@@ -1,0 +1,6 @@
+2009-09-18 13:21:55.575/CEST [main] WARN  Input stream was not available!
+2009-09-18 13:21:55.593/CEST [main] WARN  Could not read the translation '/javax/i18n4j/lib/I18NJavaParserTest.en.tr' for context javax.i18n4j.lib.I18NJavaParserTest!
+2009-09-18 13:21:55.596/CEST [main] WARN  Input stream was not available!
+2009-09-18 13:21:55.596/CEST [main] WARN  Could not read the translation '/javax/i18n4j/lib/TranslatorTest.en.tr' for context javax.i18n4j.lib.TranslatorTest!
+2009-09-18 13:21:55.685/CEST [main] WARN  Input stream was not available!
+2009-09-18 13:21:55.686/CEST [main] WARN  Could not read the translation '/javax/i18n4j/lib/MessageFormatTest.en.tr' for context javax.i18n4j.lib.MessageFormatTest!
