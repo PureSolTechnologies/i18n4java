@@ -58,7 +58,7 @@ public class I18NJavaParserTest extends TestCase {
 		try {
 			MultiLanguageTranslations translations = I18NJavaParser
 					.parseFile(new File(
-							"test/com/qsys/i18n/I18NJavaParserTest.java"));
+							"test/javax/i18n4j/I18NJavaParserTest.java"));
 			Assert.assertNotNull(translations);
 			translations.print();
 			Assert.assertNotNull(translations.get("tr(String)"));
@@ -72,11 +72,9 @@ public class I18NJavaParserTest extends TestCase {
 							+ "texts in tr()!"));
 			Assert.assertNotNull(translations
 					.get("This exception was not expected:"));
-			Assert.assertNotNull(translations
-					.get("I18N test description in English!"));
 		} catch (FileNotFoundException e) {
-			Assert.fail(translator.i18n("This exception was not expected:"));
 			e.printStackTrace();
+			Assert.fail(translator.i18n("This exception was not expected:"));
 		}
 	}
 

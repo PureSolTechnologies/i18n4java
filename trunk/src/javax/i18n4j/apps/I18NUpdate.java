@@ -116,7 +116,7 @@ public class I18NUpdate {
 	private MultiLanguageTranslations readTranslations(File file) {
 		try {
 			logger.info("Read " + file.getPath() + " for translations...");
-			MultiLanguageTranslations hash = I18NFile.readWithJAXB(file);
+			MultiLanguageTranslations hash = I18NFile.readMultiLanguageFile(file);
 			hash.removeLocations();
 			return hash;
 		} catch (FileNotFoundException e) {
@@ -128,11 +128,13 @@ public class I18NUpdate {
 	private void writeTranslations(File file,
 			MultiLanguageTranslations translations) {
 		logger.info("Write translations to " + file.getPath());
-		I18NFile.writeWithJAXB(file, translations);
+		I18NFile.writeMultiLanguageFile(file, translations);
 	}
 
 	static public void main(String args[]) {
+		System.out.println("Set translator...");
 		Translator.setDefault(new Locale("de", "DE"));
+		System.out.println("set.");
 		new I18NUpdate(args).update();
 	}
 }

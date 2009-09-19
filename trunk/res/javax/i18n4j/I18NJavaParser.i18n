@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+    <translations>
+        <entry>
+            <key>.*</key>
+            <value>
+                <source>.*</source>
+                <translated/>
+                <locations>
+                    <file>Name = &quot;&quot;.I18NJavaParser.java</file>
+                    <line>41</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key></key>
+            <value>
+                <source></source>
+                <translated/>
+                <locations>
+                    <file>\\s*&quot;, &quot;&quot;).I18NJavaParser.java</file>
+                    <line>140</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>

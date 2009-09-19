@@ -8,32 +8,15 @@ import java.text.MessageFormat;
 import java.util.Hashtable;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
-
 /**
- * <PRE>
- * 
  * This small object was inspired by QT's approach to internationalization which
  * is much more flexible and much easier to use. This object was to be created
- * because the String object is final and a tr() function could not be
- * implemented in that way. The Translator object can be create several times.
- * The text reference list is static and is therefore loaded only once into the
- * memory. Additionally, the object is designed as singleton to save memory.
- * &lt;br/&gt; &lt;br/&gt; The translation file is a normal ASCII file with the suffix
- * '.&lt;language&gt;.tr'. For german it would be '.de.tr'. The format is very
- * easy. An entry starts with a line starting with '&gt;&gt;&gt;'. In the next
- * lines the English text which is used in the program is presented. The next
- * line is stating with '===' and after that the translation is presented. It is
- * to pay attention to the format of the text. The last line of an entry is just
- * starting with '&lt;&lt;&lt;'. &lt;br/&gt; &lt;br/&gt; example:&lt;br/&gt; &lt;br/&gt; &lt;tt&gt;
- * &lt;&lt;&lt;&lt;br/&gt;
- * English text&lt;br/&gt;
- * ===&lt;br/&gt;
- * Deutscher Text&lt;br/&gt;
- * &gt;&gt;&gt;
- * &lt;/tt&gt;
+ * because the String object is final and a tt() function could not be
+ * implemented in that way.
  * 
- * </PRE>
+ * This class is the central translator for all translations. It's instanciated
+ * at best as
+ * <tt>private static final Translator translator = Translator.getTranslator(Class)</tt>
  * 
  * @author Rick-Rainer Ludwig
  */
@@ -41,22 +24,107 @@ public class Translator implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static Locale defaultLocale = null;
+	private static Locale[] additionalLocales = null;
+	/**
+	 * This variable keeps the references to the system wide unique context
+	 * sensitive instances.
+	 */
+	private static Hashtable<String, Translator> instances = new Hashtable<String, Translator>();
+
+	/**
+	 * This method creates a new instance of Translator. This method should only
+	 * be used, if it is really necessary. getInstance() should be used instead.
+	 * 
+	 * @see #getTranslator()
+	 * 
+	 * @return A reference to a newly created Translator object is returned.
+	 */
+	public static Translator newInstance(Class<?> clazz) {
+		return new Translator(clazz);
+	}
+
+	/**
+	 * This method creates a the unique instance of Translator for Singleton
+	 * pattern. This method is synchronized to assure only one instance. This
+	 * method is exclusively called by getInstance to create the unique instance
+	 * in case it was not created before.
+	 * 
+	 * @see #getTranslator()
+	 * 
+	 * @return A reference to a newly created Translator object is returned.
+	 */
+	private static synchronized Translator createInstance(Class<?> clazz) {
+		String context = clazz.getName();
+		if (!instances.containsKey(context)) {
+			instances.put(context, newInstance(clazz));
+		}
+		return instances.get(context);
+	}
+
+	/**
+	 * This method returns the static instance to Translator which is unique to
+	 * the whole system. This is the static method to build the Singleton
+	 * pattern.
+	 * 
+	 * @return A reference to the static held Translator object is returned.
+	 */
+	public static Translator getTranslator(Class<?> clazz) {
+		String context = clazz.getName();
+		Translator translator = (Translator) instances.get(context);
+		if (translator == null) {
+			translator = createInstance(clazz);
+		}
+		return translator;
+	}
+
+	static public void setDefault(Locale locale) {
+		defaultLocale = locale;
+		resetAllInstances();
+	}
+
+	static public Locale getDefault() {
+		return defaultLocale;
+	}
+
+	static public String getDefaultLanguage() {
+		return defaultLocale.getLanguage();
+	}
+
+	static public String getDefaultCountry() {
+		return defaultLocale.getCountry();
+	}
+
+	static public void setSingleLanguageMode() {
+		additionalLocales = null;
+		resetAllInstances();
+	}
+
+	static public void setAdditionalLocales(Locale... additionalLocales) {
+		Translator.additionalLocales = additionalLocales;
+		resetAllInstances();
+	}
+
+	static public Locale[] getAdditionalLocales() {
+		return additionalLocales;
+	}
+
+	static private void resetAllInstances() {
+		for (String context : instances.keySet()) {
+			instances.get(context).reset();
+		}
+	}
+
 	/**
 	 * This is the Hashtable for the context translations. Everything is kept in
 	 * there. The context is the name of the class including the package name.
 	 */
-	private MultiLanguageTranslations translations = null;
-
-	private static Locale defaultLocale = null;
-
-	private static Locale[] additionalLocales = null;
-	private static Logger logger = Logger.getLogger(Translator.class);
+	private Hashtable<String, SingleLanguageTranslations> translations = null;
 
 	/**
-	 * This variable keeps the reference to the system wide unique instance.
+	 * This variable keeps the name of the class which is used as a context.
 	 */
-	private static Hashtable<String, Translator> instance = new Hashtable<String, Translator>();
-	private String context = null;
+	private String context = "";
 
 	/**
 	 * This is the standard constructor which performs some default
@@ -70,83 +138,79 @@ public class Translator implements Serializable {
 	 *            is the objects context for what the translator is to be
 	 *            created.
 	 */
-	private Translator(String context) {
+	private Translator(Class<?> clazz) {
 		defaultLocale = Locale.getDefault();
-		this.context = context;
-		readContextTranslation();
+		context = clazz.getName();
 	}
 
-	static public void setDefault(Locale locale) {
-		Translator.defaultLocale = locale;
+	private void reset() {
+		translations = null;
 	}
 
-	public Locale getDefault() {
-		return defaultLocale;
-	}
-
-	public String getDefaultLanguage() {
-		return defaultLocale.getLanguage();
-	}
-
-	public String getDefaultCountry() {
-		return defaultLocale.getCountry();
-	}
-
-	public void setSingleLanguageMode() {
-		additionalLocales = null;
-	}
-
-	static public void setAdditionalLocales(Locale... additionalLocales) {
-		Translator.additionalLocales = additionalLocales;
-	}
-
-	public Locale[] getAdditionalLocales() {
-		return additionalLocales;
-	}
-
-	public void setTranslation(String source, String language,
+	protected void setTranslation(String source, String language,
 			String translation) {
-		translations.set(source, language, translation);
-	}
-
-	public void addTranslations(MultiLanguageTranslations translations) {
-		this.translations.add(translations);
-	}
-
-	public void setTranslation(String source, Locale locale, String translation) {
-		setTranslation(source, locale.getLanguage(), translation);
-	}
-
-	public MultiLanguageTranslations getTranslationsHash() {
-		return translations;
+		if (translations == null) {
+			translations = new Hashtable<String, SingleLanguageTranslations>();
+		}
+		if (!translations.containsKey(language)) {
+			translations.put(language, new SingleLanguageTranslations());
+		}
+		translations.get(language).set(source, translation);
 	}
 
 	private void readContextTranslation() {
-		if (getDefaultLanguage().equals("en")) {
-			this.translations = new MultiLanguageTranslations();
+		if (translations == null) {
+			translations = new Hashtable<String, SingleLanguageTranslations>();
 		}
-		File file = I18NFile.getI18NFile(context, getDefault());
-		InputStream is = this.getClass().getResourceAsStream(file.getPath());
-		MultiLanguageTranslations translations;
+		readContextTranslation(getDefaultLanguage());
+		if (getAdditionalLocales() != null) {
+			for (Locale addLocale : getAdditionalLocales()) {
+				readContextTranslation(addLocale.getLanguage());
+			}
+		}
+	}
+
+	private void readContextTranslation(String language) {
+		if (language.equals("en")) {
+			translations.put("en", new SingleLanguageTranslations());
+			return;
+		}
+		File file = I18NFile.getI18NFile(context, language);
+		InputStream is = getClass().getResourceAsStream(file.getPath());
+		SingleLanguageTranslations translations = readFromStream(is);
+		this.translations.put(language, translations);
+	}
+
+	private SingleLanguageTranslations readFromStream(InputStream is) {
 		try {
-			translations = I18NFile.readWithJAXB(is);
+			SingleLanguageTranslations translations = I18NFile
+					.readSingleLanguageFile(is);
 			translations.print();
+			return translations;
 		} catch (IOException e) {
-			logger.warn(e.getMessage());
-			logger.warn("Could not read the translation '" + file.getPath()
-					+ "' for context " + context + "!");
-			translations = new MultiLanguageTranslations();
+			return new SingleLanguageTranslations();
 		}
-		this.translations = translations;
 	}
 
 	public String i18n(String text) {
-		String translation = translations.get(text, getDefaultLanguage());
+		if (translations == null) {
+			readContextTranslation();
+		}
+		String translation = translations.get(getDefaultLanguage()).get(text);
+		boolean useLineBreak = false;
+		if (translation.contains("\n")) {
+			useLineBreak = true;
+		}
 		if (additionalLocales != null) {
-			for (int index = 0; index < additionalLocales.length; index++) {
-				translation += "\n("
-						+ translations.get(text, additionalLocales[index]
-								.getLanguage()) + ")";
+			for (Locale locale : getAdditionalLocales()) {
+				if (useLineBreak) {
+					translation += "\n";
+				} else {
+					translation += " ";
+				}
+				translation += "("
+						+ translations.get(locale.getLanguage()).get(text)
+						+ ")";
 			}
 		}
 		return translation;
@@ -156,60 +220,28 @@ public class Translator implements Serializable {
 	 * {@inheritDoc}
 	 */
 	public String i18n(String text, Object... params) {
-		String translation = new MessageFormat(translations.get(text,
-				getDefaultLanguage()), getDefault()).format(params);
+		if (translations == null) {
+			readContextTranslation();
+		}
+		String translation = new MessageFormat(translations.get(
+				getDefaultLanguage()).get(text), getDefault()).format(params);
+		boolean useLineBreak = false;
+		if (translation.contains("\n")) {
+			useLineBreak = true;
+		}
 		if (additionalLocales != null) {
-			for (int index = 0; index < additionalLocales.length; index++) {
-				translation += "\n("
-						+ new MessageFormat(translations.get(text,
-								additionalLocales[index].getLanguage()),
-								additionalLocales[index]).format(params) + ")";
+			for (Locale locale : getAdditionalLocales()) {
+				if (useLineBreak) {
+					translation += "\n";
+				} else {
+					translation += " ";
+				}
+				translation += "("
+						+ new MessageFormat(translations.get(
+								locale.getLanguage()).get(text), locale)
+								.format(params) + ")";
 			}
 		}
 		return translation;
-	}
-
-	/**
-	 * This method creates a new instance of Translator. This method should only
-	 * be used, if it is really necessary. getInstance() should be used instead.
-	 * 
-	 * @see #getTranslator()
-	 * 
-	 * @return A reference to a newly created Translator object is returned.
-	 */
-	public static Translator newInstance(String context) {
-		return new Translator(context);
-	}
-
-	/**
-	 * This method creates a the unique instance of Translator for Singleton
-	 * pattern. This method is synchronized to assure only one instance. This
-	 * method is exclusively called by getInstance to create the unique instance
-	 * in case it was not created before.
-	 * 
-	 * @see #getTranslator()
-	 * 
-	 * @return A reference to a newly created Translator object is returned.
-	 */
-	private static synchronized Translator createInstance(String context) {
-		if (!instance.containsKey(context)) {
-			instance.put(context, newInstance(context));
-		}
-		return instance.get(context);
-	}
-
-	/**
-	 * This method returns the static instance to Translator which is unique to
-	 * the whole system. This is the static method to build the Singleton
-	 * pattern.
-	 * 
-	 * @return A reference to the static held Translator object is returned.
-	 */
-	public static Translator getTranslator(Class<?> context) {
-		Translator translator = (Translator) instance.get(context.getName());
-		if (translator == null) {
-			translator = createInstance(context.getName());
-		}
-		return translator;
 	}
 }

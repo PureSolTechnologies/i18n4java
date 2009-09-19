@@ -136,7 +136,7 @@ public class TranslatorTest extends TestCase {
 		translator.setTranslation("English", "de", "Deutsch");
 		translator.setTranslation("English", "vi", "Tieng Viet");
 		translator.setTranslation("English", "en", "English");
-		Assert.assertEquals("Deutsch\n(Tieng Viet)\n(English)", translator
+		Assert.assertEquals("Deutsch (Tieng Viet) (English)", translator
 				.i18n("English"));
 	}
 
@@ -158,36 +158,8 @@ public class TranslatorTest extends TestCase {
 				"Tieng Viet: {0,date,short}");
 		translator.setTranslation("English: {0,date,short}", "en",
 				"English: {0,date,short}");
-		Assert.assertEquals("Deutsch: 07.07.09\n"
-				+ "(Tieng Viet: 07/07/2009)\n" + "(English: 7/7/09)",
-				translator.i18n("English: {0,date,short}", date));
+		Assert.assertEquals("Deutsch: 07.07.09 " + "(Tieng Viet: 07/07/2009) "
+				+ "(English: 7/7/09)", translator.i18n(
+				"English: {0,date,short}", date));
 	}
-
-	@Test
-	public void testContextTranslations() {
-		String source = "Context based translation with class as context!";
-		String expected = "Kontextbasierte Uebersetzung mit Klasse als Kontext!";
-		translator.setTranslation(source, Locale.getDefault(), expected);
-		String translated = translator.i18n(source);
-		System.out.println(source + " --> " + translated);
-		Assert.assertEquals(expected, translated);
-
-		source = "Class {0} has its own context translation which means there is a translation in the context of the class! ;-)";
-		expected = "Die Klasse "
-				+ getClass().getName()
-				+ " hat ihre eigene Kontextuebersetzung, was bedeutet, dass es eine Uebersetzung im Kontext der Klasse gibt! ;-)";
-		translator.setTranslation(source, Locale.getDefault(), expected);
-		translated = translator.i18n(source, getClass().getName());
-		System.out.println(source + " --> " + translated);
-		Assert.assertEquals(expected, translated);
-	}
-
-	@Test
-	public void testEmbeddedI18NAnnotation() {
-		Assert.assertNotNull(translator);
-		String origin = "i18n:Embedded I18N annotation.";
-		String expected = "Embedded I18N annotation.";
-		Assert.assertEquals(expected, translator.i18n(origin));
-	}
-
 }

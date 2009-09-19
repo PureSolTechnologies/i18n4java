@@ -1,5 +1,6 @@
 package javax.i18n4j;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 import java.util.Vector;
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Rick-Rainer Ludwig
  * 
  */
-@XmlRootElement(name = "internationalization", namespace = "http://ludwig.endofinternet.net")
+@XmlRootElement(name = "internationalization")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MultiLanguageTranslations {
 
@@ -141,6 +142,20 @@ public class MultiLanguageTranslations {
 
 	public Set<String> getSources() {
 		return translations.keySet();
+	}
+
+	public Set<String> getAvailableLanguages() {
+		Set<String> availableLanguages = new HashSet<String>();
+		Set<String> sources = translations.keySet();
+		for (String source : sources) {
+			Set<String> languages = getAvailableLanguages(source);
+			for (String language : languages) {
+				if (!availableLanguages.contains(language)) {
+					availableLanguages.add(language);
+				}
+			}
+		}
+		return availableLanguages;
 	}
 
 	public Set<String> getAvailableLanguages(String source) {

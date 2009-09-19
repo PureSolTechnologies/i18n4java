@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+    <translations>
+        <entry>
+            <key>usage:  I18NRelease &lt;directory&gt;</key>
+            <value>
+                <source>usage:  I18NRelease &lt;directory&gt;</source>
+                <translated>
+                	<entry>
+                		<key>de</key>
+                		<value>Nutzung:  I18NRelease &lt;Verzeichnis&gt;</value>
+                	</entry>
+                </translated>          
+                <locations>
+                    <file>javax.i18n4j.apps.I18NRelease.java</file>
+                    <line>34</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>
