@@ -185,7 +185,6 @@ public class Translator implements Serializable {
 		try {
 			SingleLanguageTranslations translations = I18NFile
 					.readSingleLanguageFile(is);
-			translations.print();
 			return translations;
 		} catch (IOException e) {
 			return new SingleLanguageTranslations();

@@ -57,7 +57,7 @@ public class I18NRelease {
 
 	private void processFile(File file) {
 		try {
-			logger.info("Process file " + file.getPath() + "...");
+			logger.info(translator.i18n("Process file {0}...", file.getPath()));
 			MultiLanguageTranslations mlTranslations = I18NFile
 					.readMultiLanguageFile(file);
 			Set<String> languages = mlTranslations.getAvailableLanguages();
@@ -72,8 +72,8 @@ public class I18NRelease {
 
 	private void release(MultiLanguageTranslations mlTranslations,
 			String language, File file) {
-		logger.info("Release language " + language + " to file "
-				+ file.getPath());
+		logger.info(translator.i18n("Release language {0}  to file {1}",
+				language, file.getPath()));
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
 		Set<String> sources = mlTranslations.getSources();
 		for (String source : sources) {
@@ -86,9 +86,7 @@ public class I18NRelease {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Set translator...");
 		Translator.setDefault(new Locale("de", "DE"));
-		System.out.println("set.");
 		new I18NRelease(args).release();
 	}
 }
