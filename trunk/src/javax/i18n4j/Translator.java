@@ -8,6 +8,8 @@ import java.text.MessageFormat;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
+
 /**
  * This small object was inspired by QT's approach to internationalization which
  * is much more flexible and much easier to use. This object was to be created
@@ -24,7 +26,9 @@ public class Translator implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static Locale defaultLocale = null;
+	private static final Logger logger = Logger.getLogger(Translator.class);
+
+	private static Locale defaultLocale = Locale.getDefault();
 	private static Locale[] additionalLocales = null;
 	/**
 	 * This variable keeps the references to the system wide unique context
@@ -41,6 +45,7 @@ public class Translator implements Serializable {
 	 * @return A reference to a newly created Translator object is returned.
 	 */
 	public static Translator newInstance(Class<?> clazz) {
+		logger.debug("Creating instance for class '" + clazz.getName() + "'");
 		return new Translator(clazz);
 	}
 
@@ -79,6 +84,7 @@ public class Translator implements Serializable {
 	}
 
 	static public void setDefault(Locale locale) {
+		logger.info("Set default locale to '" + locale.toString() + "'");
 		defaultLocale = locale;
 		resetAllInstances();
 	}
@@ -88,19 +94,31 @@ public class Translator implements Serializable {
 	}
 
 	static public String getDefaultLanguage() {
-		return defaultLocale.getLanguage();
+		return getDefault().getLanguage();
 	}
 
 	static public String getDefaultCountry() {
-		return defaultLocale.getCountry();
+		return getDefault().getCountry();
 	}
 
 	static public void setSingleLanguageMode() {
+		logger.info("Set to single language mode");
 		additionalLocales = null;
 		resetAllInstances();
 	}
 
 	static public void setAdditionalLocales(Locale... additionalLocales) {
+		if (logger.isInfoEnabled()) {
+			String s = "Set additional locales: ";
+			boolean first = true;
+			for (Locale locale : additionalLocales) {
+				if (!first) {
+					s += ", ";
+				}
+				s += locale.toString();
+			}
+			logger.info(s);
+		}
 		Translator.additionalLocales = additionalLocales;
 		resetAllInstances();
 	}
@@ -110,6 +128,7 @@ public class Translator implements Serializable {
 	}
 
 	static private void resetAllInstances() {
+		logger.info("Reset all instances");
 		for (String context : instances.keySet()) {
 			instances.get(context).reset();
 		}
@@ -139,11 +158,11 @@ public class Translator implements Serializable {
 	 *            created.
 	 */
 	private Translator(Class<?> clazz) {
-		defaultLocale = Locale.getDefault();
 		context = clazz.getName();
 	}
 
 	private void reset() {
+		logger.info("reset '" + context + "'");
 		translations = null;
 	}
 
@@ -171,11 +190,14 @@ public class Translator implements Serializable {
 	}
 
 	private void readContextTranslation(String language) {
+		logger.debug("read context translation for context '" + context
+				+ "' and language '" + language + "'");
 		if (language.equals("en")) {
 			translations.put("en", new SingleLanguageTranslations());
 			return;
 		}
 		File file = I18NFile.getI18NFile(context, language);
+		logger.info("Read context language file '" + file.getPath() + "'");
 		InputStream is = getClass().getResourceAsStream(file.getPath());
 		SingleLanguageTranslations translations = readFromStream(is);
 		this.translations.put(language, translations);

@@ -5,7 +5,12 @@
             <key>usage2: I18NUpdate &lt;source directory&gt; &lt;resource directory&gt;</key>
             <value>
                 <source>usage2: I18NUpdate &lt;source directory&gt; &lt;resource directory&gt;</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Nutyung2: I18NUpdate &lt;Quellenveryeichnis&gt; &lt;Datenverzeichnis&gt;</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NUpdate.java</file>
                     <line>56</line>
@@ -17,7 +22,12 @@
             <key>usage:  I18NUpdate &lt;directory&gt;</key>
             <value>
                 <source>usage:  I18NUpdate &lt;directory&gt;</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Nutyung:  I18NUpdate &lt;Projektveryeichnis&gt;</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NUpdate.java</file>
                     <line>53</line>

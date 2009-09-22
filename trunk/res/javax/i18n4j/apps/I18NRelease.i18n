@@ -6,10 +6,10 @@
             <value>
                 <source>Release language {0}  to file {1}</source>
                 <translated>
-                	<entry>
-                		<key>de</key>
-                		<value>Freigabe nach Datei {1} für Sprache {0}</value>
-                	</entry>
+                    <entry>
+                        <key>de</key>
+                        <value>Freigabe nach Datei {1} für Sprache {0}</value>
+                    </entry>
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
@@ -40,10 +40,10 @@
             <value>
                 <source>Process file {0}...</source>
                 <translated>
-                	<entry>
-                		<key>de</key>
-                		<value>Prozessiere Datei {0}...</value>
-                	</entry>
+                    <entry>
+                        <key>de</key>
+                        <value>Prozessiere Datei {0}...</value>
+                    </entry>
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
