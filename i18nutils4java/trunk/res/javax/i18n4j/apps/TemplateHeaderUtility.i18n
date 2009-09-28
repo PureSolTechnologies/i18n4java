@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+    <translations>
+        <entry>
+            <key>adds headers to source files.</key>
+            <value>
+                <source>adds headers to source files.</source>
+                <translated/>
+                <locations>
+                    <file>&quot;)) &amp;&amp; (line != null)) {.TemplateHeaderUtility.java</file>
+                    <line>92</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Header template file</key>
+            <value>
+                <source>Header template file</source>
+                <translated/>
+                <locations>
+                    <file>&quot;)) &amp;&amp; (line != null)) {.TemplateHeaderUtility.java</file>
+                    <line>95</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>About file</key>
+            <value>
+                <source>About file</source>
+                <translated/>
+                <locations>
+                    <file>&quot;)) &amp;&amp; (line != null)) {.TemplateHeaderUtility.java</file>
+                    <line>97</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Search pattern like 'src/**/*.java'</key>
+            <value>
+                <source>Search pattern like 'src/**/*.java'</source>
+                <translated/>
+                <locations>
+                    <file>&quot;)) &amp;&amp; (line != null)) {.TemplateHeaderUtility.java</file>
+                    <line>99</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>

@@ -56,12 +56,12 @@ public class I18NTranslationPanel extends Panel {
 
 		locales = new LocaleChooser();
 		locales.setSelectedLocale(currentLocale);
-		locales.connect("changedSelection", this, "setLocale");
+		locales.connect("changedSelection", this, "setLocale", Object.class);
 		add(Label.addFor(new ScrollPane(locales), translator.i18n("Language"),
 				Label.TOP), BorderLayout.NORTH);
 
 		classes = new List();
-		classes.connect("valueChanged", this, "openFile");
+		classes.connect("valueChanged", this, "openFile", Object.class);
 		add(Label.addFor(classes, translator.i18n("Classes"), Label.TOP),
 				BorderLayout.WEST);
 
@@ -69,7 +69,7 @@ public class I18NTranslationPanel extends Panel {
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 		reservoir = new List();
-		reservoir.connect("valueChanged", this, "changeSource");
+		reservoir.connect("valueChanged", this, "changeSource", Object.class);
 
 		centerPanel.add(Label.addFor(new ScrollPane(reservoir), translator
 				.i18n("Reservoir"), Label.TOP));
