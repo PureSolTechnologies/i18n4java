@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+    <translations>
+        <entry>
+            <key>Release language {0}  to file {1}</key>
+            <value>
+                <source>Release language {0}  to file {1}</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Freigabe nach Datei {1} für Sprache {0}</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4j.apps.I18NRelease.java</file>
+                    <line>75</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>usage:  I18NRelease &lt;directory&gt;</key>
+            <value>
+                <source>usage:  I18NRelease &lt;directory&gt;</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Nutzung:  I18NRelease &lt;Verzeichnis&gt;</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4j.apps.I18NRelease.java</file>
+                    <line>35</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Process file {0}...</key>
+            <value>
+                <source>Process file {0}...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Prozessiere Datei {0}...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4j.apps.I18NRelease.java</file>
+                    <line>60</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<translations>
+    <translations>
+        <entry>
+            <key>usage2: I18NUpdate &lt;source directory&gt; &lt;resource directory&gt;</key>
+            <value>Nutyung2: I18NUpdate &lt;Quellenveryeichnis&gt; &lt;Datenverzeichnis&gt;</value>
+        </entry>
+        <entry>
+            <key>usage:  I18NUpdate &lt;directory&gt;</key>
+            <value>Nutyung:  I18NUpdate &lt;Projektveryeichnis&gt;</value>
+        </entry>
+    </translations>
+</translations>
