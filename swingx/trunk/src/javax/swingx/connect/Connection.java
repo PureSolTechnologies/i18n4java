@@ -2,6 +2,9 @@ package javax.swingx.connect;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+
+import javax.swingx.data.TypeWrapper;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +34,7 @@ public class Connection {
 	/**
 	 * This pointer is used to store the reference to the emitter class.
 	 */
-	private ConnectionHandler emitter = null;
+	private Object emitter = null;
 
 	/**
 	 * This Method variable stores the information about the signal method.
@@ -49,8 +52,8 @@ public class Connection {
 	private Method slot = null;
 	private Class<?> types[] = null;
 
-	public Connection(ConnectionHandler emitter, String signal,
-			Object receiver, String slot, Class<?>... types) {
+	public Connection(Object emitter, String signal, Object receiver,
+			String slot, Class<?>... types) {
 		super();
 		connect(emitter, signal, receiver, slot, types);
 	}
@@ -87,8 +90,8 @@ public class Connection {
 	 *            True means, the signal was treated successfully. Otherwise a
 	 *            false is the answer.
 	 */
-	private void connect(ConnectionHandler emitter, String signal,
-			Object receiver, String slot, Class<?>... types) {
+	private void connect(Object emitter, String signal, Object receiver,
+			String slot, Class<?>... types) {
 		try {
 			Method slotMethod = receiver.getClass().getMethod(slot, types);
 
@@ -96,32 +99,35 @@ public class Connection {
 			if ((!slotMethod.getReturnType().equals(Boolean.class))
 					&& (!slotMethod.getReturnType().equals(boolean.class))
 					&& (!slotMethod.getReturnType().getName().equals("void"))) {
-				throw new RuntimeException("Return value '"
+				logger.fatal("Return value '"
 						+ slotMethod.getReturnType().getName() + "'for slot '"
 						+ receiver.getClass().getName() + "." + slot
 						+ "' does not meet the requirement! "
 						+ "A slot has to return Boolean!");
+				throw new RuntimeException();
 			}
 
 			Method signalMethod = emitter.getClass().getMethod(signal, types);
 			if ((!signalMethod.getReturnType().equals(void.class))) {
-				throw new RuntimeException("Return value '"
+				logger.fatal("Return value '"
 						+ signalMethod.getReturnType().getName()
 						+ "'for signal '" + emitter.getClass().getName() + "."
 						+ signal + "' does not meet the requirement!");
+				throw new RuntimeException();
 			}
 
 			// check exceptions...
 			Class<?> slotExceptions[] = slotMethod.getExceptionTypes();
 
 			if (slotExceptions.length != 0) {
-				throw new RuntimeException(
-						"Exceptions for slot '"
+				logger
+						.fatal("Exceptions for slot '"
 								+ receiver.getClass().getName()
 								+ "."
 								+ slot
 								+ "' do not meet the requirement! "
 								+ "A must not implement any exceptions due to the missing exception processing!");
+				throw new RuntimeException();
 			}
 
 			this.receiver = receiver;
@@ -129,11 +135,19 @@ public class Connection {
 			this.emitter = emitter;
 			this.signal = signalMethod;
 			this.types = types;
+
+			// check types for primitive types and convert to wrappers...
+			for (int i = 0; i < this.types.length; i++) {
+				if (this.types[i].isPrimitive()) {
+					this.types[i] = TypeWrapper
+							.toPrimitiveWrapper(this.types[i]);
+				}
+			}
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			logger.fatal(e.getMessage(), e);
 			throw new RuntimeException();
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			logger.fatal(e.getMessage(), e);
 			throw new RuntimeException();
 		}
 	}
@@ -156,10 +170,6 @@ public class Connection {
 				return ((Boolean) getSlot().invoke(getReceiver(), params))
 						.booleanValue();
 			}
-		} catch (IllegalArgumentException e) {
-			logger.fatal(e.getMessage(), e);
-			throw new RuntimeException("Could not emit signal '" + toString()
-					+ "' correctly! (" + e.getMessage() + ")");
 		} catch (IllegalAccessException e) {
 			logger.fatal(e.getMessage(), e);
 			throw new RuntimeException("Could not emit signal '" + toString()
@@ -185,21 +195,28 @@ public class Connection {
 	 */
 	public boolean isSignal(ConnectionHandler emitter, String signal,
 			Object... params) {
+		Class<?> types[] = new Class<?>[params.length];
+		for (int i = 0; i < params.length; i++) {
+			types[i] = params[i].getClass();
+		}
+		return isSignal(emitter, signal, types);
+	}
+
+	public boolean isSignal(ConnectionHandler emitter, String signal,
+			Class<?>... types) {
 		if (getEmitter() != emitter) {
 			return false;
 		}
 		if (!getSignal().getName().equals(signal)) {
 			return false;
 		}
-		if (types.length != params.length) {
+		if (this.types.length != types.length) {
 			return false;
 		}
-		// TODO to be fixed!!!
-		// for (int i = 0; i < params.length; i++) {
-		// if (!types[i].isAssignableFrom(params[i].getClass())) {
-		// return false;
-		// }
-		// }
+		for (int i = 0; i < types.length; i++) {
+			if (!types[i].equals(this.types[i]))
+				return false;
+		}
 		return true;
 	}
 
@@ -216,17 +233,25 @@ public class Connection {
 	 *         the receiving class and the method in this connection.
 	 */
 	public boolean isSlot(Object receiver, String slot, Object... params) {
+		ArrayList<Class<?>> types = new ArrayList<Class<?>>();
+		for (Object param : params) {
+			types.add(param.getClass());
+		}
+		return isSlot(receiver, slot, (Class<?>[]) types.toArray());
+	}
+
+	public boolean isSlot(Object receiver, String slot, Class<?>... types) {
 		if (getReceiver() != receiver) {
 			return false;
 		}
 		if (!getSlot().getName().equals(slot)) {
 			return false;
 		}
-		if (types.length != params.length) {
+		if (this.types.length != types.length) {
 			return false;
 		}
-		for (int i = 0; i < params.length; i++) {
-			if (!params[i].getClass().equals(types[i].getClass())) {
+		for (int i = 0; i < types.length; i++) {
+			if (!this.types[i].equals(types[i])) {
 				return false;
 			}
 		}

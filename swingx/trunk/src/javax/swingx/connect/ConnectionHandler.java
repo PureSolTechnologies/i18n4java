@@ -56,7 +56,8 @@ public interface ConnectionHandler {
 	 *            is the method which is to be called, when the signal was
 	 *            emitted.
 	 */
-	public void release(String signal, Object receiver, String slot);
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types);
 
 	/**
 	 * This method checks for an established connection.
@@ -72,5 +73,6 @@ public interface ConnectionHandler {
 	 * @return True is returned if a connection was establish before which has
 	 *         the same objects and methods involved.
 	 */
-	public boolean isConnected(String signal, Object receiver, String slot);
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types);
 }

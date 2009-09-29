@@ -46,17 +46,22 @@ public class List extends JList implements ListSelectionListener,
 		connectionManager.emitSignal("indicesChanged", indices);
 	}
 
+	@Override
 	public void connect(String signal, Object receiver, String slot,
 			Class<?>... types) {
 		connectionManager.connect(signal, receiver, slot, types);
 	}
 
-	public boolean isConnected(String signal, Object receiver, String slot) {
-		return connectionManager.isConnected(signal, receiver, slot);
+	@Override
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		return connectionManager.isConnected(signal, receiver, slot, types);
 	}
 
-	public void release(String signal, Object receiver, String slot) {
-		connectionManager.release(signal, receiver, slot);
+	@Override
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		connectionManager.release(signal, receiver, slot, types);
 	}
 
 	public void valueChanged(ListSelectionEvent event) {

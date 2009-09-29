@@ -202,14 +202,16 @@ public class Dialog extends JDialog implements Widget {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void release(String signal, Object receiver, String slot) {
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
 		connectionManager.release(signal, receiver, slot);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isConnected(String signal, Object receiver, String slot) {
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
 		return connectionManager.isConnected(signal, receiver, slot);
 	}
 

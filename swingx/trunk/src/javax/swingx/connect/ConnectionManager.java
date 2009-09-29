@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class handles connections which were established and also emits signals.
  * 
@@ -35,6 +37,9 @@ import java.util.Vector;
 final public class ConnectionManager implements ConnectionHandler, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger
+			.getLogger(ConnectionManager.class);
 
 	/**
 	 * This Vector stores all connections which were established.
@@ -68,12 +73,13 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void release(String signal, Object receiver, String slot) {
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
 		Enumeration<Connection> enumeration = connections.elements();
 		while (enumeration.hasMoreElements()) {
 			Connection connection = enumeration.nextElement();
-			if (connection.isSignal(emitter, signal)
-					&& connection.isSlot(receiver, slot)) {
+			if (connection.isSignal(emitter, signal, types)
+					&& connection.isSlot(receiver, slot, types)) {
 				connections.remove(connection);
 			}
 		}
@@ -82,16 +88,28 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isConnected(String signal, Object receiver, String slot) {
-		for (Connection connection : connections) {
-			if ((connection.getEmitter() == emitter)
-					&& (connection.getSignal().getName().equals(signal))
-					&& (connection.getReceiver() == receiver)
-					&& (connection.getSlot().getName().equals(slot))) {
-				return true;
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		try {
+			Method signalMethod = getEmitter().getClass().getMethod(signal,
+					types);
+			Method slotMethod = receiver.getClass().getMethod(slot, types);
+			for (Connection connection : connections) {
+				if ((connection.getEmitter() == emitter)
+						&& (connection.getReceiver() == receiver)
+						&& (signalMethod.equals(connection.getSignal()))
+						&& (slotMethod.equals(connection.getSlot()))) {
+					return true;
+				}
 			}
+			return false;
+		} catch (SecurityException e) {
+			logger.fatal(e.getMessage(), e);
+			throw new RuntimeException();
+		} catch (NoSuchMethodException e) {
+			logger.fatal(e.getMessage(), e);
+			throw new RuntimeException();
 		}
-		return false;
 	}
 
 	/**
@@ -118,32 +136,5 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 			}
 		}
 		return retVal;
-	}
-
-	public Method getSignal(ConnectionHandler emitter, String signal) {
-		try {
-			Method signalMethod = emitter.getClass().getMethod(signal);
-			if (signalMethod.getAnnotation(Signal.class) == null)
-				throw new RuntimeException();
-			return signalMethod;
-		} catch (SecurityException e) {
-			throw new RuntimeException();
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException();
-		}
-	}
-
-	public Method getSlot(ConnectionHandler receiver, String slot,
-			Object... params) {
-		try {
-			Method slotMethod = receiver.getClass().getMethod(slot);
-			if (slotMethod.getAnnotation(Slot.class) == null)
-				throw new RuntimeException();
-			return slotMethod;
-		} catch (SecurityException e) {
-			throw new RuntimeException();
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException();
-		}
 	}
 }

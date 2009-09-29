@@ -59,15 +59,17 @@ public class CheckBoxMenuItem extends JCheckBoxMenuItem implements Widget,
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isConnected(String signal, Object receiver, String slot) {
-		return connectionManager.isConnected(signal, receiver, slot);
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		return connectionManager.isConnected(signal, receiver, slot, types);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void release(String signal, Object receiver, String slot) {
-		connectionManager.release(signal, receiver, slot);
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		connectionManager.release(signal, receiver, slot, types);
 	}
 
 	@Signal

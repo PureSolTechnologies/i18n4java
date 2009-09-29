@@ -47,6 +47,7 @@ public class Panel extends JPanel implements ConnectionHandler {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void connect(String signal, Object receiver, String slot,
 			Class<?>... types) {
 		connectionManager.connect(signal, receiver, slot, types);
@@ -55,14 +56,18 @@ public class Panel extends JPanel implements ConnectionHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void release(String signal, Object receiver, String slot) {
-		connectionManager.release(signal, receiver, slot);
+	@Override
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		connectionManager.release(signal, receiver, slot, types);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isConnected(String signal, Object receiver, String slot) {
-		return connectionManager.isConnected(signal, receiver, slot);
+	@Override
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		return connectionManager.isConnected(signal, receiver, slot, types);
 	}
 }
