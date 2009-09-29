@@ -57,10 +57,6 @@ public class I18NJavaParser {
 			.compile(".*i18n\\s*\\(.*");
 	static private final Pattern I18N_PATTERN_2 = Pattern
 			.compile(".*\"i18n:.*");
-	static private final Pattern SINGLE_I18N_ANNOTATION_PATTERN = Pattern
-			.compile(".*@I18N\\s*\\(.*");
-	static private final Pattern MULTI_I18N_ANNOTATION_PATTERN = Pattern
-			.compile(".*@I18N\\s*\\(.*");
 
 	private I18NJavaParser(File file) {
 		this.file = file;
@@ -118,8 +114,6 @@ public class I18NJavaParser {
 				}
 				translations
 						.add(extractI18N(line, startLineNumber, lineNumber));
-				translations.add(extractI18NAnnotation(line, startLineNumber,
-						lineNumber));
 			}
 			return translations;
 		} catch (IOException e) {
@@ -161,33 +155,6 @@ public class I18NJavaParser {
 		for (int index = 1; index < i18ns.length; index++) {
 			String source = extractStringFromStartToEnd("\"" + i18ns[index]);
 			if (source != null) {
-				translations.add(MultiLanguageTranslations.from(source,
-						packageName + "." + file.getName(), startLine));
-			}
-		}
-		return translations;
-	}
-
-	private MultiLanguageTranslations extractI18NAnnotation(String line,
-			int startLine, int endLine) {
-		MultiLanguageTranslations translations = new MultiLanguageTranslations();
-		if ((!SINGLE_I18N_ANNOTATION_PATTERN.matcher(line).matches())
-				&& (!MULTI_I18N_ANNOTATION_PATTERN.matcher(line).matches())) {
-			return translations;
-		}
-		// there is only one annotation per line, therfore no split is needed
-		line = line.replaceAll("^\\s*@I18N\\s*\\(\\s*", "");
-		if (line.startsWith("\"")) {
-			String source = extractStringFromStartToEnd(line);
-			if (source != null) {
-				translations.add(MultiLanguageTranslations.from(source,
-						packageName + "." + file.getName(), startLine));
-			}
-		} else {
-			line = line.replaceAll("\\s*\\{\\s*\"", "");
-			line = line.replaceAll("\"\\s*\\}\\s*\\).*", "");
-			String[] sources = line.split("\"\\s*,\\s*\"");
-			for (String source : sources) {
 				translations.add(MultiLanguageTranslations.from(source,
 						packageName + "." + file.getName(), startLine));
 			}
