@@ -214,8 +214,10 @@ public class Connection {
 			return false;
 		}
 		for (int i = 0; i < types.length; i++) {
-			if (!types[i].equals(this.types[i]))
+			if ((!types[i].equals(this.types[i]))
+					&& (!this.types[i].isAssignableFrom(types[i]))) {
 				return false;
+			}
 		}
 		return true;
 	}
