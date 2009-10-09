@@ -21,10 +21,6 @@ package javax.i18n4j;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.i18n4j.I18NJavaParser;
-import javax.i18n4j.MultiLanguageTranslations;
-import javax.i18n4j.Translator;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
