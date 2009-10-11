@@ -93,6 +93,10 @@ public class LanguageSetTest extends TestCase {
 	@Test
 	public void testEquals() {
 		LanguageSet set1 = new LanguageSet();
+		Assert.assertTrue(set1.equals(set1));
+		Assert.assertFalse(set1.equals(null));
+		Assert.assertFalse(set1.equals(new String("Test")));
+
 		LanguageSet set2 = new LanguageSet();
 		Assert.assertTrue(set1.equals(set2));
 		Assert.assertTrue(set2.equals(set1));
@@ -108,5 +112,35 @@ public class LanguageSetTest extends TestCase {
 		set2.addLocation(new SourceLocation("source.java", 1, 2));
 		Assert.assertTrue(set1.equals(set2));
 		Assert.assertTrue(set2.equals(set1));
+
+		Assert.assertTrue(set1.equals(set1));
+		Assert.assertFalse(set1.equals(null));
+		Assert.assertFalse(set1.equals(new String("Test")));
+	}
+
+	@Test
+	public void testHashCode() {
+		LanguageSet set = new LanguageSet();
+		Assert.assertTrue(set.hashCode() > 0);
+	}
+
+	@Test
+	public void testClose() {
+		LanguageSet origin = new LanguageSet("Source String");
+		origin.set("de", "Quellzeichenkette");
+		origin.addLocation(new SourceLocation("File.java", 1, 2));
+		LanguageSet cloned = (LanguageSet) origin.clone();
+		Assert.assertNotNull(cloned);
+		Assert.assertEquals(origin, cloned);
+		cloned.setSource("New Source String");
+		Assert.assertFalse(origin.equals(cloned));
+		cloned.setSource("Source String");
+		Assert.assertTrue(origin.equals(cloned));
+		cloned.set("de", "Neue Quellzeichenkette");
+		Assert.assertFalse(origin.equals(cloned));
+		cloned.set("de", "Quellzeichenkette");
+		Assert.assertTrue(origin.equals(cloned));
+		cloned.addLocation(new SourceLocation("File.java", 10, 3));
+		Assert.assertFalse(origin.equals(cloned));
 	}
 }

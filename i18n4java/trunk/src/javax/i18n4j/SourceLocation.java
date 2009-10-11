@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "location", namespace = "http://ludwig.endofinternet.net")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SourceLocation implements Serializable, Comparable<SourceLocation> {
+public class SourceLocation implements Cloneable, Serializable,
+		Comparable<SourceLocation> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,6 +93,16 @@ public class SourceLocation implements Serializable, Comparable<SourceLocation> 
 			return file + ":" + line;
 		} else {
 			return file + ":" + line + "-" + (line + lineCount - 1);
+		}
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
 		}
 	}
 

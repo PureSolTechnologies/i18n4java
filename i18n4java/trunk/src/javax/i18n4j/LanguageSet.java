@@ -110,6 +110,9 @@ public class LanguageSet implements Cloneable {
 	public Object clone() {
 		try {
 			LanguageSet languageSet = (LanguageSet) super.clone();
+			languageSet.setSource(this.getSource());
+			languageSet.translated = new Hashtable<String, String>();
+			languageSet.locations = new Vector<SourceLocation>();
 			languageSet.add(this);
 			return languageSet;
 		} catch (CloneNotSupportedException e) {
