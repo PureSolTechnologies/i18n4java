@@ -57,8 +57,9 @@ public class I18NFile {
 	}
 
 	static public File getI18NFile(File file) {
+		BufferedReader reader = null;
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
+			reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(file)));
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -68,11 +69,19 @@ public class I18NFile {
 					line = line.replaceAll("\\.", "/");
 					line += "/" + file.getName();
 					line = line.replaceAll("\\.[^\\.]*$", ".i18n");
+					reader.close();
 					return new File(line);
 				}
 			}
+			reader.close();
 			return new File(file.getName());
 		} catch (IOException e) {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+				}
+			}
 			return null;
 		}
 	}

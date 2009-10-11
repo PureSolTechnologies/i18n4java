@@ -38,15 +38,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "translation", namespace = "http://overstock.com/example")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LanguageSet {
+public class LanguageSet implements Cloneable {
 
 	private String source = "";
-	private Hashtable<String, String> translated = null;
-	private Vector<SourceLocation> locations = null;
+	private Hashtable<String, String> translated = new Hashtable<String, String>();
+	private Vector<SourceLocation> locations = new Vector<SourceLocation>();
 
 	public LanguageSet() {
-		translated = new Hashtable<String, String>();
-		locations = new Vector<SourceLocation>();
 	}
 
 	public LanguageSet(String source) {
@@ -107,5 +105,55 @@ public class LanguageSet {
 
 	public Set<String> getAvailableLanguages() {
 		return translated.keySet();
+	}
+
+	public Object clone() {
+		try {
+			LanguageSet languageSet = (LanguageSet) super.clone();
+			languageSet.add(this);
+			return languageSet;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((locations == null) ? 0 : locations.hashCode());
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result
+				+ ((translated == null) ? 0 : translated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LanguageSet other = (LanguageSet) obj;
+		if (locations == null) {
+			if (other.locations != null)
+				return false;
+		} else if (!locations.equals(other.locations))
+			return false;
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
+			return false;
+		if (translated == null) {
+			if (other.translated != null)
+				return false;
+		} else if (!translated.equals(other.translated))
+			return false;
+		return true;
 	}
 }

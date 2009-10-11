@@ -62,12 +62,15 @@ public class MultiLanguageTranslations {
 		translations = new Hashtable<String, LanguageSet>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setTranslations(Hashtable<String, LanguageSet> translations) {
-		this.translations = translations;
+		this.translations = (Hashtable<String, LanguageSet>) translations
+				.clone();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Hashtable<String, LanguageSet> getTranslations() {
-		return translations;
+		return (Hashtable<String, LanguageSet>) translations.clone();
 	}
 
 	public void setLocations(String source, Vector<SourceLocation> locations) {

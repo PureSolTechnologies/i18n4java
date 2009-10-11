@@ -47,7 +47,8 @@ public class Translator implements Serializable {
 	private static final Logger logger = Logger.getLogger(Translator.class);
 
 	private static Locale defaultLocale = Locale.getDefault();
-	private static Locale[] additionalLocales = null;
+
+	private static Locale[] additionalLocales = new Locale[0];
 	/**
 	 * This variable keeps the references to the system wide unique context
 	 * sensitive instances.
@@ -121,11 +122,15 @@ public class Translator implements Serializable {
 
 	static public void setSingleLanguageMode() {
 		logger.info("Set to single language mode");
-		additionalLocales = null;
+		additionalLocales = new Locale[0];
 		resetAllInstances();
 	}
 
 	static public void setAdditionalLocales(Locale... additionalLocales) {
+		if (additionalLocales == null) {
+			setSingleLanguageMode();
+			return;
+		}
 		if (logger.isInfoEnabled()) {
 			String s = "Set additional locales: ";
 			boolean first = true;
@@ -142,7 +147,7 @@ public class Translator implements Serializable {
 	}
 
 	static public Locale[] getAdditionalLocales() {
-		return additionalLocales;
+		return additionalLocales.clone();
 	}
 
 	static private void resetAllInstances() {

@@ -38,7 +38,7 @@ public class SourceLocation implements Serializable, Comparable<SourceLocation> 
 	private static final long serialVersionUID = 1L;
 
 	private String file = "";
-	private int line = -1;
+	private int line = 0;
 	private int lineCount = 0;
 
 	public SourceLocation() {
@@ -95,17 +95,62 @@ public class SourceLocation implements Serializable, Comparable<SourceLocation> 
 		}
 	}
 
+	@Override
 	public int compareTo(SourceLocation other) {
-		if (other == null) {
+		if (this == other)
+			return 0;
+		if (other == null)
 			return -1;
+		if (getClass() != other.getClass())
+			return -1;
+		if (file == null) {
+			if (other.file != null)
+				return 1;
+		} else if (!file.equals(other.file))
+			return file.compareTo(other.file);
+		if (line != other.line) {
+			if (line > other.line)
+				return 1;
+			else
+				return -1;
 		}
-		return toString().compareTo(other.toString());
+		if (lineCount != other.lineCount) {
+			if (lineCount > other.lineCount)
+				return 1;
+			else
+				return -1;
+		}
+		return 0;
 	}
 
-	public boolean equals(Object o) {
-		if (getClass().equals(o.getClass())) {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + line;
+		result = prime * result + lineCount;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-		return toString().equals(((SourceLocation) o).toString());
+		if (getClass() != obj.getClass())
+			return false;
+		SourceLocation other = (SourceLocation) obj;
+		if (file == null) {
+			if (other.file != null)
+				return false;
+		} else if (!file.equals(other.file))
+			return false;
+		if (line != other.line)
+			return false;
+		if (lineCount != other.lineCount)
+			return false;
+		return true;
 	}
 }

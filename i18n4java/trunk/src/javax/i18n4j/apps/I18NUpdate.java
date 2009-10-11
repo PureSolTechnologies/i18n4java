@@ -21,7 +21,6 @@ package javax.i18n4j.apps;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Vector;
 
 import javax.i18n4j.FileSearch;
@@ -38,7 +37,6 @@ import org.apache.log4j.Logger;
  * Trolltech's lupdate.
  * 
  * @author Rick-Rainer Ludwig
- * 
  */
 public class I18NUpdate {
 
@@ -47,7 +45,7 @@ public class I18NUpdate {
 			.getTranslator(I18NUpdate.class);
 
 	private String i18nDirectory = "";
-	private String sourceDirectory = "";
+	private String sourceFiles = "";
 	private Vector<File> inputFiles = new Vector<File>();
 
 	static public boolean isCorrectProjectDirectory(File directory) {
@@ -61,26 +59,45 @@ public class I18NUpdate {
 	}
 
 	public I18NUpdate(String projectDirectory) {
-		this.sourceDirectory = projectDirectory + "/src/**/*.java";
-		this.i18nDirectory = projectDirectory + "/res";
+		this(projectDirectory + "/src", projectDirectory + "/res");
+	}
+
+	public I18NUpdate(String sourceDirectory, String i18nDirectory) {
+		super();
+		this.sourceFiles = sourceDirectory + "/**/*.java";
+		this.i18nDirectory = i18nDirectory;
 	}
 
 	public I18NUpdate(String args[]) {
 		if ((args.length == 0) || (args.length > 2)) {
-			System.out.println(translator
-					.i18n("usage:  I18NUpdate <directory>"));
-			System.out
-					.println(translator
-							.i18n("usage2: I18NUpdate <source directory> <resource directory>"));
+			showUsage();
 			return;
 		}
 		if (args.length == 1) {
-			this.sourceDirectory = args[0] + "/src/**/*.java";
+			this.sourceFiles = args[0] + "/src/**/*.java";
 			this.i18nDirectory = args[0] + "/res";
 		} else {
-			sourceDirectory = args[0];
+			sourceFiles = args[0] + "/**/*.java";
 			i18nDirectory = args[1];
 		}
+	}
+
+	private void showUsage() {
+		System.out.println("==========");
+		System.out.println("I18NUpdate");
+		System.out.println("==========");
+		System.out.println();
+		System.out.println(translator
+				.i18n("usage: I18NUpdate <project directory>"));
+		System.out.println(translator
+				.i18n("   or  I18NUpdate <source directory> <i18n directory>"));
+		System.out.println();
+		System.out
+				.println(translator
+						.i18n("This application reads a source directory (<project directory>/src)\n"
+								+ "and looks for all Java files (<source directory>/**/*.java).\n"
+								+ "These files are scanned for i18n strings and the i18n files are\n"
+								+ "stored classwise in a i18n directory  (<project directory>/res).\n"));
 	}
 
 	public void update() {
@@ -89,7 +106,7 @@ public class I18NUpdate {
 	}
 
 	private void findAllInputFiles() {
-		inputFiles.addAll(FileSearch.find(sourceDirectory));
+		inputFiles.addAll(FileSearch.find(sourceFiles));
 	}
 
 	private void processFiles() {
@@ -127,14 +144,16 @@ public class I18NUpdate {
 		MultiLanguageTranslations translations = readTranslations(file);
 		translations.add(i18nSources);
 		File directory = new File(file.getPath().replaceAll(file.getName(), ""));
-		directory.mkdirs();
-		writeTranslations(file, translations);
+		if (directory.mkdirs()) {
+			writeTranslations(file, translations);
+		}
 	}
 
 	private MultiLanguageTranslations readTranslations(File file) {
 		try {
 			logger.info("Read " + file.getPath() + " for translations...");
-			MultiLanguageTranslations hash = I18NFile.readMultiLanguageFile(file);
+			MultiLanguageTranslations hash = I18NFile
+					.readMultiLanguageFile(file);
 			hash.removeLocations();
 			return hash;
 		} catch (FileNotFoundException e) {
@@ -150,9 +169,6 @@ public class I18NUpdate {
 	}
 
 	static public void main(String args[]) {
-		System.out.println("Set translator...");
-		Translator.setDefault(new Locale("de", "DE"));
-		System.out.println("set.");
 		new I18NUpdate(args).update();
 	}
 }

@@ -21,7 +21,6 @@ package javax.i18n4j.apps;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
 
@@ -34,6 +33,12 @@ import javax.i18n4j.Translator;
 
 import org.apache.log4j.Logger;
 
+/**
+ * This application converts all i18n files in the the specified directory and
+ * converts them into tr files for usage in internationalized applications.
+ * 
+ * @author Rick-Rainer Ludwig
+ */
 public class I18NRelease {
 
 	private static final Logger logger = Logger.getLogger(I18NRelease.class);
@@ -49,11 +54,24 @@ public class I18NRelease {
 
 	public I18NRelease(String args[]) {
 		if ((args.length == 0) || (args.length > 1)) {
-			System.out.println(translator
-					.i18n("usage:  I18NRelease <directory>"));
+			showUsage();
 			return;
 		}
 		this.i18nDirectory = args[0];
+	}
+
+	private void showUsage() {
+		System.out.println("===========");
+		System.out.println("I18NRelease");
+		System.out.println("===========");
+		System.out.println();
+		System.out.println(translator.i18n("usage:  I18NRelease <directory>"));
+		System.out.println();
+		System.out
+				.println(translator
+						.i18n("This application converts all i18n files in the\n"
+								+ "the specified directory and converts them into\n"
+								+ "tr files for usage in internationalized applications."));
 	}
 
 	public void release() {
@@ -104,7 +122,6 @@ public class I18NRelease {
 	}
 
 	public static void main(String[] args) {
-		Translator.setDefault(new Locale("de", "DE"));
 		new I18NRelease(args).release();
 	}
 }
