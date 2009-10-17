@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MultiLanguageTranslations {
 
-	private static final long serialVersionUID = 1L;
-
 	private Hashtable<String, LanguageSet> translations = null;
 
 	/**
@@ -75,10 +73,6 @@ public class MultiLanguageTranslations {
 
 	public void setLocations(String source, Vector<SourceLocation> locations) {
 		translations.get(source).addLocations(locations);
-	}
-
-	public Vector<SourceLocation> getLlocations(String source) {
-		return translations.get(source).getLocations();
 	}
 
 	public LanguageSet get(String source) {

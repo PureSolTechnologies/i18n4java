@@ -19,7 +19,6 @@
 package javax.i18n4j;
 
 import java.util.Hashtable;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -45,11 +44,12 @@ public class SingleLanguageTranslations {
 		return source;
 	}
 
-	public void print() {
-		Set<String> sources = translations.keySet();
-		for (String source : sources) {
-			System.out.println(source);
-			System.out.println("--> " + translations.get(source));
+	public String toString() {
+		StringBuffer result = new StringBuffer();
+		for (String source : translations.keySet()) {
+			result.append(source).append(" --> ").append(
+					translations.get(source)).append("\n");
 		}
+		return result.toString();
 	}
 }

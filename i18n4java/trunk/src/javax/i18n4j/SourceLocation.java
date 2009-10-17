@@ -38,26 +38,29 @@ public class SourceLocation implements Cloneable, Serializable,
 
 	private static final long serialVersionUID = 1L;
 
-	private String file = "";
-	private int line = 0;
-	private int lineCount = 0;
-
-	public SourceLocation() {
-	}
+	private String file;
+	private int line;
+	private int lineCount;
 
 	public SourceLocation(String file, int line) {
-		this.file = file;
-		this.line = line;
-		this.lineCount = 1;
+		setFile(file);
+		setLine(line);
+		setLineCount(1);
 	}
 
 	public SourceLocation(String file, int line, int lineCount) {
-		this.file = file;
-		this.line = line;
-		this.lineCount = lineCount;
+		setFile(file);
+		setLine(line);
+		setLineCount(lineCount);
 	}
 
 	public void setFile(String file) {
+		if (file == null) {
+			throw new IllegalArgumentException("file must not be null!");
+		}
+		if (file.isEmpty()) {
+			throw new IllegalArgumentException("file must not be empty!");
+		}
 		this.file = file;
 	}
 
@@ -114,11 +117,9 @@ public class SourceLocation implements Cloneable, Serializable,
 			return -1;
 		if (getClass() != other.getClass())
 			return -1;
-		if (file == null) {
-			if (other.file != null)
-				return 1;
-		} else if (!file.equals(other.file))
-			return file.compareTo(other.file);
+		if (!file.equals(other.file)) {
+			return (file.compareTo(other.file) > 0 ? 1 : -1);
+		}
 		if (line != other.line) {
 			if (line > other.line)
 				return 1;
@@ -138,7 +139,7 @@ public class SourceLocation implements Cloneable, Serializable,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + file.hashCode();
 		result = prime * result + line;
 		result = prime * result + lineCount;
 		return result;
@@ -153,10 +154,7 @@ public class SourceLocation implements Cloneable, Serializable,
 		if (getClass() != obj.getClass())
 			return false;
 		SourceLocation other = (SourceLocation) obj;
-		if (file == null) {
-			if (other.file != null)
-				return false;
-		} else if (!file.equals(other.file))
+		if (!file.equals(other.file))
 			return false;
 		if (line != other.line)
 			return false;
