@@ -12,8 +12,8 @@
 <project name="JavaTools" default="all" basedir=".">
 
 	<description>
-    	JavaTools is a Java based application package for all kind of purposes in PCM test, map creation and quality assurence.
-    	Copyright (C) 2004-2009 X-FAB Dresden
+	I18N4Java is a i18n framework for java inspired by QT.
+	Copyright (C) 2009 Rick-Rainer Ludwig
     </description>
 
 	<!-- fetch all constants, directories and tool path from properies file -->
@@ -21,8 +21,13 @@
 
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
-			<include name="cobertura.jar" />
-			<include name="lib/**/*.jar" />
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="findbugs.classpath">
+		<fileset dir="${findbugs.dir}">
+			<include name="**/*.jar" />
 		</fileset>
 	</path>
 
@@ -33,7 +38,7 @@
 	</path>
 
 	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	<taskdef name="findbugs" classpath="${findbugs.dir}/lib/findbugs-ant.jar" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+	<taskdef name="findbugs" classpathref="findbugs.classpath" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
 
 	<!-- ================================= 
           target: all              
@@ -102,7 +107,7 @@
 			<formatter type="plain" />
 			<batchtest todir="${junit.text.dir}" unless="testcase">
 				<fileset dir="${test.dir}">
-					<include name="**/Test*.java" />
+					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -132,7 +137,7 @@
 			<test name="${testcase}" todir="${junit.xml.dir}" if="testcase" />
 			<batchtest todir="${junit.xml.dir}" unless="testcase">
 				<fileset dir="${test.dir}">
-					<include name="**/Test*.java" />
+					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -197,6 +202,7 @@
 				source line containing a reference to log4j, for the
 				purposes of coverage reporting.
 			-->
+			<classpath refid="libs.classpath" />
 			<ignore regex="org.apache.log4j.*" />
 
 			<fileset dir="${bin.dir}">
@@ -235,25 +241,11 @@
           target: findbugs
          ================================= -->
 	<target name="findbugs" depends="compile" description="Runs FindBugs code analysis tool against whole source tree.">
-		<!-- findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="html" outputFile="${findbugs.html.dir}/findbugs_report.html" reportLevel="low" effort="max" -->
-		<!-- sourcePath path="src" / -->
-		<!-- class location="bin" / -->
-		<!-- auxClasspath location="lib/junit/junit.jar" / -->
-		<!-- /findbugs -->
-		<exec executable="${findbugs.dir}/bin/findbugs" failonerror="true">
-			<arg value="-maxHeap" />
-			<arg value="512" />
-			<arg value="-textui" />
-			<arg value="-home" />
-			<arg value="${findbugs.dir}" />
-			<arg value="-project" />
-			<arg value="findbugs.fbp" />
-			<arg value="-effort:max" />
-			<arg value="-low" />
-			<arg value="-html" />
-			<arg value="-output" />
-			<arg value="${findbugs.html.dir}/findbugs_report.html" />
-		</exec>
+		<findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="html" outputFile="${findbugs.html.dir}/findbugs_report.html" reportLevel="low" effort="max">
+			<sourcePath path="src" />
+			<class location="bin" />
+			<auxClasspath location="lib/junit/junit.jar" />
+		</findbugs>
 	</target>
 
 	<!-- ================================= 
@@ -265,7 +257,7 @@
 		<!-- class location="bin" / -->
 		<!-- auxClasspath location="lib/junit/junit.jar" / -->
 		<!-- /findbugs -->
-		<exec executable="${findbugs.dir}/bin/findbugs" failonerror="true">
+		<exec executable="${findbugs.dir}/findbugs.jar" failonerror="true">
 			<arg value="-maxHeap" />
 			<arg value="512" />
 			<arg value="-textui" />

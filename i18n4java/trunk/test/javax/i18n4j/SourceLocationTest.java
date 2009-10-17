@@ -51,7 +51,7 @@ public class SourceLocationTest extends TestCase {
 		SourceLocation sl1 = new SourceLocation();
 		Assert.assertTrue(sl1.equals(sl1));
 		Assert.assertFalse(sl1.equals(null));
-		Assert.assertFalse(sl1.equals(new String("Test")));
+		Assert.assertFalse(sl1.equals("Test"));
 
 		SourceLocation sl2 = new SourceLocation();
 		Assert.assertTrue(sl1.equals(sl2));
@@ -125,7 +125,7 @@ public class SourceLocationTest extends TestCase {
 			// nothing to catch, exception was expected!
 		}
 	}
-	
+
 	@Test
 	public void testCompateTo() {
 		SourceLocation sl1 = new SourceLocation("File.java", 1, 2);

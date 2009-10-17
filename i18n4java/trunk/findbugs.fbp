@@ -1,8 +1,6 @@
-<Project filename="&lt;&lt;unnamed project&gt;&gt;" projectName="QSStudy">
+<Project filename="&lt;&lt;unnamed project&gt;&gt;" projectName="I18N4Java">
   <Jar>bin</Jar>
   <AuxClasspathEntry>lib/junit.jar</AuxClasspathEntry>
   <SrcDir>src</SrcDir>
-  <SuppressionFilter>
-    <LastVersion value="-1" relOp="NEQ"/>
-  </SuppressionFilter>
+  <SrcDir>test</SrcDir>
 </Project>

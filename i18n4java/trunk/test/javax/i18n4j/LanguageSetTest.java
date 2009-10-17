@@ -95,7 +95,7 @@ public class LanguageSetTest extends TestCase {
 		LanguageSet set1 = new LanguageSet();
 		Assert.assertTrue(set1.equals(set1));
 		Assert.assertFalse(set1.equals(null));
-		Assert.assertFalse(set1.equals(new String("Test")));
+		Assert.assertFalse(set1.equals("Test"));
 
 		LanguageSet set2 = new LanguageSet();
 		Assert.assertTrue(set1.equals(set2));
@@ -115,7 +115,7 @@ public class LanguageSetTest extends TestCase {
 
 		Assert.assertTrue(set1.equals(set1));
 		Assert.assertFalse(set1.equals(null));
-		Assert.assertFalse(set1.equals(new String("Test")));
+		Assert.assertFalse(set1.equals("Test"));
 	}
 
 	@Test

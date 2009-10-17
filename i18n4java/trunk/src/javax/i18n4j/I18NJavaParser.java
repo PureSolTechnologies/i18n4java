@@ -90,21 +90,24 @@ public class I18NJavaParser {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
 		try {
 			String line;
+			StringBuffer buffer = null;
 			int lineNumber = 0;
 			while ((line = readLineWithoutComments(f)) != null) {
+				buffer = new StringBuffer(line);
 				lineNumber++;
 				int startLineNumber = lineNumber;
-				while (line.endsWith("\"") || line.endsWith("+")
-						|| line.endsWith(",")) {
+				while (buffer.toString().endsWith("\"")
+						|| buffer.toString().endsWith("+")
+						|| buffer.toString().endsWith(",")) {
 					String nextLine = readLineWithoutComments(f);
 					lineNumber++;
 					if (nextLine == null) {
 						throw new IOException("Unexpected end of file!");
 					}
-					line += nextLine;
+					buffer.append(nextLine);
 				}
 				// remove string appends: '" + "' --> ""
-				line = line.replaceAll("\"\\s*\\+\\s*\"", "");
+				line = buffer.toString().replaceAll("\"\\s*\\+\\s*\"", "");
 				if (line.contains("package")) {
 					packageName = extractPackageName(line);
 					continue;

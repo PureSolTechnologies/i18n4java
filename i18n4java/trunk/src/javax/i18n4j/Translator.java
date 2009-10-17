@@ -132,15 +132,15 @@ public class Translator implements Serializable {
 			return;
 		}
 		if (logger.isInfoEnabled()) {
-			String s = "Set additional locales: ";
+			StringBuffer s = new StringBuffer("Set additional locales: ");
 			boolean first = true;
 			for (Locale locale : additionalLocales) {
 				if (!first) {
-					s += ", ";
+					s.append(", ");
 				}
-				s += locale.toString();
+				s.append(locale.toString());
 			}
-			logger.info(s);
+			logger.info(s.toString());
 		}
 		Translator.additionalLocales = additionalLocales;
 		resetAllInstances();
@@ -240,24 +240,25 @@ public class Translator implements Serializable {
 		if (translations == null) {
 			readContextTranslation();
 		}
-		String translation = translations.get(getDefaultLanguage()).get(text);
+		StringBuffer translation = new StringBuffer(translations.get(
+				getDefaultLanguage()).get(text));
 		boolean useLineBreak = false;
-		if (translation.contains("\n")) {
+		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
 		}
 		if (additionalLocales != null) {
 			for (Locale locale : getAdditionalLocales()) {
 				if (useLineBreak) {
-					translation += "\n";
+					translation.append("\n");
 				} else {
-					translation += " ";
+					translation.append(" ");
 				}
-				translation += "("
-						+ translations.get(locale.getLanguage()).get(text)
-						+ ")";
+				translation.append("(").append(
+						translations.get(locale.getLanguage()).get(text))
+						.append(")");
 			}
 		}
-		return translation;
+		return translation.toString();
 	}
 
 	/**
@@ -267,25 +268,26 @@ public class Translator implements Serializable {
 		if (translations == null) {
 			readContextTranslation();
 		}
-		String translation = new MessageFormat(translations.get(
-				getDefaultLanguage()).get(text), getDefault()).format(params);
+		StringBuffer translation = new StringBuffer(new MessageFormat(
+				translations.get(getDefaultLanguage()).get(text), getDefault())
+				.format(params));
 		boolean useLineBreak = false;
-		if (translation.contains("\n")) {
+		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
 		}
 		if (additionalLocales != null) {
 			for (Locale locale : getAdditionalLocales()) {
 				if (useLineBreak) {
-					translation += "\n";
+					translation.append("\n");
 				} else {
-					translation += " ";
+					translation.append(" ");
 				}
-				translation += "("
-						+ new MessageFormat(translations.get(
-								locale.getLanguage()).get(text), locale)
-								.format(params) + ")";
+				translation.append("(").append(
+						new MessageFormat(translations
+								.get(locale.getLanguage()).get(text), locale)
+								.format(params)).append(")");
 			}
 		}
-		return translation;
+		return translation.toString();
 	}
 }
