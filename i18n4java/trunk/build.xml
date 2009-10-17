@@ -9,27 +9,31 @@
 ############################################## 
 -->
 
-<project name="I18N" default="all" basedir=".">
+<project name="JavaTools" default="all" basedir=".">
 
 	<description>
-	I18N is a package for internationalization which bases on Java's Locale framework.
-	Copyright (C) 2009 Rick-Rainer Ludwig
-	</description>
+    	JavaTools is a Java based application package for all kind of purposes in PCM test, map creation and quality assurence.
+    	Copyright (C) 2004-2009 X-FAB Dresden
+    </description>
 
 	<!-- fetch all constants, directories and tool path from properies file -->
 	<property file="build.properties" />
 
 	<path id="cobertura.classpath">
+		<fileset dir="${cobertura.dir}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="libs.classpath">
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
 	</path>
 
-	<path id="lib.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	<taskdef name="findbugs" classpath="${findbugs.dir}/lib/findbugs-ant.jar" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 
 	<!-- ================================= 
           target: all              
@@ -58,9 +62,6 @@
           target: init              
          ================================= -->
 	<target name="init" description="initialize build environment">
-		<taskdef classpathref="lib.classpath" resource="tasks.properties" />
-		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-		<taskdef name="findbugs" classpath="${findbugs.dir}/findbugs-ant.jar" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 		<mkdir dir="${bin.dir}" />
 		<mkdir dir="${instrumented.dir}" />
 		<mkdir dir="${junit.xml.dir}" />
@@ -77,10 +78,12 @@
          ================================= -->
 	<target name="compile" depends="init" description="compile the whole tree">
 		<javac srcdir="${src.dir}" destdir="${bin.dir}" debug="yes">
-			<classpath refid="lib.classpath" />
+			<classpath refid="libs.classpath" />
+			<classpath refid="cobertura.classpath" />
 		</javac>
 		<javac srcdir="${test.dir}" destdir="${bin.dir}" debug="yes">
-			<classpath refid="lib.classpath" />
+			<classpath refid="libs.classpath" />
+			<classpath refid="cobertura.classpath" />
 		</javac>
 		<copy todir="${bin.dir}">
 			<fileset dir="${res.dir}" />
@@ -92,15 +95,14 @@
          ================================= -->
 	<target name="test" depends="compile" description="performs all junit tests and prints the result to the standard output as text.">
 		<junit fork="yes" dir="${basedir}">
+			<classpath refid="libs.classpath" />
 			<classpath>
 				<pathelement location="${bin.dir}" />
-				<pathelement location="${test.dir}" />
 			</classpath>
-			<classpath refid="lib.classpath" />
 			<formatter type="plain" />
 			<batchtest todir="${junit.text.dir}" unless="testcase">
 				<fileset dir="${test.dir}">
-					<include name="**/*Test.java" />
+					<include name="**/Test*.java" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -124,12 +126,13 @@
 					must be on your classpath.
 				-->
 			</classpath>
-			<classpath refid="lib.classpath" />
+			<classpath refid="libs.classpath" />
+			<classpath refid="cobertura.classpath" />
 			<formatter type="xml" />
 			<test name="${testcase}" todir="${junit.xml.dir}" if="testcase" />
 			<batchtest todir="${junit.xml.dir}" unless="testcase">
 				<fileset dir="${test.dir}">
-					<include name="**/*Test.java" />
+					<include name="**/Test*.java" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -183,6 +186,7 @@
 		-->
 		<delete file="cobertura.ser" />
 		<delete dir="${instrumented.dir}" />
+
 		<!--
 			Instrument the application classes, writing the
 			instrumented classes into ${build.instrumented.dir}.
@@ -194,10 +198,7 @@
 				purposes of coverage reporting.
 			-->
 			<ignore regex="org.apache.log4j.*" />
-			<classpath refid="lib.classpath" />
-			<classpath>
-			    <pathelement location="lib/cobertura.jar" />
-			</classpath>
+
 			<fileset dir="${bin.dir}">
 				<!--
 					Instrument all the application classes, but
@@ -207,9 +208,6 @@
 				<exclude name="**/*Test.class" />
 			</fileset>
 		</cobertura-instrument>
-		<copy todir="${instrumented.dir}">
-			<fileset dir="${res.dir}" />
-		</copy>
 	</target>
 
 	<!-- ================================= 
@@ -218,11 +216,18 @@
 	<target name="coverage" depends="compile,instrument,exttest,coverage-report,alternate-coverage-report" description="Compile, instrument ourself, run the tests and generate JUnit and coverage reports." />
 
 	<!-- ================================= 
+          target: cruisecontrol
+         ================================= -->
+	<target name="cruisecontrol" depends="compile,instrument,exttest,coverage-report,alternate-coverage-report,findbugs" description="Compile, instrument ourself, run the tests and generate JUnit and coverage reports. Finally Findbugs is called for report." />
+
+	<!-- ================================= 
           target: showrepors
          ================================= -->
 	<target name="showreports" depends="" description="Opens JUnit, Cobertura and Findbugs reports in Konqueror.">
 		<exec executable="konqueror">
-			<arg value="${reports.dir}/index.html" />
+			<arg value="${junit.html.dir}/index.html" />
+			<arg value="${coverage.html.dir}/index.html" />
+			<arg value="${findbugs.html.dir}/findbugs_report.html" />
 		</exec>
 	</target>
 
@@ -230,46 +235,49 @@
           target: findbugs
          ================================= -->
 	<target name="findbugs" depends="compile" description="Runs FindBugs code analysis tool against whole source tree.">
-		<findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="html" outputFile="${findbugs.html.dir}/findbugs_report.html" reportLevel="low" effort="max">
-			<!-- sourcePath path="src" / -->
-			<!-- class location="bin" / -->
-			<!-- auxClasspath location="tools/junit/junit.jar" / -->
-		</findbugs>
+		<!-- findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="html" outputFile="${findbugs.html.dir}/findbugs_report.html" reportLevel="low" effort="max" -->
+		<!-- sourcePath path="src" / -->
+		<!-- class location="bin" / -->
+		<!-- auxClasspath location="lib/junit/junit.jar" / -->
+		<!-- /findbugs -->
+		<exec executable="${findbugs.dir}/bin/findbugs" failonerror="true">
+			<arg value="-maxHeap" />
+			<arg value="512" />
+			<arg value="-textui" />
+			<arg value="-home" />
+			<arg value="${findbugs.dir}" />
+			<arg value="-project" />
+			<arg value="findbugs.fbp" />
+			<arg value="-effort:max" />
+			<arg value="-low" />
+			<arg value="-html" />
+			<arg value="-output" />
+			<arg value="${findbugs.html.dir}/findbugs_report.html" />
+		</exec>
 	</target>
 
 	<!-- ================================= 
           target: findbugs_xml
          ================================= -->
 	<target name="findbugs_xml" depends="compile" description="Runs FindBugs code analysis tool against whole source tree amd generating XML output.">
-		<findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="xml:withMessages" outputFile="${findbugs.xml.dir}/findbugs_report.xml" reportLevel="low" effort="max">
-			<!-- sourcePath path="src" / -->
-			<!-- class location="bin" / -->
-			<!-- auxClasspath location="tools/junit/junit.jar" / -->
-		</findbugs>
-	</target>
-
-	<!-- ================================= 
-          target: cocomo
-         ================================= -->
-	<target name="cocomo" depends="" description="Uses sloccount by J. Wheeler to calculate the development effort for the project.">
-		<exec executable="sloccount">
-			<arg value="${src.dir}" />
-			<arg value="${test.dir}" />
-			<arg value="${man.dir}" />
-			<arg value=">" />
-			<arg value="sloccount.txt" />
-		</exec>
-		<exec executable="cat">
-			<arg value="sloccount.txt" />
-		</exec>
-	</target>
-
-	<!-- ================================= 
-          target: deploy
-         ================================= -->
-	<target name="deploy" depends="compile,test" description="Deploys the classes to a central directory.">
-		<exec executable="sh">
-			<arg value="deploy.sh" />
+		<!-- findbugs home="${findbugs.dir}" projectFile="findbugs.fbp" output="xml:withMessages" outputFile="${findbugs.xml.dir}/findbugs_report.xml" reportLevel="low" effort="max" -->
+		<!-- sourcePath path="src" / -->
+		<!-- class location="bin" / -->
+		<!-- auxClasspath location="lib/junit/junit.jar" / -->
+		<!-- /findbugs -->
+		<exec executable="${findbugs.dir}/bin/findbugs" failonerror="true">
+			<arg value="-maxHeap" />
+			<arg value="512" />
+			<arg value="-textui" />
+			<arg value="-home" />
+			<arg value="${findbugs.dir}" />
+			<arg value="-project" />
+			<arg value="findbugs.fbp" />
+			<arg value="-effort:max" />
+			<arg value="-low" />
+			<arg value="-xml:withMessages" />
+			<arg value="-output" />
+			<arg value="${findbugs.html.dir}/findbugs_report.html" />
 		</exec>
 	</target>
 
@@ -277,20 +285,7 @@
           target: doc
          ================================= -->
 	<target name="doc" description="create documentation">
-		<javadoc packagenames="com.qsys.*" sourcepath="${src.dir}" destdir="${doc.dir}" windowtitle="I18N API Documentation">
-			<classpath>
-				<pathelement location="${bin.dir}" />
-			</classpath>
-			<classpath refid="lib.classpath" />
-		</javadoc>
-	</target>
-
-	<!-- ================================= 
-          target: man
-         ================================= -->
-	<target name="man" depends="" description="Generates all manuals and design documentations.">
-		<exec executable="./man.sh">
-		</exec>
+		<javadoc packagenames="com.xfab.*" sourcepath="${src.dir}" destdir="${api.dir}" windowtitle="JavaTools API Documentation" />
 	</target>
 
 	<!-- ================================= 

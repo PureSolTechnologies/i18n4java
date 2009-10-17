@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  */
 public class Translator implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2918229155516838530L;
 
 	private static final Logger logger = Logger.getLogger(Translator.class);
 
