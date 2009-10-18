@@ -219,7 +219,7 @@ public class Translator implements Serializable {
 			translations.put("en", new SingleLanguageTranslations());
 			return;
 		}
-		File file = I18NFile.getI18NFile(context, language);
+		File file = I18NFile.getTrFile(context, language);
 		logger.info("Read context language file '" + file.getPath() + "'");
 		InputStream is = getClass().getResourceAsStream(file.getPath());
 		SingleLanguageTranslations translations = readFromStream(is);

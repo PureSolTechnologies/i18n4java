@@ -45,15 +45,13 @@ public class I18NFile {
 
 	static private Logger logger = Logger.getLogger(I18NFile.class);
 
-	static public File getI18NFile(String context, Locale locale) {
-		return getI18NFile(context, locale.getLanguage());
-
+	static public File getTrFile(String context, Locale locale) {
+		return getTrFile(context, locale.getLanguage());
 	}
 
-	static public File getI18NFile(String context, String language) {
+	static public File getTrFile(String context, String language) {
 		return new File("/" + context.replaceAll("\\.", "/") + "." + language
 				+ ".tr");
-
 	}
 
 	static public File getI18NFile(File file) {

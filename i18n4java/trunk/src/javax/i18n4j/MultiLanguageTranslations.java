@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "internationalization")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MultiLanguageTranslations {
+public class MultiLanguageTranslations implements Cloneable {
 
 	private Hashtable<String, LanguageSet> translations = null;
 
@@ -62,6 +62,9 @@ public class MultiLanguageTranslations {
 
 	@SuppressWarnings("unchecked")
 	public void setTranslations(Hashtable<String, LanguageSet> translations) {
+		if (translations == null) {
+			throw new IllegalArgumentException("translations must no be null!");
+		}
 		this.translations = (Hashtable<String, LanguageSet>) translations
 				.clone();
 	}
@@ -69,10 +72,6 @@ public class MultiLanguageTranslations {
 	@SuppressWarnings("unchecked")
 	public Hashtable<String, LanguageSet> getTranslations() {
 		return (Hashtable<String, LanguageSet>) translations.clone();
-	}
-
-	public void setLocations(String source, Vector<SourceLocation> locations) {
-		translations.get(source).addLocations(locations);
 	}
 
 	public LanguageSet get(String source) {
@@ -211,6 +210,43 @@ public class MultiLanguageTranslations {
 		for (String language : languages) {
 			System.out.println("\t" + language + "="
 					+ translations.get(source).get(language));
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + translations.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MultiLanguageTranslations other = (MultiLanguageTranslations) obj;
+		if (!translations.equals(other.translations))
+			return false;
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object clone() {
+		try {
+			MultiLanguageTranslations cloned = (MultiLanguageTranslations) super
+					.clone();
+			cloned.translations = (Hashtable<String, LanguageSet>) this.translations
+					.clone();
+			return cloned;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
 		}
 	}
 }

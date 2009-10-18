@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "translations")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SingleLanguageTranslations {
+public class SingleLanguageTranslations implements Cloneable {
 
 	private Hashtable<String, String> translations = new Hashtable<String, String>();
 
@@ -51,5 +51,42 @@ public class SingleLanguageTranslations {
 					translations.get(source)).append("\n");
 		}
 		return result.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + translations.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SingleLanguageTranslations other = (SingleLanguageTranslations) obj;
+		if (!translations.equals(other.translations))
+			return false;
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object clone() {
+		try {
+			SingleLanguageTranslations cloned = (SingleLanguageTranslations) super
+					.clone();
+			cloned.translations = (Hashtable<String, String>) this.translations
+					.clone();
+			return cloned;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
 	}
 }
