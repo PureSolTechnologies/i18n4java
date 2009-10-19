@@ -57,12 +57,12 @@ public class I18NTranslationPanel extends Panel {
 		locales = new LocaleChooser();
 		locales.setSelectedLocale(currentLocale);
 		locales.connect("changedSelection", this, "setLocale", Object.class);
-		add(Label.addFor(new ScrollPane(locales), translator.i18n("Language"),
+		add(Label.addTo(new ScrollPane(locales), translator.i18n("Language"),
 				Label.TOP), BorderLayout.NORTH);
 
 		classes = new List();
 		classes.connect("valueChanged", this, "openFile", Object.class);
-		add(Label.addFor(classes, translator.i18n("Classes"), Label.TOP),
+		add(Label.addTo(classes, translator.i18n("Classes"), Label.TOP),
 				BorderLayout.WEST);
 
 		Panel centerPanel = new Panel();
@@ -71,17 +71,17 @@ public class I18NTranslationPanel extends Panel {
 		reservoir = new List();
 		reservoir.connect("valueChanged", this, "changeSource", Object.class);
 
-		centerPanel.add(Label.addFor(new ScrollPane(reservoir), translator
+		centerPanel.add(Label.addTo(new ScrollPane(reservoir), translator
 				.i18n("Reservoir"), Label.TOP));
 		source = new TextArea();
-		centerPanel.add(Label.addFor(new ScrollPane(source), translator
+		centerPanel.add(Label.addTo(new ScrollPane(source), translator
 				.i18n("Source:"), Label.TOP));
 		translation = new TextArea();
-		centerPanel.add(Label.addFor(new ScrollPane(translation), translator
+		centerPanel.add(Label.addTo(new ScrollPane(translation), translator
 				.i18n("Translation:"), Label.TOP));
 		add(centerPanel, BorderLayout.CENTER);
 
-		centerPanel.add(Label.addFor(new ScrollPane(new TextArea()), translator
+		centerPanel.add(Label.addTo(new ScrollPane(new TextArea()), translator
 				.i18n("Source"), Label.TOP));
 
 		add(new Label("Some I18NFile statistics"), BorderLayout.SOUTH);
