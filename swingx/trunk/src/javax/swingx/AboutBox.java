@@ -115,13 +115,6 @@ public class AboutBox extends Dialog {
 
 	static public void main(String args[]) {
 		Translator.setDefault(new Locale("de", "DE"));
-		System.out.println(AboutBox.class.getName());
-		System.out.println(AboutBox.class.getClassLoader().getResource(
-				"com/qsys/gui/AboutBox.tr").toString());
-		AboutBox.class.getClassLoader().getResourceAsStream(
-				"com/qsys/gui/AboutBox.tr");
-		String t = translator.i18n("About");
-		System.out.println(t);
 		new AboutBox().run();
 	}
 }

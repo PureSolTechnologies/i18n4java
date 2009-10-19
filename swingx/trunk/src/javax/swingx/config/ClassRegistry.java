@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class is a central register for applications to register classes for
  * interfaces. This is used to decouple dependencies.
@@ -13,7 +15,9 @@ import java.util.Hashtable;
  */
 public class ClassRegistry {
 
-	static public final String REGISTRY_FILE = "config/registry";
+	static private final Logger logger = Logger.getLogger(ClassRegistry.class);
+
+	static public final String REGISTRY_FILE = "/config/registry";
 
 	static private Hashtable<String, ClassRegistryElement> register = new Hashtable<String, ClassRegistryElement>();
 	static private Hashtable<String, Object> classes = new Hashtable<String, Object>();
@@ -23,10 +27,13 @@ public class ClassRegistry {
 	}
 
 	static public void register(Class<?> interfce) {
+		logger.info("Register interface '" + interfce.getName() + "'");
 		String className = Configurator.getEntry(REGISTRY_FILE, interfce
 				.getName(), "class");
+		logger.debug("class: '" + className + "'");
 		String typeName = Configurator.getEntry(REGISTRY_FILE, interfce
 				.getName(), "type");
+		logger.debug("type: '" + typeName + "'");
 		int type = 0;
 		if (typeName.equalsIgnoreCase("singleton")) {
 			type = ClassRegistryElement.SINGLETON;
@@ -49,11 +56,12 @@ public class ClassRegistry {
 	}
 
 	static public Object create(Class<?> interfce) {
+		logger.debug("create for interface '" + interfce.getName() + "'");
 		if (!isRegistered(interfce)) {
 			register(interfce);
-		}
-		if (!isRegistered(interfce)) {
-			return null;
+			if (!isRegistered(interfce)) {
+				return null;
+			}
 		}
 		ClassRegistryElement element = register.get(interfce.getName());
 		if (element.getType() == ClassRegistryElement.FACTORY) {
@@ -74,18 +82,25 @@ public class ClassRegistry {
 			Class<?> clazz = Class.forName(element.getClassName());
 			return clazz.getConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (SecurityException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (InstantiationException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (IllegalAccessException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (InvocationTargetException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (NoSuchMethodException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 	}
@@ -115,14 +130,19 @@ public class ClassRegistry {
 				return factory(interfce, element);
 			}
 		} catch (SecurityException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (NoSuchMethodException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (IllegalAccessException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		} catch (InvocationTargetException e) {
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 	}

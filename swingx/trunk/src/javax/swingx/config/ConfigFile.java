@@ -1,12 +1,18 @@
 package javax.swingx.config;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import org.apache.log4j.Logger;
 
 /**
  * ConfigFile is an object to handle ASCII configuration files with sections and
@@ -32,17 +38,16 @@ import java.util.Hashtable;
  * 
  * @author Rick-Rainer Ludwig
  */
-public class ConfigFile extends RandomAccessFile {
+public class ConfigFile {
+
+	private static final Logger logger = Logger.getLogger(ConfigFile.class);
 
 	/**
 	 * This is a File object keeping the path to the opened configuration file.
 	 */
-	protected File file;
+	private File file;
 
-	/**
-	 * This string keeps the open mode for later usage.
-	 */
-	protected String mode;
+	private RandomAccessFile raFile;
 
 	/**
 	 * This is the constructor with a file object only. The file will be opened
@@ -52,9 +57,8 @@ public class ConfigFile extends RandomAccessFile {
 	 *            is the file which is to open by the constructor.
 	 */
 	public ConfigFile(File file) throws IOException {
-		super(file, "r");
+		raFile = new RandomAccessFile(file, "r");
 		this.file = file;
-		this.mode = "r";
 	}
 
 	/**
@@ -67,9 +71,25 @@ public class ConfigFile extends RandomAccessFile {
 	 *            is the open mode string. It contains 'r' and/or 'w'.
 	 */
 	public ConfigFile(File file, String mode) throws IOException {
-		super(file, mode);
+		raFile = new RandomAccessFile(file, mode);
 		this.file = file;
-		this.mode = mode;
+	}
+
+	public void close() {
+		try {
+			raFile.close();
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public String readLine() {
+		try {
+			return raFile.readLine();
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		}
 	}
 
 	/**
@@ -81,7 +101,7 @@ public class ConfigFile extends RandomAccessFile {
 	 *             is thrown in case of an IO error.
 	 */
 	public String readLineTrimmed() throws IOException {
-		String line = readLine();
+		String line = raFile.readLine();
 		if (line == null) {
 			return null;
 		}
@@ -100,7 +120,7 @@ public class ConfigFile extends RandomAccessFile {
 	 */
 	public boolean gotoSection(String name) {
 		try {
-			seek(0);
+			raFile.seek(0);
 			String line = "";
 			while (!line.equals("[" + name + "]")) {
 				line = readLineTrimmed();
@@ -160,10 +180,10 @@ public class ConfigFile extends RandomAccessFile {
 			return "";
 		}
 		String result = "";
-		String line = readLine();
+		String line = raFile.readLine();
 		while ((line != null) && (!line.startsWith("["))) {
 			result += line;
-			line = readLine();
+			line = raFile.readLine();
 		}
 		return result;
 	}
@@ -201,6 +221,64 @@ public class ConfigFile extends RandomAccessFile {
 			return null;
 		}
 		return result.substring(entry.length() + 1);
+	}
+
+	/**
+	 * This method writes a single section header to the already opened file.
+	 * The method only add rectangular brackets to the name and writes the line
+	 * into the file.
+	 * 
+	 * @param section
+	 *            is the name of the section the header is to be written.
+	 * @throws IOException
+	 *             is thrown in case of an IO error.
+	 */
+	public void writeSection(String section) throws IOException {
+		raFile.writeBytes("[" + section + "]\n");
+	}
+
+	/**
+	 * This mothod write a single key value pair into the file. The key name and
+	 * the key's value is specified. There is only an equal sign '=' added in
+	 * between and the string is written afterwards as a line into the file. To
+	 * be compatible a section header must be written before the key to have a
+	 * valid section and key assignment.
+	 * 
+	 * @param key
+	 *            is the name of the key to be written.
+	 * @param value
+	 *            is the key's value.
+	 * @throws IOException
+	 *             is thrown in case of an IO error.
+	 */
+	public void writeEntry(String key, String value) throws IOException {
+		raFile.writeBytes(key + "=" + value + "\n");
+	}
+
+	/**
+	 * This method just returns the current file's File object.
+	 * 
+	 * @return A file object is returned pointing the the currently opened file.
+	 */
+	public File getFile() {
+		return file;
+	}
+
+	/**
+	 * This method removes comments by truncating the line after the sharp (#)
+	 * and removing all trailing and leading white spaces.
+	 * 
+	 * @param line
+	 *            is a String to be removed from comment and white spaces.
+	 * @return The cleaned string is returned.
+	 */
+	static public String removeComment(String line) {
+
+		String result = line;
+		if (result.contains("#")) {
+			result = result.substring(0, result.indexOf("#"));
+		}
+		return result.trim();
 	}
 
 	/**
@@ -294,86 +372,84 @@ public class ConfigFile extends RandomAccessFile {
 		return result;
 	}
 
+	static public String readSection(InputStream stream, String section)
+			throws IOException {
+		if (stream == null) {
+			throw new IllegalArgumentException("stream must not be null!");
+		}
+		StringBuffer result = new StringBuffer();
+		boolean inside = false;
+		String line;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(stream));
+		do {
+			line = reader.readLine();
+			if (line == null) {
+				continue;
+			}
+			line = removeComment(line);
+			if (line.isEmpty()) {
+				continue;
+			}
+			if (line.startsWith("[") && line.endsWith("]")) {
+				if (inside) {
+					break;
+				} else if (line.equals("[" + section + "]")) {
+					inside = true;
+				}
+				continue;
+			}
+			if (inside) {
+				result.append(line + "\n");
+			}
+		} while (line != null);
+		reader.close();
+		return result.toString();
+	}
+
 	static public String readSection(File file, String section) {
+		InputStream stream = null;
 		try {
-			ConfigFile configFile = new ConfigFile(file);
-			String result = configFile.read(section);
-			configFile.close();
+			stream = new FileInputStream(file);
+			String result = readSection(stream, section);
 			return result;
 		} catch (IOException e) {
 			return "";
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 
-	static public String readSection(String filename, String section) {
-		URL url = ConfigFile.class.getClassLoader().getResource(filename);
-		if (url != null) {
-			String file = url.getFile();
-			return readSection(new File(file), section);
+	static public String readSection(String resource, String section) {
+		InputStream stream = null;
+		try {
+			stream = ConfigFile.class.getClassLoader().getResourceAsStream(
+					resource);
+			if (stream != null) {
+				return readSection(stream, section);
+			}
+			ArrayList<String> files = getAvailableConfigFiles(resource);
+			if (files.size() == 0) {
+				return "";
+			}
+			// use last file...
+			return readSection(new File(files.get(files.size() - 1)), section);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+				}
+			}
 		}
-		ArrayList<String> files = getAvailableConfigFiles(filename);
-		if (files.size() == 0) {
-			return "";
-		}
-		return readSection(new File(files.get(files.size() - 1)), section);
-	}
-
-	/**
-	 * This method writes a single section header to the already opened file.
-	 * The method only add rectangular brackets to the name and writes the line
-	 * into the file.
-	 * 
-	 * @param section
-	 *            is the name of the section the header is to be written.
-	 * @throws IOException
-	 *             is thrown in case of an IO error.
-	 */
-	public void writeSection(String section) throws IOException {
-		writeBytes("[" + section + "]\n");
-	}
-
-	/**
-	 * This mothod write a single key value pair into the file. The key name and
-	 * the key's value is specified. There is only an equal sign '=' added in
-	 * between and the string is written afterwards as a line into the file. To
-	 * be compatible a section header must be written before the key to have a
-	 * valid section and key assignment.
-	 * 
-	 * @param key
-	 *            is the name of the key to be written.
-	 * @param value
-	 *            is the key's value.
-	 * @throws IOException
-	 *             is thrown in case of an IO error.
-	 */
-	public void writeEntry(String key, String value) throws IOException {
-		writeBytes(key + "=" + value + "\n");
-	}
-
-	/**
-	 * This method just returns the current file's File object.
-	 * 
-	 * @return A file object is returned pointing the the currently opened file.
-	 */
-	public File getFile() {
-		return file;
-	}
-
-	/**
-	 * This method removes comments by truncating the line after the sharp (#)
-	 * and removing all trailing and leading white spaces.
-	 * 
-	 * @param line
-	 *            is a String to be removed from comment and white spaces.
-	 * @return The cleaned string is returned.
-	 */
-	private String removeComment(String line) {
-
-		String result = line;
-		if (result.contains("#")) {
-			result = result.substring(0, result.indexOf("#"));
-		}
-		return result.trim();
 	}
 
 	/**
@@ -382,22 +458,56 @@ public class ConfigFile extends RandomAccessFile {
 	 * @return A ConfigHash is returned containing all information in the config
 	 *         file.
 	 */
-	public ConfigHash readToHash() throws IOException {
+	static public ConfigHash readToHash(File file) {
+		if (file == null) {
+			throw new IllegalArgumentException("file must not be null!");
+		}
+		if (!file.exists()) {
+			return new ConfigHash();
+		}
+		InputStream inStream = null;
+		try {
+			inStream = new FileInputStream(file);
+			ConfigHash hash = readToHash(inStream);
+			inStream.close();
+			return hash;
+		} catch (FileNotFoundException e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		} finally {
+			if (inStream != null) {
+				try {
+					inStream.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+
+	static public ConfigHash readToHash(InputStream stream) throws IOException {
+		if (stream == null) {
+			throw new IllegalArgumentException("stream must not be null!");
+		}
 		ConfigHash hash = new ConfigHash();
-		seek(0);
 		String line;
 		String section = "";
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(stream));
 		do {
-			line = readLineTrimmed();
+			line = reader.readLine();
 			if (line == null) {
 				continue;
 			}
 			line = removeComment(line);
-			if (line.equals("")) {
+			if (line.isEmpty()) {
 				continue;
 			}
 			if (line.startsWith("[") && line.endsWith("]")) {
 				section = line.substring(1, line.length() - 1);
+				logger.trace("Found section '" + section + "'");
 				continue;
 			}
 			if (section.equals("")) {
@@ -418,6 +528,7 @@ public class ConfigFile extends RandomAccessFile {
 				hash.put(section, new Hashtable<String, String>());
 			}
 			hash.get(section).put(key, value);
+			logger.trace("key: '" + key + "=" + value + "'");
 		} while (line != null);
 		return hash;
 	}
@@ -444,7 +555,8 @@ public class ConfigFile extends RandomAccessFile {
 		System.out.println(file.read("GENERAL", "server"));
 		System.out.println(ConfigFile.readEntry("pcmanalyse/config", "GENERAL",
 				"server"));
-		ConfigHash configHash = file.readToHash();
+		ConfigHash configHash = ConfigFile.readToHash(new File(
+				"/etc/pcmanalyse/config"));
 		configHash.println();
 		file.close();
 	}

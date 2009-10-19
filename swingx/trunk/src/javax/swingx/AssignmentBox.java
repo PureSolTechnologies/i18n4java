@@ -46,7 +46,7 @@ public class AssignmentBox extends Panel {
 		c.ipady = 2;
 		c.insets = new Insets(2, 2, 2, 2);
 
-		Panel selectionPanel = Label.addFor(new ScrollPane(
+		Panel selectionPanel = Label.addTo(new ScrollPane(
 				selectionList = new List()), translator.i18n("Assigned"),
 				Label.NORTH);
 		c.gridwidth = 1;
@@ -72,7 +72,7 @@ public class AssignmentBox extends Panel {
 		layout.setConstraints(buttonPanel, c);
 		add(buttonPanel);
 
-		Panel reservoirPanel = Label.addFor(new ScrollPane(
+		Panel reservoirPanel = Label.addTo(new ScrollPane(
 				availableList = new List()), translator.i18n("Available"),
 				Label.NORTH);
 		c.gridwidth = GridBagConstraints.REMAINDER;

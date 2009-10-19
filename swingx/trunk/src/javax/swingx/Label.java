@@ -13,7 +13,7 @@ public class Label extends JLabel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static public Panel addFor(Component component, String text, int align) {
+	static public Panel addTo(Component component, String text, int align) {
 		Panel panel = new Panel();
 		panel.setLayout(new BorderLayout());
 		panel.add(component, BorderLayout.CENTER);

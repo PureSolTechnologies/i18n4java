@@ -29,9 +29,21 @@ public class TextField extends JTextField implements Widget, ActionListener,
 		initialize();
 	}
 
+	public TextField(Validator validator) {
+		super();
+		initialize();
+		setValidator(validator);
+	}
+
 	public TextField(String text) {
 		super(text);
 		initialize();
+	}
+
+	public TextField(String text, Validator validator) {
+		super(text);
+		initialize();
+		setValidator(validator);
 	}
 
 	public TextField(String text, int length) {
@@ -39,9 +51,21 @@ public class TextField extends JTextField implements Widget, ActionListener,
 		initialize();
 	}
 
+	public TextField(String text, int length, Validator validator) {
+		super(text, length);
+		initialize();
+		setValidator(validator);
+	}
+
 	public TextField(int length) {
 		super(length);
 		initialize();
+	}
+
+	public TextField(int length, Validator validator) {
+		super(length);
+		initialize();
+		setValidator(validator);
 	}
 
 	private void initialize() {

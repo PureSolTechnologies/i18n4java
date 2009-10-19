@@ -1,8 +1,10 @@
 package javax.swingx.config;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -55,39 +57,25 @@ public class Configurator {
 	 * @throws ConfigException
 	 *             is thrown in case of config read file failures.
 	 */
-	private void read(String file) throws ConfigException {
-		readAll(file);
-	}
-
-	/**
-	 * This method is used internally in the case the configuration file needed
-	 * was not loaded yet. This method uses the ConfigFile obeject to read the
-	 * whole file into a ConfigHash.
-	 * 
-	 * @param file
-	 *            is the short file path.
-	 * @throws ConfigException
-	 *             is thrown in case of config read file failures.
-	 */
 	private boolean loadResource(String resource) {
-		URL url = getClass().getResource(resource);
-		if (url == null) {
+		logger.debug("Load resource '" + resource + "'");
+		InputStream inStream = getClass().getResourceAsStream(
+				resource);
+		if (inStream == null) {
+			logger.warn("Resource '" + resource + "' not found!");
 			return false;
 		}
-		String file = url.getFile();
-		return load(resource, new File(file));
+		return load(resource, inStream);
 	}
 
-	public boolean load(String resource, File file) {
+	public boolean load(String resource, InputStream inStream) {
 		try {
-			ConfigFile f = new ConfigFile(file);
-			configuratorHash.put(resource, f.readToHash());
-			f.close();
+			configuratorHash.put(resource, ConfigFile.readToHash(inStream));
 			return true;
 		} catch (IOException e) {
-			// Logger.getInstance().logException(this, e);
+			logger.warn(e.getMessage(), e);
+			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -102,26 +90,40 @@ public class Configurator {
 	 * 
 	 * If a file is present several times, the entry's last version is used.
 	 * 
-	 * @param file
+	 * @param resource
 	 *            is the short file path.
 	 * @throws ConfigException
 	 *             is thrown in case of config read file failures.
 	 */
-	private void readAll(String file) throws ConfigException {
-		if (!configuratorHash.contains(file)) {
-			configuratorHash.put(file, new ConfigHash());
+	private void readAll(String resource) throws ConfigException {
+		logger
+				.debug("Try to read information from resource '" + resource
+						+ "'");
+		if (!configuratorHash.contains(resource)) {
+			configuratorHash.put(resource, new ConfigHash());
 		}
-		boolean found = loadResource(file);
+		boolean found = loadResource(resource);
 		if (!found) {
-			ArrayList<String> files = ConfigFile.getAvailableConfigFiles(file);
-			for (String configFile: files) {
-				found |= load(file, new File(configFile));
+			logger
+					.debug("Resource '"
+							+ resource
+							+ "' not found as resource within class path. Look for files...");
+			ArrayList<String> files = ConfigFile
+					.getAvailableConfigFiles(resource);
+			for (String configFile : files) {
+				try {
+					found |= load(resource, new FileInputStream(new File(
+							configFile)));
+				} catch (FileNotFoundException e) {
+					logger.debug("File '" + configFile
+							+ "' not found. Skipping.");
+				}
 			}
 		}
 		if (!found) {
-			logger.warn("Could no read configuration file '" + file + "'");
+			logger.warn("Could no read configuration file '" + resource + "'");
 			throw new ConfigException("Could not read configuration file '"
-					+ file + "'!");
+					+ resource + "'!");
 		}
 	}
 
@@ -143,7 +145,7 @@ public class Configurator {
 	private String readEntry(String resource, String section, String key) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				read(resource);
+				readAll(resource);
 			}
 		} catch (ConfigException ce) {
 			return "";
@@ -180,7 +182,7 @@ public class Configurator {
 	private ConfigHash returnResource(String resource) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				read(resource);
+				readAll(resource);
 			}
 		} catch (ConfigException ce) {
 			return null;
