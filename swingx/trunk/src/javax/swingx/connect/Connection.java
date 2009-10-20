@@ -197,7 +197,11 @@ public class Connection {
 			Object... params) {
 		Class<?> types[] = new Class<?>[params.length];
 		for (int i = 0; i < params.length; i++) {
-			types[i] = params[i].getClass();
+			if (params[i] != null) {
+				types[i] = params[i].getClass();
+			} else {
+				types[i] = Object.class;
+			}
 		}
 		return isSignal(emitter, signal, types);
 	}

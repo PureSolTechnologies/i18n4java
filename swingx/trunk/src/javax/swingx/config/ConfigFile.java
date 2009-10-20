@@ -45,9 +45,9 @@ public class ConfigFile {
 	/**
 	 * This is a File object keeping the path to the opened configuration file.
 	 */
-	private File file;
+	protected File file;
 
-	private RandomAccessFile raFile;
+	protected RandomAccessFile raFile;
 
 	/**
 	 * This is the constructor with a file object only. The file will be opened
@@ -80,15 +80,6 @@ public class ConfigFile {
 			raFile.close();
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-		}
-	}
-
-	public String readLine() {
-		try {
-			return raFile.readLine();
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			return null;
 		}
 	}
 
@@ -531,33 +522,5 @@ public class ConfigFile {
 			logger.trace("key: '" + key + "=" + value + "'");
 		} while (line != null);
 		return hash;
-	}
-
-	/**
-	 * This is the static main method for starting this object. It is used for
-	 * testing purposes only.
-	 * 
-	 * @param args
-	 *            is the array of string for the command line parameters.
-	 * @throws IOException
-	 *             is thrown in case of an IO error.
-	 */
-	public static void main(String args[]) throws IOException {
-		ConfigFile file = new ConfigFile(new File("/etc/pcmanalyse/config"));
-		String str;
-		do {
-			str = file.readLine();
-			if (str != null)
-				System.out.println(str);
-		} while (str != null);
-		System.out.println("Read:");
-		System.out.println("=====");
-		System.out.println(file.read("GENERAL", "server"));
-		System.out.println(ConfigFile.readEntry("pcmanalyse/config", "GENERAL",
-				"server"));
-		ConfigHash configHash = ConfigFile.readToHash(new File(
-				"/etc/pcmanalyse/config"));
-		configHash.println();
-		file.close();
 	}
 }
