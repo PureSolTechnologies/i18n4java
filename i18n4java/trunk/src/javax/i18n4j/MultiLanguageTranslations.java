@@ -18,6 +18,7 @@
  ***************************************************************************/
 package javax.i18n4j;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -178,6 +179,19 @@ public class MultiLanguageTranslations implements Cloneable {
 
 	public boolean hasTranslations() {
 		return (translations.size() > 0);
+	}
+
+	public void removeWithoutLocation() {
+		ArrayList<String> toRemove = new ArrayList<String>();
+		for (String source : translations.keySet()) {
+			LanguageSet languageSet = translations.get(source);
+			if (languageSet.getLocations().size() == 0) {
+				toRemove.add(source);
+			}
+		}
+		for (String source : toRemove) {
+			translations.remove(source);
+		}
 	}
 
 	public void print() {

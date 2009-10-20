@@ -123,7 +123,7 @@ public class I18NUpdate {
 			MultiLanguageTranslations i18nSources = collectI18NSource(file);
 			if (i18nSources.hasTranslations()) {
 				File i18nFile = new File(i18nDirectory + "/"
-						+ I18NFile.getI18NFile(file).getPath());
+						+ I18NFile.getI18NResource(file).getPath());
 				addNewSourcesToExistingFile(i18nFile, i18nSources);
 			}
 		} catch (FileNotFoundException e) {
@@ -144,9 +144,14 @@ public class I18NUpdate {
 		MultiLanguageTranslations translations = readTranslations(file);
 		translations.add(i18nSources);
 		File directory = new File(file.getPath().replaceAll(file.getName(), ""));
-		if (directory.mkdirs()) {
-			writeTranslations(file, translations);
+		if (!directory.exists()) {
+			if (!directory.mkdirs()) {
+				logger.warn("Could not create directory '"
+						+ directory.getPath() + "'");
+				return;
+			}
 		}
+		writeTranslations(file, translations);
 	}
 
 	private MultiLanguageTranslations readTranslations(File file) {

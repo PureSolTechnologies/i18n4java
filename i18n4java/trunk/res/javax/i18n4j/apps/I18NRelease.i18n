@@ -52,5 +52,17 @@
                 </locations>
             </value>
         </entry>
+        <entry>
+            <key>usage:  I18NUpdate &lt;directory&gt;</key>
+            <value>
+                <source>usage:  I18NUpdate &lt;directory&gt;</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Nutzung:  I18NUpdate &lt;Projektveryeichnis&gt;</value>
+                    </entry>
+                </translated>
+            </value>
+        </entry>
     </translations>
 </internationalization>

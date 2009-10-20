@@ -42,6 +42,12 @@ public class SourceLocation implements Cloneable, Serializable,
 	private int line;
 	private int lineCount;
 
+	public SourceLocation() {
+		file = "";
+		line = 0;
+		lineCount = 0;
+	}
+
 	public SourceLocation(String file, int line) {
 		setFile(file);
 		setLine(line);

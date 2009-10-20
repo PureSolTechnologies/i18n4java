@@ -18,7 +18,6 @@
  ***************************************************************************/
 package javax.i18n4j;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -46,7 +45,12 @@ public class Translator implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(Translator.class);
 
-	private static Locale defaultLocale = Locale.getDefault();
+	private static Locale defaultLocale;
+	static {
+		Locale locale = Locale.getDefault();
+		logger.info("Setting default locale to '" + locale.toString() + "'");
+		defaultLocale = locale;
+	}
 
 	private static Locale[] additionalLocales = new Locale[0];
 	/**
@@ -219,9 +223,14 @@ public class Translator implements Serializable {
 			translations.put("en", new SingleLanguageTranslations());
 			return;
 		}
-		File file = I18NFile.getTrFile(context, language);
-		logger.info("Read context language file '" + file.getPath() + "'");
-		InputStream is = getClass().getResourceAsStream(file.getPath());
+		String resource = I18NFile.getTrResource(context, language);
+		logger.info("Read context language file '" + resource + "'");
+		InputStream is = getClass().getResourceAsStream(resource);
+		if (is == null) {
+			logger.warn("No context translation file found for '" + resource
+					+ "'");
+			return;
+		}
 		SingleLanguageTranslations translations = readFromStream(is);
 		this.translations.put(language, translations);
 	}
@@ -236,12 +245,25 @@ public class Translator implements Serializable {
 		}
 	}
 
+	public String translate(String text, String language) {
+		SingleLanguageTranslations singleLanguageTranslations = translations
+				.get(language);
+		if (singleLanguageTranslations == null) {
+			return text;
+		}
+		String translation = singleLanguageTranslations.get(text);
+		if (translation == null) {
+			return text;
+		}
+		return translation;
+	}
+
 	public String i18n(String text) {
 		if (translations == null) {
 			readContextTranslation();
 		}
-		StringBuffer translation = new StringBuffer(translations.get(
-				getDefaultLanguage()).get(text));
+		StringBuffer translation = new StringBuffer(translate(text,
+				getDefaultLanguage()));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
@@ -254,8 +276,7 @@ public class Translator implements Serializable {
 					translation.append(" ");
 				}
 				translation.append("(").append(
-						translations.get(locale.getLanguage()).get(text))
-						.append(")");
+						translate(text, locale.getLanguage())).append(")");
 			}
 		}
 		return translation.toString();
@@ -269,7 +290,7 @@ public class Translator implements Serializable {
 			readContextTranslation();
 		}
 		StringBuffer translation = new StringBuffer(new MessageFormat(
-				translations.get(getDefaultLanguage()).get(text), getDefault())
+				translate(text, getDefaultLanguage()), getDefault())
 				.format(params));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
@@ -283,8 +304,8 @@ public class Translator implements Serializable {
 					translation.append(" ");
 				}
 				translation.append("(").append(
-						new MessageFormat(translations
-								.get(locale.getLanguage()).get(text), locale)
+						new MessageFormat(
+								translate(text, locale.getLanguage()), locale)
 								.format(params)).append(")");
 			}
 		}

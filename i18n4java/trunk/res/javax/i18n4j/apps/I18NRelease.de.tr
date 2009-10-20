@@ -13,5 +13,9 @@
             <key>Process file {0}...</key>
             <value>Prozessiere Datei {0}...</value>
         </entry>
+        <entry>
+            <key>usage:  I18NUpdate &lt;directory&gt;</key>
+            <value>Nutzung:  I18NUpdate &lt;Projektveryeichnis&gt;</value>
+        </entry>
     </translations>
 </translations>

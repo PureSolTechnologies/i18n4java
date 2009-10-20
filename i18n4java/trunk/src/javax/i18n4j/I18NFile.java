@@ -45,16 +45,42 @@ public class I18NFile {
 
 	static private Logger logger = Logger.getLogger(I18NFile.class);
 
-	static public File getTrFile(String context, Locale locale) {
-		return getTrFile(context, locale.getLanguage());
+	/**
+	 * This method calculates the resource path to a context translation file.
+	 * The language information from the locale is used to invoke another
+	 * getTrResource method to get the name.
+	 * 
+	 * @see I18NFile#getI18NResource(File)
+	 * @param context
+	 *            is the context name to use. In normal case its
+	 *            class.getName().
+	 * @param locale
+	 *            is a locale as language specifier to be used.
+	 * @return A String is returned with a path to the translation file. String
+	 *         is used and not(!) File to due the issue that resources within
+	 *         JARs are to be specified with normal '/' slash separators.
+	 */
+	static public String getTrResource(String context, Locale locale) {
+		return getTrResource(context, locale.getLanguage());
 	}
 
-	static public File getTrFile(String context, String language) {
-		return new File("/" + context.replaceAll("\\.", "/") + "." + language
-				+ ".tr");
+	/**
+	 * This method calculates the resource path to a context translation file.
+	 * 
+	 * @param context
+	 *            is the context name to use. In normal case its
+	 *            class.getName().
+	 * @param language
+	 *            is the language to look for.
+	 * @return A String is returned with a path to the translation file. String
+	 *         is used and not(!) File to due the issue that resources within
+	 *         JARs are to be specified with normal '/' slash separators.
+	 */
+	static public String getTrResource(String context, String language) {
+		return "/" + context.replaceAll("\\.", "/") + "." + language + ".tr";
 	}
 
-	static public File getI18NFile(File file) {
+	static public File getI18NResource(File file) {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(
@@ -183,5 +209,4 @@ public class I18NFile {
 			return null;
 		}
 	}
-
 }
