@@ -9,7 +9,9 @@ import java.util.Vector;
 
 import javax.i18n4j.FileSearch;
 import javax.i18n4j.I18NFile;
+import javax.i18n4j.LanguageSet;
 import javax.i18n4j.MultiLanguageTranslations;
+import javax.i18n4j.SourceLocation;
 import javax.i18n4j.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
@@ -38,6 +40,7 @@ public class I18NTranslationPanel extends Panel {
 	private List reservoir = null;
 	private TextArea source = null;
 	private TextArea translation = null;
+	private TextArea location = null;
 	private boolean changed = false;
 	private String oldSource = "";
 	private String oldTranslation = "";
@@ -62,8 +65,8 @@ public class I18NTranslationPanel extends Panel {
 
 		classes = new List();
 		classes.connect("valueChanged", this, "openFile", Object.class);
-		add(Label.addTo(classes, translator.i18n("Classes"), Label.TOP),
-				BorderLayout.WEST);
+		add(Label.addTo(new ScrollPane(classes), translator.i18n("Classes"),
+				Label.TOP), BorderLayout.WEST);
 
 		Panel centerPanel = new Panel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -74,6 +77,7 @@ public class I18NTranslationPanel extends Panel {
 		centerPanel.add(Label.addTo(new ScrollPane(reservoir), translator
 				.i18n("Reservoir"), Label.TOP));
 		source = new TextArea();
+		source.setEditable(false);
 		centerPanel.add(Label.addTo(new ScrollPane(source), translator
 				.i18n("Source:"), Label.TOP));
 		translation = new TextArea();
@@ -81,8 +85,10 @@ public class I18NTranslationPanel extends Panel {
 				.i18n("Translation:"), Label.TOP));
 		add(centerPanel, BorderLayout.CENTER);
 
-		centerPanel.add(Label.addTo(new ScrollPane(new TextArea()), translator
-				.i18n("Source"), Label.TOP));
+		location = new TextArea();
+		location.setEditable(false);
+		centerPanel.add(Label.addTo(new ScrollPane(location), translator
+				.i18n("Location(s)"), Label.TOP));
 
 		add(new Label("Some I18NFile statistics"), BorderLayout.SOUTH);
 		add(new Label("<html>Some project<br/>statistics</html>"),
@@ -180,11 +186,12 @@ public class I18NTranslationPanel extends Panel {
 	@Slot
 	public void changeSource(Object source) {
 		if (source != null) {
-			this.source.setText(source.toString());
+			this.source.setText(source.toString().replaceAll("\\\\n", "\n"));
 		} else {
 			this.source.setText("");
 		}
 		updateTranslation();
+		updateLocation();
 	}
 
 	private void updateTranslation() {
@@ -201,20 +208,53 @@ public class I18NTranslationPanel extends Panel {
 			return;
 		}
 		updateHash();
-		oldSource = source.getText();
+		oldSource = source.getText().replaceAll("\\n", "\\\\n");
 		oldLanguage = currentLocale.getLanguage();
 		oldTranslation = translationsHash.get(oldSource, oldLanguage);
-		translation.setText(oldTranslation);
+		translation.setText(oldTranslation.replaceAll("\\\\n", "\n"));
+	}
+
+	private void updateLocation() {
+		if (currentLocale == null) {
+			location.setText("");
+			return;
+		}
+		if (translationsHash == null) {
+			location.setText("");
+			return;
+		}
+		if (source.getText().isEmpty()) {
+			location.setText("");
+			return;
+		}
+		StringBuffer locations = new StringBuffer();
+		LanguageSet languageSet = translationsHash.get(source.getText()
+				.replaceAll("\\n", "\\\\n"));
+		if (languageSet == null) {
+			location.setText("");
+			return;
+		}
+		for (SourceLocation location : languageSet.getLocations()) {
+			locations.append(location.toString()).append("\n");
+		}
+		location.setText(locations.toString());
 	}
 
 	private void updateHash() {
-		if ((!oldTranslation.equals(translation.getText()))
+		if ((!oldTranslation.equals(translation.getText().replaceAll("\\n",
+				"\\\\n")))
 				&& (!translation.getText().isEmpty())) {
 			if ((!oldSource.isEmpty()) && (!oldLanguage.isEmpty())) {
 				translationsHash.set(oldSource, oldLanguage, translation
-						.getText());
+						.getText().replaceAll("\\n", "\\\\n"));
 				changed = true;
 			}
 		}
+	}
+
+	public void removeWithoutLocation() {
+		changeSource("");
+		translationsHash.removeWithoutLocation();
+		updateReservoir();
 	}
 }

@@ -43,9 +43,11 @@ public class I18NLinguist extends Application {
 		setJMenuBar(menuBar);
 
 		Menu fileMenu = new Menu(translator.i18n("File"));
+		Menu toolsMenu = new Menu(translator.i18n("Tools"));
 		Menu helpMenu = new Menu(translator.i18n("Help"));
 
 		menuBar.add(fileMenu);
+		menuBar.add(toolsMenu);
 		menuBar.add(helpMenu);
 
 		MenuItem update = new MenuItem(translator.i18n("Update..."));
@@ -53,6 +55,9 @@ public class I18NLinguist extends Application {
 
 		MenuItem release = new MenuItem(translator.i18n("Release..."));
 		release.connect("start", this, "release");
+
+		MenuItem clear = new MenuItem(translator.i18n("Clear"));
+		clear.connect("start", this, "clear");
 
 		MenuItem open = new MenuItem(translator.i18n("Open..."));
 		open.connect("start", this, "open");
@@ -63,13 +68,14 @@ public class I18NLinguist extends Application {
 		MenuItem exit = new MenuItem(translator.i18n("Quit"));
 		exit.connect("start", this, "quit");
 
-		fileMenu.add(update);
-		fileMenu.add(release);
-		fileMenu.addSeparator();
 		fileMenu.add(open);
 		fileMenu.add(save);
 		fileMenu.addSeparator();
 		fileMenu.add(exit);
+
+		toolsMenu.add(update);
+		toolsMenu.add(release);
+		toolsMenu.add(clear);
 
 		helpMenu.addDefaultAboutItem();
 	}
@@ -131,6 +137,11 @@ public class I18NLinguist extends Application {
 		I18NRelease release = new I18NRelease(fileChooser.getSelectedFile()
 				.getPath());
 		release.release();
+	}
+
+	@Slot
+	public void clear() {
+		translationPanel.removeWithoutLocation();
 	}
 
 	@Slot
