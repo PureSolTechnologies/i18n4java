@@ -108,6 +108,10 @@ public class Dialog extends JDialog implements Widget {
 		dispose();
 	}
 
+	public boolean isConfirmed() {
+		return confirmed;
+	}
+
 	@Slot
 	public void ok() {
 		quit();

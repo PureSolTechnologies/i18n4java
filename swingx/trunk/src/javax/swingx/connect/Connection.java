@@ -95,6 +95,12 @@ public class Connection {
 		try {
 			Method slotMethod = receiver.getClass().getMethod(slot, types);
 
+			if (slotMethod.getAnnotation(Slot.class) == null) {
+				logger.fatal("Slot '" + receiver.getClass().getName() + "."
+						+ slot + "' does not annote @Slot! ");
+				throw new RuntimeException();
+			}
+
 			// check return values for correct assignment...
 			if ((!slotMethod.getReturnType().equals(Boolean.class))
 					&& (!slotMethod.getReturnType().equals(boolean.class))
@@ -108,6 +114,13 @@ public class Connection {
 			}
 
 			Method signalMethod = emitter.getClass().getMethod(signal, types);
+
+			if (signalMethod.getAnnotation(Signal.class) == null) {
+				logger.fatal("Signal '" + emitter.getClass().getName() + "."
+						+ signal + "' does not annote @Signal! ");
+				throw new RuntimeException();
+			}
+
 			if ((!signalMethod.getReturnType().equals(void.class))) {
 				logger.fatal("Return value '"
 						+ signalMethod.getReturnType().getName()
