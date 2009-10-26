@@ -102,9 +102,7 @@ public class Connection {
 			}
 
 			// check return values for correct assignment...
-			if ((!slotMethod.getReturnType().equals(Boolean.class))
-					&& (!slotMethod.getReturnType().equals(boolean.class))
-					&& (!slotMethod.getReturnType().getName().equals("void"))) {
+			if (!slotMethod.getReturnType().equals(void.class)) {
 				logger.fatal("Return value '"
 						+ slotMethod.getReturnType().getName() + "'for slot '"
 						+ receiver.getClass().getName() + "." + slot
@@ -174,15 +172,9 @@ public class Connection {
 	 *         process. True is returned if the slot were called correctly.
 	 *         False is returned otherwise.
 	 */
-	public boolean emit(Object... params) {
+	public void emit(Object... params) {
 		try {
-			if (getSlot().getReturnType().getName().equals("void")) {
-				getSlot().invoke(getReceiver(), params);
-				return true;
-			} else {
-				return ((Boolean) getSlot().invoke(getReceiver(), params))
-						.booleanValue();
-			}
+			getSlot().invoke(getReceiver(), params);
 		} catch (IllegalAccessException e) {
 			logger.fatal(e.getMessage(), e);
 			throw new RuntimeException("Could not emit signal '" + toString()

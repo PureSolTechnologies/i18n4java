@@ -126,15 +126,11 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	 *         process. True is returned if all slots were called correctly.
 	 *         False is returned otherwise.
 	 */
-	public boolean emitSignal(String signal, Object... params) {
-		boolean retVal = true;
+	public void emitSignal(String signal, Object... params) {
 		for (Connection connection : connections) {
 			if (connection.isSignal(emitter, signal, params)) {
-				if (!connection.emit(params)) {
-					retVal = false;
-				}
+				connection.emit(params);
 			}
 		}
-		return retVal;
 	}
 }
