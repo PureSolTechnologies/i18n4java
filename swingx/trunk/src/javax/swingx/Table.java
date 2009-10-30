@@ -1,9 +1,11 @@
 package javax.swingx;
 
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swingx.connect.ConnectionHandler;
 import javax.swingx.connect.ConnectionManager;
+import javax.swingx.connect.Signal;
 
 public class Table extends JTable implements ConnectionHandler {
 
@@ -11,14 +13,21 @@ public class Table extends JTable implements ConnectionHandler {
 
 	public Table() {
 		super();
+		init();
 	}
 
 	public Table(int rows, int cols) {
 		super(rows, cols);
+		init();
 	}
 
 	public Table(AbstractTableModel model) {
 		super(model);
+		init();
+	}
+
+	private void init() {
+		getSelectionModel().addListSelectionListener(this);
 	}
 
 	/**
@@ -26,6 +35,23 @@ public class Table extends JTable implements ConnectionHandler {
 	 */
 	protected ConnectionManager connectionManager = ConnectionManager
 			.createFor(this);
+
+	@Override
+	public void valueChanged(ListSelectionEvent event) {
+		super.valueChanged(event);
+		selectionChanged();
+		selectionChanged(this.getSelectedRow());
+	}
+
+	@Signal
+	public void selectionChanged() {
+		connectionManager.emitSignal("selectionChanged");
+	}
+
+	@Signal
+	public void selectionChanged(int row) {
+		connectionManager.emitSignal("selectionChanged", row);
+	}
 
 	/**
 	 * {@inheritDoc}

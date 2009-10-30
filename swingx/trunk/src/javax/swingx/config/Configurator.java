@@ -59,12 +59,12 @@ public class Configurator {
 	 */
 	private boolean loadResource(String resource) {
 		logger.debug("Load resource '" + resource + "'");
-		InputStream inStream = getClass().getResourceAsStream(
-				resource);
+		InputStream inStream = getClass().getResourceAsStream(resource);
 		if (inStream == null) {
 			logger.warn("Resource '" + resource + "' not found!");
 			return false;
 		}
+		logger.debug("Reading...");
 		return load(resource, inStream);
 	}
 
@@ -95,7 +95,8 @@ public class Configurator {
 	 * @throws ConfigException
 	 *             is thrown in case of config read file failures.
 	 */
-	private void readAll(String resource) throws ConfigException {
+	private void readAll(String resource, boolean firstValid)
+			throws ConfigException {
 		logger
 				.debug("Try to read information from resource '" + resource
 						+ "'");
@@ -103,11 +104,7 @@ public class Configurator {
 			configuratorHash.put(resource, new ConfigHash());
 		}
 		boolean found = loadResource(resource);
-		if (!found) {
-			logger
-					.debug("Resource '"
-							+ resource
-							+ "' not found as resource within class path. Look for files...");
+		if (found && (!firstValid)) {
 			ArrayList<String> files = ConfigFile
 					.getAvailableConfigFiles(resource);
 			for (String configFile : files) {
@@ -117,6 +114,9 @@ public class Configurator {
 				} catch (FileNotFoundException e) {
 					logger.debug("File '" + configFile
 							+ "' not found. Skipping.");
+				}
+				if (found && (!firstValid)) {
+					break;
 				}
 			}
 		}
@@ -142,10 +142,11 @@ public class Configurator {
 	 *            is the key name to be read and returned.
 	 * @return A String is returned containing the value of the key.
 	 */
-	private String readEntry(String resource, String section, String key) {
+	private String readEntry(String resource, String section, String key,
+			boolean firstValid) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				readAll(resource);
+				readAll(resource, firstValid);
 			}
 		} catch (ConfigException ce) {
 			return "";
@@ -175,14 +176,15 @@ public class Configurator {
 	 *            is the key name to be read and returned.
 	 * @return A String is returned containing the value of the key.
 	 */
-	static public String getEntry(String resource, String section, String key) {
-		return getInstance().readEntry(resource, section, key);
+	static public String getEntry(String resource, String section, String key,
+			boolean firstValid) {
+		return getInstance().readEntry(resource, section, key, firstValid);
 	}
 
-	private ConfigHash returnResource(String resource) {
+	private ConfigHash returnResource(String resource, boolean firstValid) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				readAll(resource);
+				readAll(resource, firstValid);
 			}
 		} catch (ConfigException ce) {
 			return null;
@@ -190,8 +192,8 @@ public class Configurator {
 		return configuratorHash.get(resource);
 	}
 
-	static public ConfigHash getResource(String resource) {
-		return getInstance().returnResource(resource);
+	static public ConfigHash getResource(String resource, boolean firstValid) {
+		return getInstance().returnResource(resource, firstValid);
 	}
 
 	static private synchronized void createInstance() {

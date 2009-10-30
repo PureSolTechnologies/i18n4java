@@ -14,13 +14,13 @@ public class CustomerConfig {
 	 * This variable keeps the customers short name.
 	 */
 	private static String shortName = Configurator.getEntry("/config/customer",
-			"GENERAL", "shortname");
+			"GENERAL", "shortname", true);
 
 	/**
 	 * This variable keeps the customers short name.
 	 */
 	private static String longName = Configurator.getEntry("/config/customer",
-			"GENERAL", "name");
+			"GENERAL", "name", true);
 
 	/**
 	 * This method sets the customers short name for messages.

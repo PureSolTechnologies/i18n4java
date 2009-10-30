@@ -43,6 +43,23 @@ public class ConfigFile {
 	private static final Logger logger = Logger.getLogger(ConfigFile.class);
 
 	/**
+	 * This method removes comments by truncating the line after the sharp (#)
+	 * and removing all trailing and leading white spaces.
+	 * 
+	 * @param line
+	 *            is a String to be removed from comment and white spaces.
+	 * @return The cleaned string is returned.
+	 */
+	static public String removeComment(String line) {
+
+		String result = line;
+		if (result.contains("#")) {
+			result = result.substring(0, result.indexOf("#"));
+		}
+		return result.trim();
+	}
+
+	/**
 	 * This is a File object keeping the path to the opened configuration file.
 	 */
 	protected File file;
@@ -253,23 +270,6 @@ public class ConfigFile {
 	 */
 	public File getFile() {
 		return file;
-	}
-
-	/**
-	 * This method removes comments by truncating the line after the sharp (#)
-	 * and removing all trailing and leading white spaces.
-	 * 
-	 * @param line
-	 *            is a String to be removed from comment and white spaces.
-	 * @return The cleaned string is returned.
-	 */
-	static public String removeComment(String line) {
-
-		String result = line;
-		if (result.contains("#")) {
-			result = result.substring(0, result.indexOf("#"));
-		}
-		return result.trim();
 	}
 
 	/**

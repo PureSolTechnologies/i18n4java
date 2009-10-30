@@ -21,14 +21,14 @@ public class APIConfig {
 	 * fix = bug fix release with no functional changes, but bugs are fixed
 	 */
 	public static final String PACKAGE_VERSION = Configurator.getEntry(
-			"/config/about", "GENERAL", "version");
+			"/config/about", "GENERAL", "version", true);
 
 	/**
 	 * This is the constants containing the year range of development. The
 	 * starting point was January 2009.
 	 */
 	public static final String PACKAGE_YEARS = Configurator.getEntry(
-			"/config/about", "GENERAL", "years");
+			"/config/about", "GENERAL", "years", true);
 
 	/**
 	 * These are all developers which were working on this release as architects
@@ -36,26 +36,26 @@ public class APIConfig {
 	 * fast.
 	 */
 	public static final String PACKAGE_AUTHOR = Configurator.getEntry(
-			"/config/about", "GENERAL", "author");
+			"/config/about", "GENERAL", "author", true);
 
 	/**
 	 * This is the email address used for bug reports. This is shown to
 	 * customers to have an email contact.
 	 */
 	public static final String PACKAGE_BUGREPORT = Configurator.getEntry(
-			"/config/about", "GENERAL", "bugreport");
+			"/config/about", "GENERAL", "bugreport", true);
 
 	/**
 	 * This is the copyright message for about boxes.
 	 */
 	public static final String PACKAGE_COPYRIGHT = Configurator.getEntry(
-			"/config/about", "GENERAL", "copyright");
+			"/config/about", "GENERAL", "copyright", true);
 
 	/**
 	 * This is the legal owner of the software package.
 	 */
 	public static final String PACKAGE_OWNER = Configurator.getEntry(
-			"/config/about", "GENERAL", "owner");
+			"/config/about", "GENERAL", "owner", true);
 
 	/**
 	 * This variable is for global usage and is used to keep the help request

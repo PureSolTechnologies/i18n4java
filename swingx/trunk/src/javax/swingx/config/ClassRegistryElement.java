@@ -10,6 +10,14 @@ public class ClassRegistryElement {
 	private String className = "";
 
 	public ClassRegistryElement(int type, String className) {
+		if (type < 0) {
+			throw new IllegalArgumentException("type '" + type
+					+ "'must no be negative!");
+		}
+		if (type > 2) {
+			throw new IllegalArgumentException("type '" + type
+					+ "'is not defined!");
+		}
 		this.type = type;
 		this.className = className;
 	}

@@ -29,10 +29,10 @@ public class ClassRegistry {
 	static public void register(Class<?> interfce) {
 		logger.info("Register interface '" + interfce.getName() + "'");
 		String className = Configurator.getEntry(REGISTRY_FILE, interfce
-				.getName(), "class");
+				.getName(), "class", true);
 		logger.debug("class: '" + className + "'");
 		String typeName = Configurator.getEntry(REGISTRY_FILE, interfce
-				.getName(), "type");
+				.getName(), "type", true);
 		logger.debug("type: '" + typeName + "'");
 		int type = 0;
 		if (typeName.equalsIgnoreCase("singleton")) {
