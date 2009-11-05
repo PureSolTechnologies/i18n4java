@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class ValueType {
+public class ValueType implements Comparable<ValueType> {
 
 	/**
 	 * This variable keeps the class object stored for later use within the
@@ -182,26 +182,6 @@ public class ValueType {
 	}
 
 	/**
-	 * This method checks whether another class is equal to this variable type
-	 * or not.
-	 * 
-	 * @param c
-	 *            is a class which to check against.
-	 * @return true is returned if the stored variable type is equal to c.
-	 *         Otherwise false is returned.
-	 */
-	public boolean equals(Object o) {
-		if (o == null) {
-			return false;
-		}
-		return toString().equals(o.toString());
-	}
-
-	public int hashCode() {
-		return toString().hashCode();
-	}
-
-	/**
 	 * This method checks whether another class is instance of this variable
 	 * type or not.
 	 * 
@@ -218,12 +198,12 @@ public class ValueType {
 		return getClassName();
 	}
 
-	public static Class<?> recognizeType(String value) {
+	public static ValueType recognizeFromString(String value) {
 		for (Class<?> wrapper : TypeWrapper.PRIMITIVE_WRAPPERS) {
 			if (wrapper.equals(Character.class)) {
 				// Character does not have a valueOf method!
 				if (value.length() == 1) {
-					return wrapper;
+					return new ValueType(wrapper);
 				}
 				continue;
 			}
@@ -254,7 +234,7 @@ public class ValueType {
 						continue;
 					}
 				}
-				return wrapper;
+				return new ValueType(wrapper);
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
@@ -267,6 +247,62 @@ public class ValueType {
 				// nothing to catch here, it's expected due to test...
 			}
 		}
-		return String.class;
+		return new ValueType(String.class);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((classObject == null) ? 0 : classObject.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ValueType other = (ValueType) obj;
+		if (classObject == null) {
+			if (other.classObject != null)
+				return false;
+		} else if (!classObject.equals(other.classObject))
+			return false;
+		return true;
+	}
+
+	private int getIndex(Class<?> type) {
+		for (int index = 0; index < TypeWrapper.PRIMITIVE_WRAPPERS.length; index++) {
+			if (TypeWrapper.PRIMITIVE_WRAPPERS[index].equals(type)) {
+				return index;
+			}
+			if (TypeWrapper.PRIMITIVES[index].equals(type)) {
+				return index;
+			}
+		}
+		return TypeWrapper.PRIMITIVE_WRAPPERS.length;
+	}
+
+	@Override
+	public int compareTo(ValueType other) {
+		if (other == null) {
+			return 1;
+		}
+		if (equals(other)) {
+			return 0;
+		}
+		int otherIndex = getIndex(other.getClassObject());
+		int thisIndex = getIndex(this.getClassObject());
+		if (thisIndex > otherIndex) {
+			return 1;
+		} else if (thisIndex < otherIndex) {
+			return -1;
+		}
+		return 0;
 	}
 }
