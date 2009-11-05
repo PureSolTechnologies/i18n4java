@@ -63,6 +63,11 @@ public class CheckBox extends JCheckBox implements Widget, ActionListener {
 	}
 
 	@Signal
+	public void changed(boolean selected) {
+		connectionManager.emitSignal("selected", boolean.class);
+	}
+
+	@Signal
 	public void actionPerformed(ActionEvent actionEvent) {
 		connectionManager.emitSignal("actionPerformed", actionEvent);
 		start();

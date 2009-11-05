@@ -1,5 +1,7 @@
 package javax.swingx.data;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -214,5 +216,57 @@ public class ValueType {
 
 	public String toString() {
 		return getClassName();
+	}
+
+	public static Class<?> recognizeType(String value) {
+		for (Class<?> wrapper : TypeWrapper.PRIMITIVE_WRAPPERS) {
+			if (wrapper.equals(Character.class)) {
+				// Character does not have a valueOf method!
+				if (value.length() == 1) {
+					return wrapper;
+				}
+				continue;
+			}
+			try {
+				Method method = wrapper.getMethod("valueOf", String.class);
+				Object o = method.invoke(wrapper, value);
+				if (wrapper.equals(Float.class)) {
+					Float f = (Float) o;
+					if (f.isInfinite()) {
+						continue;
+					}
+					if (f.isNaN()) {
+						continue;
+					}
+				} else if (wrapper.equals(Double.class)) {
+					Double d = (Double) o;
+					if (d.isInfinite()) {
+						continue;
+					}
+					if (d.isNaN()) {
+						continue;
+					}
+				} else if (wrapper.equals(Boolean.class)) {
+					if (!(value.equalsIgnoreCase("true")
+							|| value.equalsIgnoreCase("false")
+							|| value.equalsIgnoreCase("on") || value
+							.equalsIgnoreCase("off"))) {
+						continue;
+					}
+				}
+				return wrapper;
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// nothing to catch here, it's expected due to test...
+			}
+		}
+		return String.class;
 	}
 }

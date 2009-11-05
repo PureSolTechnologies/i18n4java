@@ -1,5 +1,7 @@
 package javax.swingx.data;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -131,11 +133,23 @@ public class VerticalData {
 		}
 		Vector<Object> row = new Vector<Object>();
 		for (int column = 0; column < values.length; column++) {
-			System.out.println(columnTypes.get(column).getClassObject()
-					.getName());
-			System.out.println(values[column].getClass().getName());
 			if (!columnTypes.get(column).getClassObject().isAssignableFrom(
 					values[column].getClass())) {
+				try {
+					Method valueOf = columnTypes.get(column).getClassObject()
+							.getMethod("valueOf", values[column].getClass());
+					row.add(valueOf.invoke(columnTypes.get(column),
+							values[column]));
+					continue;
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
 				throw new IllegalArgumentException("Class '"
 						+ values.getClass().getName()
 						+ "' is not castable to column type '"
@@ -163,7 +177,6 @@ public class VerticalData {
 				addColumn(name, ValueType.fromClassName(metaData
 						.getColumnClassName(column + 1)));
 			}
-			resultSet.beforeFirst();
 			while (resultSet.next()) {
 				Vector<Object> row = new Vector<Object>();
 				for (int column = 0; column < columnCount; column++) {

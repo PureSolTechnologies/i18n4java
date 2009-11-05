@@ -61,7 +61,7 @@ public class Configurator {
 		logger.debug("Load resource '" + resource + "'");
 		InputStream inStream = getClass().getResourceAsStream(resource);
 		if (inStream == null) {
-			logger.warn("Resource '" + resource + "' not found!");
+			logger.debug("Resource '" + resource + "' not found!");
 			return false;
 		}
 		logger.debug("Reading...");
@@ -104,7 +104,7 @@ public class Configurator {
 			configuratorHash.put(resource, new ConfigHash());
 		}
 		boolean found = loadResource(resource);
-		if (found && (!firstValid)) {
+		if ((!found) || (!firstValid)) {
 			ArrayList<String> files = ConfigFile
 					.getAvailableConfigFiles(resource);
 			for (String configFile : files) {
