@@ -133,8 +133,10 @@ public class VerticalData {
 		}
 		Vector<Object> row = new Vector<Object>();
 		for (int column = 0; column < values.length; column++) {
-			if (!columnTypes.get(column).getClassObject().isAssignableFrom(
+			if (columnTypes.get(column).getClassObject().isAssignableFrom(
 					values[column].getClass())) {
+				row.add(values[column]);
+			} else {
 				try {
 					Method valueOf = columnTypes.get(column).getClassObject()
 							.getMethod("valueOf", values[column].getClass());
@@ -148,6 +150,15 @@ public class VerticalData {
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
+					if (values[column] == null) {
+						row.add(null);
+						continue;
+					} else if (values[column].getClass().equals(String.class)) {
+						if (((String) values[column]).isEmpty()) {
+							row.add(null);
+							continue;
+						}
+					}
 					e.printStackTrace();
 				}
 				throw new IllegalArgumentException("Class '"
@@ -156,7 +167,6 @@ public class VerticalData {
 						+ columnTypes.get(column).getClassName()
 						+ "' of column " + column + "!");
 			}
-			row.add(values[column]);
 		}
 		rowData.add(row);
 	}

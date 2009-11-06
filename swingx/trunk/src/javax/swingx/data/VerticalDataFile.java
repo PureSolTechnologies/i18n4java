@@ -20,7 +20,9 @@ public class VerticalDataFile {
 				if (line.contains("#")) {
 					line = line.substring(0, line.indexOf('#'));
 				}
-				line = line.trim();
+				while (line.endsWith("\n") || line.endsWith("\r")) {
+					line = line.substring(0, line.length() - 1);
+				}
 			}
 			return line;
 		} catch (IOException e) {
@@ -29,21 +31,20 @@ public class VerticalDataFile {
 		return null;
 	}
 
-	public static VerticalData createTable(RandomAccessFile f, String[] headers) {
+	private static VerticalData createTable(RandomAccessFile f, String[] headers) {
 		int width = headers.length;
 		String line = "";
 		VerticalData data = new VerticalData();
 		ValueType[] types = new ValueType[headers.length];
 		for (int index = 0; index < types.length; index++) {
-			types[index] = ValueType.fromClass(Boolean.class);
+			types[index] = ValueType
+					.fromClass(TypeWrapper.PRIMITIVE_WRAPPERS[0]);
 		}
 		while ((line = readLine(f)) != null) {
+			logger.debug(line);
 			String[] splits = line.split("\t");
-			if (splits.length != width) {
-				logger.warn("Table width not constant! Abort parsing!");
-				return null;
-			}
-			for (int index = 0; index < width; index++) {
+			for (int index = 0; index < (width < splits.length ? width
+					: splits.length); index++) {
 				ValueType newType = ValueType
 						.recognizeFromString(splits[index]);
 				if (types[index].compareTo(newType) < 0) {
@@ -64,28 +65,32 @@ public class VerticalDataFile {
 			f = new RandomAccessFile(file, "r");
 			String line = "";
 			boolean isHeader = true;
-			int cols = 0;
 			int lineNum = 0;
+			String[] cols = null;
+			int width = 0;
 			while ((line = readLine(f)) != null) {
 				lineNum++;
 				if (line.isEmpty()) {
 					continue;
 				}
 				String[] splits = line.split("\t");
-				if (cols == 0) {
-					cols = splits.length;
-				} else if (cols != splits.length) {
-					throw new IOException("Wrong number of columns in line "
-							+ lineNum);
-				}
 				if (isHeader) {
 					long pointer = f.getFilePointer();
 					data = createTable(f, splits);
 					f.seek(pointer);
 					isHeader = false;
+					width = data.getColumnNumber();
+					cols = new String[width];
 					continue;
 				}
-				// TODO do normal reading here!!!
+				for (int index = 0; index < width; index++) {
+					if (splits.length > index) {
+						cols[index] = splits[index];
+					} else {
+						cols[index] = "";
+					}
+				}
+				data.addRow((Object[]) cols);
 			}
 			f.close();
 			return data;
@@ -102,5 +107,43 @@ public class VerticalDataFile {
 			}
 		}
 		return null;
+	}
+
+	public static void write(File file, VerticalData data) {
+		try {
+			RandomAccessFile f = new RandomAccessFile(file, "rw");
+			boolean first = true;
+			for (String columnName : data.columnNames) {
+				if (first) {
+					first = false;
+				} else {
+					f.writeBytes("\t");
+				}
+				f.writeBytes(columnName);
+			}
+			f.writeBytes("\n");
+			for (int row = 0; row < data.getRowNumber(); row++) {
+				first = true;
+				for (int col = 0; col < data.getColumnNumber(); col++) {
+					if (first) {
+						first = false;
+					} else {
+						f.writeBytes("\t");
+					}
+					f.writeBytes(data.getString(row, col));
+				}
+				f.writeBytes("\n");
+			}
+			f.close();
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public static void main(String[] args) {
+		VerticalData data = VerticalDataFile.read(new File(
+				"/home/ludwig/DIAGS.txt"));
+		data.println();
+		VerticalDataFile.write(new File("/home/ludwig/test.csv"), data);
 	}
 }

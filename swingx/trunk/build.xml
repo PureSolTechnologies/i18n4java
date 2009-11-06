@@ -8,7 +8,6 @@
 #
 ############################################## 
 -->
-
 <project name="I18N" default="all" basedir=".">
 
 	<description>
