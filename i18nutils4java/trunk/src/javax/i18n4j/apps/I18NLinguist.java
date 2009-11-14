@@ -12,6 +12,7 @@ import javax.swingx.Button;
 import javax.swingx.Menu;
 import javax.swingx.MenuBar;
 import javax.swingx.MenuItem;
+import javax.swingx.SplashWindow;
 import javax.swingx.ToolBar;
 import javax.swingx.connect.Slot;
 import javax.swingx.i18n.I18NTranslationPanel;
@@ -22,6 +23,8 @@ public class I18NLinguist extends Application {
 
 	private static final Translator translator = Translator
 			.getTranslator(I18NLinguist.class);
+
+	private static SplashWindow splash = null;
 
 	private I18NTranslationPanel translationPanel = null;
 
@@ -189,8 +192,12 @@ public class I18NLinguist extends Application {
 	}
 
 	static public void main(String[] args) {
+		splash = new SplashWindow(I18NLinguist.class
+				.getResource("/splashtest.jpg"), 400, 300);
+		splash.run();
 		Locale.setDefault(new Locale("de", "DE"));
 		I18NLinguist app = new I18NLinguist();
+		splash.dispose();
 		app.run();
 	}
 }
