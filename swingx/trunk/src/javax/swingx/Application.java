@@ -2,6 +2,9 @@ package javax.swingx;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.i18n4j.Translator;
 import javax.swing.JFrame;
@@ -68,9 +71,20 @@ public class Application extends JFrame implements Runnable {
 	}
 
 	@Slot
-	public Boolean quit() {
+	public void quit() {
 		logger.info("Quitting application...");
 		dispose();
-		return true;
+	}
+
+	public static void main(String[] args) {
+		try {
+			Application app = new Application("Name of Application");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					System.in));
+			reader.readLine();
+			app.run();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

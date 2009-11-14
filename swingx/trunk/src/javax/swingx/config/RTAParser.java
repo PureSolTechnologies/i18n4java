@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.i18n4j.Translator;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -466,6 +467,20 @@ public class RTAParser {
 				String[] splits = locale.split("_");
 				Translator.setDefault(new Locale(splits[0], splits[1]));
 			}
+		}
+		String logLevel = getParameterString("", "log-level",
+				"Log level setting (trace, debug, info, warn).");
+		if (logLevel.equalsIgnoreCase("trace")) {
+			Logger.getRootLogger().setLevel(Level.TRACE);
+		} else if (logLevel.equalsIgnoreCase("debug")) {
+			Logger.getRootLogger().setLevel(Level.DEBUG);
+		} else if (logLevel.equalsIgnoreCase("info")) {
+			Logger.getRootLogger().setLevel(Level.INFO);
+		} else if (logLevel.equalsIgnoreCase("warn")) {
+			Logger.getRootLogger().setLevel(Level.WARN);
+		} else {
+			logger.warn("Log level '" + logLevel
+					+ "' is unknown. Stay at standard log level!");
 		}
 	}
 }

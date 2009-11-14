@@ -18,10 +18,7 @@ import javax.swingx.connect.Slot;
  */
 public class Dialog extends JDialog implements Widget {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 261850181983552138L;
 
 	private static final Translator translator = Translator
 			.getTranslator(Dialog.class);

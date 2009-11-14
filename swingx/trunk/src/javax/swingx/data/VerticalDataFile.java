@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -12,7 +16,23 @@ public class VerticalDataFile {
 	private static final Logger logger = Logger
 			.getLogger(VerticalDataFile.class);
 
-	public static String readLine(RandomAccessFile f) {
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+			Locale.ENGLISH);
+	private VerticalDataFileFormat fileFormat = VerticalDataFileFormat.TAB_SEPARATED;
+
+	public void setDateFormat(DateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+
+	public VerticalDataFileFormat getFileFormat() {
+		return fileFormat;
+	}
+
+	public void setFileFormat(VerticalDataFileFormat fileFormat) {
+		this.fileFormat = fileFormat;
+	}
+
+	public String readLine(RandomAccessFile f) {
 		try {
 			String line;
 			line = f.readLine();
@@ -31,7 +51,7 @@ public class VerticalDataFile {
 		return null;
 	}
 
-	private static VerticalData createTable(RandomAccessFile f, String[] headers) {
+	private VerticalData createTable(RandomAccessFile f, String[] headers) {
 		int width = headers.length;
 		String line = "";
 		VerticalData data = new VerticalData();
@@ -58,7 +78,7 @@ public class VerticalDataFile {
 		return data;
 	}
 
-	public static VerticalData read(File file) {
+	public VerticalData read(File file) {
 		RandomAccessFile f = null;
 		try {
 			VerticalData data = null;
@@ -109,15 +129,20 @@ public class VerticalDataFile {
 		return null;
 	}
 
-	public static void write(File file, VerticalData data) {
+	public boolean write(File file, VerticalData data) {
+		String separator = "\t";
+		if (fileFormat == VerticalDataFileFormat.COMMA_SEPARATED) {
+			separator = ",";
+		}
+		RandomAccessFile f = null;
 		try {
-			RandomAccessFile f = new RandomAccessFile(file, "rw");
+			f = new RandomAccessFile(file, "rw");
 			boolean first = true;
 			for (String columnName : data.columnNames) {
 				if (first) {
 					first = false;
 				} else {
-					f.writeBytes("\t");
+					f.writeBytes(separator);
 				}
 				f.writeBytes(columnName);
 			}
@@ -128,22 +153,28 @@ public class VerticalDataFile {
 					if (first) {
 						first = false;
 					} else {
-						f.writeBytes("\t");
+						f.writeBytes(separator);
 					}
-					f.writeBytes(data.getString(row, col));
+					if (data.getType(col).getClassObject().equals(Date.class)) {
+						f.writeBytes(dateFormat.format(data.getDate(row, col)));
+					} else {
+						f.writeBytes(data.getString(row, col));
+					}
 				}
 				f.writeBytes("\n");
 			}
 			f.close();
+			return false;
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
-	}
-
-	public static void main(String[] args) {
-		VerticalData data = VerticalDataFile.read(new File(
-				"/home/ludwig/DIAGS.txt"));
-		data.println();
-		VerticalDataFile.write(new File("/home/ludwig/test.csv"), data);
+		if (f != null) {
+			try {
+				f.close();
+			} catch (IOException e) {
+				// nothing to catch here...
+			}
+		}
+		return false;
 	}
 }

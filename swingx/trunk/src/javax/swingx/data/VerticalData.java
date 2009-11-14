@@ -165,7 +165,7 @@ public class VerticalData {
 						+ values.getClass().getName()
 						+ "' is not castable to column type '"
 						+ columnTypes.get(column).getClassName()
-						+ "' of column " + column + "!");
+						+ "' of column " + (column + 1) + "!");
 			}
 		}
 		rowData.add(row);

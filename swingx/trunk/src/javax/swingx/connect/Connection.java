@@ -101,16 +101,6 @@ public class Connection {
 				throw new RuntimeException();
 			}
 
-			// check return values for correct assignment...
-			if (!slotMethod.getReturnType().equals(void.class)) {
-				logger.fatal("Return value '"
-						+ slotMethod.getReturnType().getName() + "'for slot '"
-						+ receiver.getClass().getName() + "." + slot
-						+ "' does not meet the requirement! "
-						+ "A slot has to return Boolean!");
-				throw new RuntimeException();
-			}
-
 			Method signalMethod = emitter.getClass().getMethod(signal, types);
 
 			if (signalMethod.getAnnotation(Signal.class) == null) {
