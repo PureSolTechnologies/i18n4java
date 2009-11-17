@@ -29,6 +29,7 @@ import javax.i18n4j.I18NFile;
 import javax.i18n4j.LanguageSet;
 import javax.i18n4j.MultiLanguageTranslations;
 import javax.i18n4j.SingleLanguageTranslations;
+import javax.i18n4j.TRFile;
 import javax.i18n4j.Translator;
 
 import org.apache.log4j.Logger;
@@ -94,8 +95,7 @@ public class I18NRelease {
 	private void processFile(File file) {
 		try {
 			logger.info(translator.i18n("Process file {0}...", file.getPath()));
-			MultiLanguageTranslations mlTranslations = I18NFile
-					.readMultiLanguageFile(file);
+			MultiLanguageTranslations mlTranslations = I18NFile.read(file);
 			Set<String> languages = mlTranslations.getAvailableLanguages();
 			for (String language : languages) {
 				release(mlTranslations, language, new File(file.getPath()
@@ -118,7 +118,7 @@ public class I18NRelease {
 				translations.set(source, set.get(language));
 			}
 		}
-		I18NFile.writeSingleLanguageFile(file, translations);
+		TRFile.write(file, translations);
 	}
 
 	public static void main(String[] args) {

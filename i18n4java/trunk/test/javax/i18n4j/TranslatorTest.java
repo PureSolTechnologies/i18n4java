@@ -180,4 +180,11 @@ public class TranslatorTest extends TestCase {
 				+ "(English: 7/7/09)", translator.i18n(
 				"English: {0,date,short}", date));
 	}
+
+	@Test
+	public void testMultipleLineTranslation() {
+		translator.setTranslation("Line1\nLine2", "de", "Zeile1\nZeile2");
+		Assert.assertEquals("Zeile1\nZeile2", translator.translate(
+				"Line1\nLine2", "de"));
+	}
 }

@@ -223,7 +223,7 @@ public class Translator implements Serializable {
 			translations.put("en", new SingleLanguageTranslations());
 			return;
 		}
-		String resource = I18NFile.getTrResource(context, language);
+		String resource = TRFile.getResource(context, language);
 		logger.info("Read context language file '" + resource + "'");
 		InputStream is = getClass().getResourceAsStream(resource);
 		if (is == null) {
@@ -237,8 +237,8 @@ public class Translator implements Serializable {
 
 	private SingleLanguageTranslations readFromStream(InputStream is) {
 		try {
-			SingleLanguageTranslations translations = I18NFile
-					.readSingleLanguageFile(is);
+			SingleLanguageTranslations translations = TRFile
+					.read(is);
 			return translations;
 		} catch (IOException e) {
 			return new SingleLanguageTranslations();

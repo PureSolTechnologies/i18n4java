@@ -123,7 +123,7 @@ public class I18NUpdate {
 			MultiLanguageTranslations i18nSources = collectI18NSource(file);
 			if (i18nSources.hasTranslations()) {
 				File i18nFile = new File(i18nDirectory + "/"
-						+ I18NFile.getI18NResource(file).getPath());
+						+ I18NFile.getResource(file).getPath());
 				addNewSourcesToExistingFile(i18nFile, i18nSources);
 			}
 		} catch (FileNotFoundException e) {
@@ -158,7 +158,7 @@ public class I18NUpdate {
 		try {
 			logger.info("Read " + file.getPath() + " for translations...");
 			MultiLanguageTranslations hash = I18NFile
-					.readMultiLanguageFile(file);
+					.read(file);
 			hash.removeLocations();
 			return hash;
 		} catch (FileNotFoundException e) {
@@ -170,7 +170,7 @@ public class I18NUpdate {
 	private void writeTranslations(File file,
 			MultiLanguageTranslations translations) {
 		logger.info("Write translations to " + file.getPath());
-		I18NFile.writeMultiLanguageFile(file, translations);
+		I18NFile.write(file, translations);
 	}
 
 	static public void main(String args[]) {

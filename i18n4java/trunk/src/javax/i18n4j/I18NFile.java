@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -45,42 +44,7 @@ public class I18NFile {
 
 	static private Logger logger = Logger.getLogger(I18NFile.class);
 
-	/**
-	 * This method calculates the resource path to a context translation file.
-	 * The language information from the locale is used to invoke another
-	 * getTrResource method to get the name.
-	 * 
-	 * @see I18NFile#getI18NResource(File)
-	 * @param context
-	 *            is the context name to use. In normal case its
-	 *            class.getName().
-	 * @param locale
-	 *            is a locale as language specifier to be used.
-	 * @return A String is returned with a path to the translation file. String
-	 *         is used and not(!) File to due the issue that resources within
-	 *         JARs are to be specified with normal '/' slash separators.
-	 */
-	static public String getTrResource(String context, Locale locale) {
-		return getTrResource(context, locale.getLanguage());
-	}
-
-	/**
-	 * This method calculates the resource path to a context translation file.
-	 * 
-	 * @param context
-	 *            is the context name to use. In normal case its
-	 *            class.getName().
-	 * @param language
-	 *            is the language to look for.
-	 * @return A String is returned with a path to the translation file. String
-	 *         is used and not(!) File to due the issue that resources within
-	 *         JARs are to be specified with normal '/' slash separators.
-	 */
-	static public String getTrResource(String context, String language) {
-		return "/" + context.replaceAll("\\.", "/") + "." + language + ".tr";
-	}
-
-	static public File getI18NResource(File file) {
+	static public File getResource(File file) {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(
@@ -110,7 +74,7 @@ public class I18NFile {
 		}
 	}
 
-	static public boolean writeMultiLanguageFile(File file,
+	static public boolean write(File file,
 			MultiLanguageTranslations translations) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(translations
@@ -126,7 +90,7 @@ public class I18NFile {
 		}
 	}
 
-	static public MultiLanguageTranslations readMultiLanguageFile(File file)
+	static public MultiLanguageTranslations read(File file)
 			throws FileNotFoundException {
 		try {
 			if (!file.exists()) {
@@ -143,8 +107,8 @@ public class I18NFile {
 		}
 	}
 
-	static public MultiLanguageTranslations readMultiLanguageFile(
-			InputStream inputStream) throws IOException {
+	static public MultiLanguageTranslations read(InputStream inputStream)
+			throws IOException {
 		try {
 			if (inputStream == null) {
 				throw new IOException("Input stream was not available!");
@@ -153,56 +117,6 @@ public class I18NFile {
 					.newInstance(MultiLanguageTranslations.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (MultiLanguageTranslations) unmarshaller
-					.unmarshal(inputStream);
-		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
-	}
-
-	static public boolean writeSingleLanguageFile(File file,
-			SingleLanguageTranslations translations) {
-		try {
-			JAXBContext context = JAXBContext.newInstance(translations
-					.getClass());
-			Marshaller marshaller = context.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-					Boolean.TRUE);
-			marshaller.marshal(translations, file);
-			return true;
-		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return false;
-		}
-	}
-
-	static public SingleLanguageTranslations readSingleLanguageFile(File file)
-			throws FileNotFoundException {
-		try {
-			if (!file.exists()) {
-				throw new FileNotFoundException("File " + file.getPath()
-						+ " could not be found!");
-			}
-			JAXBContext context = JAXBContext
-					.newInstance(SingleLanguageTranslations.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (SingleLanguageTranslations) unmarshaller.unmarshal(file);
-		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
-	}
-
-	static public SingleLanguageTranslations readSingleLanguageFile(
-			InputStream inputStream) throws IOException {
-		try {
-			if (inputStream == null) {
-				throw new IOException("Input stream was not available!");
-			}
-			JAXBContext context = JAXBContext
-					.newInstance(SingleLanguageTranslations.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (SingleLanguageTranslations) unmarshaller
 					.unmarshal(inputStream);
 		} catch (JAXBException e) {
 			logger.error(e.getMessage(), e);
