@@ -119,7 +119,7 @@ public class I18NTranslationPanel extends Panel {
 
 	public boolean saveFile() {
 		if ((i18nFile != null) && (translationsHash != null)) {
-			boolean result = I18NFile.writeMultiLanguageFile(i18nFile,
+			boolean result = I18NFile.write(i18nFile,
 					translationsHash);
 			if (result) {
 				changed = false;
@@ -150,7 +150,7 @@ public class I18NTranslationPanel extends Panel {
 		}
 		i18nFile = new File(directory + "/" + file);
 		try {
-			setTranslationsHash(I18NFile.readMultiLanguageFile(i18nFile));
+			setTranslationsHash(I18NFile.read(i18nFile));
 			updateReservoir();
 			changed = false;
 		} catch (FileNotFoundException e) {
