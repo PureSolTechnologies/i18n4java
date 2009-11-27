@@ -18,6 +18,7 @@
  ***************************************************************************/
 package javax.i18n4j;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -87,6 +88,30 @@ public class SingleLanguageTranslations implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
+		}
+	}
+
+	public void removeLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			String translation = translations.get(source);
+			translations.remove(source);
+			source = source.replaceAll("\\n", "\\\\n");
+			translation = translation.replaceAll("\\n", "\\\\n");
+			translations.put(source, translation);
+		}
+	}
+
+	public void addLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			String translation = translations.get(source);
+			translations.remove(source);
+			source = source.replaceAll("\\\\n", "\n");
+			translation = translation.replaceAll("\\\\n", "\n");
+			translations.put(source, translation);
 		}
 	}
 }

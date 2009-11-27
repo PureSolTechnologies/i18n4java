@@ -55,6 +55,8 @@ public class TRFile {
 	static public boolean write(File file,
 			SingleLanguageTranslations translations) {
 		try {
+			translations = (SingleLanguageTranslations) translations.clone();
+			translations.removeLineBreaks();
 			JAXBContext context = JAXBContext.newInstance(translations
 					.getClass());
 			Marshaller marshaller = context.createMarshaller();
@@ -78,7 +80,10 @@ public class TRFile {
 			JAXBContext context = JAXBContext
 					.newInstance(SingleLanguageTranslations.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (SingleLanguageTranslations) unmarshaller.unmarshal(file);
+			SingleLanguageTranslations translations = (SingleLanguageTranslations) unmarshaller
+					.unmarshal(file);
+			translations.addLineBreaks();
+			return translations;
 		} catch (JAXBException e) {
 			logger.error(e.getMessage(), e);
 			return null;
@@ -94,8 +99,10 @@ public class TRFile {
 			JAXBContext context = JAXBContext
 					.newInstance(SingleLanguageTranslations.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (SingleLanguageTranslations) unmarshaller
+			SingleLanguageTranslations translations = (SingleLanguageTranslations) unmarshaller
 					.unmarshal(inputStream);
+			translations.addLineBreaks();
+			return translations;
 		} catch (JAXBException e) {
 			logger.error(e.getMessage(), e);
 			return null;

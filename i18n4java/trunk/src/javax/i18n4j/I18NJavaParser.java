@@ -158,8 +158,9 @@ public class I18NJavaParser {
 		for (int index = 1; index < i18ns.length; index++) {
 			String source = extractStringFromStartToEnd("\"" + i18ns[index]);
 			if (source != null) {
-				translations.add(MultiLanguageTranslations.from(source,
-						packageName + "." + file.getName(), startLine));
+				translations.add(MultiLanguageTranslations.from(source
+						.replaceAll("\\\\n", "\n"), packageName + "."
+						+ file.getName(), startLine));
 			}
 		}
 		return translations;

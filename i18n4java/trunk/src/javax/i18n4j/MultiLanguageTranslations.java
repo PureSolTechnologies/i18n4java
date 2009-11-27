@@ -19,6 +19,7 @@
 package javax.i18n4j;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -73,6 +74,10 @@ public class MultiLanguageTranslations implements Cloneable {
 	@SuppressWarnings("unchecked")
 	public Hashtable<String, LanguageSet> getTranslations() {
 		return (Hashtable<String, LanguageSet>) translations.clone();
+	}
+
+	public LanguageSet getTranslations(String source) {
+		return (LanguageSet) translations.get(source).clone();
 	}
 
 	public LanguageSet get(String source) {
@@ -261,6 +266,42 @@ public class MultiLanguageTranslations implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
+		}
+	}
+
+	public void removeLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			LanguageSet languageSet = translations.get(source);
+			translations.remove(source);
+			source = languageSet.getSource();
+			source = source.replaceAll("\\n", "\\\\n");
+			translations.put(source, languageSet);
+			languageSet.setSource(source);
+			for (String language : languageSet.getAvailableLanguages()) {
+				String translation = languageSet.get(language);
+				translation = translation.replaceAll("\\n", "\\\\n");
+				languageSet.set(language, translation);
+			}
+		}
+	}
+
+	public void addLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			LanguageSet languageSet = translations.get(source);
+			translations.remove(source);
+			source = languageSet.getSource();
+			source = source.replaceAll("\\\\n", "\n");
+			translations.put(source, languageSet);
+			languageSet.setSource(source);
+			for (String language : languageSet.getAvailableLanguages()) {
+				String translation = languageSet.get(language);
+				translation = translation.replaceAll("\\\\n", "\n");
+				languageSet.set(language, translation);
+			}
 		}
 	}
 }

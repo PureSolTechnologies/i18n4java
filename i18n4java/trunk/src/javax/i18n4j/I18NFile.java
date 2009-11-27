@@ -77,6 +77,8 @@ public class I18NFile {
 	static public boolean write(File file,
 			MultiLanguageTranslations translations) {
 		try {
+			translations = (MultiLanguageTranslations) translations.clone();
+			translations.removeLineBreaks();
 			JAXBContext context = JAXBContext.newInstance(translations
 					.getClass());
 			Marshaller marshaller = context.createMarshaller();
@@ -100,7 +102,10 @@ public class I18NFile {
 			JAXBContext context = JAXBContext
 					.newInstance(MultiLanguageTranslations.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (MultiLanguageTranslations) unmarshaller.unmarshal(file);
+			MultiLanguageTranslations translations = (MultiLanguageTranslations) unmarshaller
+					.unmarshal(file);
+			translations.addLineBreaks();
+			return translations;
 		} catch (JAXBException e) {
 			logger.error(e.getMessage(), e);
 			return null;
@@ -116,8 +121,10 @@ public class I18NFile {
 			JAXBContext context = JAXBContext
 					.newInstance(MultiLanguageTranslations.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (MultiLanguageTranslations) unmarshaller
+			MultiLanguageTranslations translations = (MultiLanguageTranslations) unmarshaller
 					.unmarshal(inputStream);
+			translations.addLineBreaks();
+			return translations;
 		} catch (JAXBException e) {
 			logger.error(e.getMessage(), e);
 			return null;
