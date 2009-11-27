@@ -18,12 +18,12 @@ public class List extends JList implements ListSelectionListener,
 
 	public List() {
 		super();
-		this.addListSelectionListener(this);
+		addListSelectionListener(this);
 	}
 
 	public List(ListModel listModel) {
 		super(listModel);
-		this.addListSelectionListener(this);
+		addListSelectionListener(this);
 	}
 
 	@Signal
