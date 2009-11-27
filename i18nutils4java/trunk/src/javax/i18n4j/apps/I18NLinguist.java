@@ -196,6 +196,7 @@ public class I18NLinguist extends Application {
 				.getResource("/splashtest.jpg"), 400, 300);
 		splash.run();
 		Locale.setDefault(new Locale("de", "DE"));
+		Translator.setDefault(Locale.getDefault());
 		I18NLinguist app = new I18NLinguist();
 		splash.dispose();
 		app.run();

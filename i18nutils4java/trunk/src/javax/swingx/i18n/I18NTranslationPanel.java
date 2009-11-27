@@ -3,6 +3,7 @@ package javax.swingx.i18n;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
@@ -17,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swingx.Application;
 import javax.swingx.Label;
+import javax.swingx.FreeList;
 import javax.swingx.List;
 import javax.swingx.Panel;
 import javax.swingx.ScrollPane;
@@ -37,7 +39,7 @@ public class I18NTranslationPanel extends Panel {
 	private MultiLanguageTranslations translationsHash = null;
 	private LocaleChooser locales = null;
 	private Locale currentLocale = Locale.getDefault();
-	private List reservoir = null;
+	private FreeList reservoir = null;
 	private TextArea source = null;
 	private TextArea translation = null;
 	private TextArea location = null;
@@ -71,7 +73,7 @@ public class I18NTranslationPanel extends Panel {
 		Panel centerPanel = new Panel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-		reservoir = new List();
+		reservoir = new FreeList();
 		reservoir.connect("valueChanged", this, "changeSource", Object.class);
 
 		centerPanel.add(Label.addTo(new ScrollPane(reservoir), translator
@@ -105,8 +107,8 @@ public class I18NTranslationPanel extends Panel {
 			return true;
 		}
 		int result = JOptionPane.showConfirmDialog(Application.getInstance(),
-				translator.i18n("Changes were made. Save?"), translator
-						.i18n("Save"), JOptionPane.YES_NO_CANCEL_OPTION,
+				translator.i18n("Changes were made.\nDo you want to save?"),
+				translator.i18n("Save"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (result == JOptionPane.CANCEL_OPTION) {
 			return false;
@@ -119,8 +121,7 @@ public class I18NTranslationPanel extends Panel {
 
 	public boolean saveFile() {
 		if ((i18nFile != null) && (translationsHash != null)) {
-			boolean result = I18NFile.write(i18nFile,
-					translationsHash);
+			boolean result = I18NFile.write(i18nFile, translationsHash);
 			if (result) {
 				changed = false;
 			}
@@ -180,13 +181,22 @@ public class I18NTranslationPanel extends Panel {
 			return;
 		}
 		Set<String> sources = translationsHash.getSources();
-		reservoir.setListData(new Vector<String>(sources));
+		Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
+		boolean color = false;
+		for (String source : sources) {
+			String html = "<html><body><br/>";
+			html += source.replaceAll("\\n", "<br/>");
+			html += "<br/><br/><body></html>";
+			listData.put(html, source);
+			color = !color;
+		}
+		reservoir.setListData(listData);
 	}
 
 	@Slot
 	public void changeSource(Object source) {
 		if (source != null) {
-			this.source.setText(source.toString().replaceAll("\\\\n", "\n"));
+			this.source.setText(source.toString());
 		} else {
 			this.source.setText("");
 		}
@@ -208,10 +218,10 @@ public class I18NTranslationPanel extends Panel {
 			return;
 		}
 		updateHash();
-		oldSource = source.getText().replaceAll("\\n", "\\\\n");
+		oldSource = source.getText();
 		oldLanguage = currentLocale.getLanguage();
 		oldTranslation = translationsHash.get(oldSource, oldLanguage);
-		translation.setText(oldTranslation.replaceAll("\\\\n", "\n"));
+		translation.setText(oldTranslation);
 	}
 
 	private void updateLocation() {
@@ -228,8 +238,7 @@ public class I18NTranslationPanel extends Panel {
 			return;
 		}
 		StringBuffer locations = new StringBuffer();
-		LanguageSet languageSet = translationsHash.get(source.getText()
-				.replaceAll("\\n", "\\\\n"));
+		LanguageSet languageSet = translationsHash.get(source.getText());
 		if (languageSet == null) {
 			location.setText("");
 			return;
@@ -241,12 +250,11 @@ public class I18NTranslationPanel extends Panel {
 	}
 
 	private void updateHash() {
-		if ((!oldTranslation.equals(translation.getText().replaceAll("\\n",
-				"\\\\n")))
+		if ((!oldTranslation.equals(translation.getText()))
 				&& (!translation.getText().isEmpty())) {
 			if ((!oldSource.isEmpty()) && (!oldLanguage.isEmpty())) {
 				translationsHash.set(oldSource, oldLanguage, translation
-						.getText().replaceAll("\\n", "\\\\n"));
+						.getText());
 				changed = true;
 			}
 		}
