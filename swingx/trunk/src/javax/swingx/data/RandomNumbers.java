@@ -1,5 +1,8 @@
 package javax.swingx.data;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -256,5 +259,65 @@ public class RandomNumbers {
 			}
 		}
 		return values;
+	}
+
+	public Object getRandomValue(Class<?> clazz) {
+		if (clazz.equals(Byte.class)) {
+			return new Byte((byte) generator.nextInt(128));
+		} else if (clazz.equals(Short.class)) {
+			return new Short((short) generator.nextInt(32768));
+		} else if (clazz.equals(Integer.class)) {
+			return new Integer(generator.nextInt());
+		} else if (clazz.equals(Long.class)) {
+			return new Long(generator.nextLong());
+		} else if (clazz.equals(Float.class)) {
+			return new Float(generator.nextFloat());
+		} else if (clazz.equals(Double.class)) {
+			return new Double(generator.nextDouble());
+		} else if (clazz.equals(Character.class)) {
+			return new Character((char) generator.nextInt(255));
+		} else if (clazz.equals(Boolean.class)) {
+			return new Boolean(generator.nextBoolean());
+		} else if (clazz.equals(byte.class)) {
+			return (byte) generator.nextInt(128);
+		} else if (clazz.equals(short.class)) {
+			return (short) generator.nextInt(32768);
+		} else if (clazz.equals(int.class)) {
+			return generator.nextInt();
+		} else if (clazz.equals(long.class)) {
+			return generator.nextLong();
+		} else if (clazz.equals(float.class)) {
+			return generator.nextFloat();
+		} else if (clazz.equals(double.class)) {
+			return generator.nextDouble();
+		} else if (clazz.equals(char.class)) {
+			return (char) generator.nextInt(255);
+		} else if (clazz.equals(boolean.class)) {
+			return generator.nextBoolean();
+		}
+
+		if (clazz.equals(String.class)) {
+			byte[] bytes = new byte[32];
+			for (int index = 0; index < 32; index++) {
+				bytes[index] = (byte) (65 + generator.nextInt(26));
+			}
+			return new String(bytes);
+		}
+
+		if (clazz.equals(Date.class)) {
+			return new Date(generator.nextLong());
+		}
+
+		try {
+			Constructor<?> constructor = clazz.getConstructor();
+			return constructor.newInstance();
+		} catch (SecurityException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return null;
 	}
 }
