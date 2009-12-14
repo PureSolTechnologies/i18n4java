@@ -113,7 +113,7 @@ public class ConfigFile {
 		if (line == null) {
 			return null;
 		}
-		return line.trim();
+		return removeComment(line);
 	}
 
 	/**
