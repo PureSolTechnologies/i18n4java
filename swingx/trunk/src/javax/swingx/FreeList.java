@@ -1,5 +1,6 @@
 package javax.swingx;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -17,6 +18,24 @@ public class FreeList extends List {
 
 	public FreeList(ListModel listModel) {
 		super(listModel);
+	}
+
+	public void setListData(ArrayList<Object> displayItems,
+			ArrayList<Object> assignedItems) {
+		if (displayItems.size() != assignedItems.size()) {
+			throw new IllegalArgumentException(
+					"The length of displayItems is unequal to assignedItems!");
+		}
+		for (int index = 0; index < displayItems.size(); index++) {
+			listData.put(displayItems.get(index), assignedItems.get(index));
+		}
+		if (listData == null) {
+			removeAll();
+		} else if (listData.size() == 0) {
+			removeAll();
+		} else {
+			setListData(new Vector<Object>(displayItems));
+		}
 	}
 
 	public void setListData(Hashtable<Object, Object> listData) {
