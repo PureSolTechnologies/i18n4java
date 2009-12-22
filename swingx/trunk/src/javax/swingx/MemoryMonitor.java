@@ -1,44 +1,97 @@
 package javax.swingx;
 
-public class MemoryMonitor extends Label implements Runnable {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
+import org.apache.log4j.Logger;
+
+/**
+ * This element is a typical Label, but contains memory usage information.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
+public class MemoryMonitor extends Label implements Runnable,
+	ActionListener {
 
     private static final long serialVersionUID = 4484584488099486969L;
 
-    private Runtime runtime = null;
+    private static final Logger logger =
+	    Logger.getLogger(MemoryMonitor.class);
+    private static final Runtime runtime = Runtime.getRuntime();
+
+    private static int millisecondsDelay = 1000;
+    private boolean swingTimer = false;
+    private Timer timer = null;
+    private Thread thread = null;
 
     public MemoryMonitor() {
 	super();
 	init();
     }
 
+    public MemoryMonitor(boolean swingTimer) {
+	super();
+	init();
+    }
+
     private void init() {
-	runtime = Runtime.getRuntime();
-	Thread thread = new Thread(this);
-	thread.start();
-	Application.getInstance().addThread(thread);
+	if (swingTimer) {
+	    logger.info("Start memory monitor with Swing timer...");
+	    timer = new Timer(1000, this);
+	    timer.start();
+	} else {
+	    logger
+		    .info("Start memory monitor with Application managed thread...");
+	    thread = Application.getInstance().getThread(this);
+	    thread.start();
+	}
+    }
+
+    public static int getMillisecondsDelay() {
+	return millisecondsDelay;
+    }
+
+    public static void setMillisecondsDelay(int millisecondsDelay) {
+	MemoryMonitor.millisecondsDelay = millisecondsDelay;
+    }
+
+    public static String getMemoryStatus() {
+	double max = (double) runtime.maxMemory() / 1024.0 / 1024.0;
+	double total = (double) runtime.totalMemory() / 1024.0 / 1024.0;
+	double free = (double) runtime.freeMemory() / 1024.0 / 1024.0;
+	double usage = total / max * 100.0;
+	max = Math.round(max * 100.0) / 100.0;
+	total = Math.round(total * 100.0) / 100.0;
+	free = Math.round(free * 100.0) / 100.0;
+	usage = Math.round(usage * 100.0) / 100.0;
+	return "max: " + max + "MB, total: " + total + "MB, free: " + free
+		+ "MB (usage: " + usage + "%)";
+    }
+
+    private void setText() {
+	setText(getMemoryStatus());
     }
 
     @Override
     public void run() {
 	try {
 	    while (true) {
-		double max =
-			(double) runtime.maxMemory() / 1024.0 / 1024.0;
-		double total =
-			(double) runtime.totalMemory() / 1024.0 / 1024.0;
-		double free =
-			(double) runtime.freeMemory() / 1024.0 / 1024.0;
-		double usage = (max - total) / max * 100.0;
-		max = Math.round(max * 100.0) / 100.0;
-		total = Math.round(total * 100.0) / 100.0;
-		free = Math.round(free * 100.0) / 100.0;
-		usage = Math.round(usage * 100.0) / 100.0;
-		setText("max: " + max + "MB, total: " + total
-			+ "MB, free: " + free + "MB (usage: " + usage
-			+ "%)");
-		Thread.sleep(1000);
+		setText();
+		Thread.sleep(millisecondsDelay);
 	    }
 	} catch (InterruptedException e) {
+	    logger.info("Memory monitor interrupted.");
+	}
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+	setText();
+	if (timer.getDelay() != millisecondsDelay) {
+	    timer.setDelay(millisecondsDelay);
 	}
     }
 }

@@ -76,7 +76,7 @@ public class Application extends JFrame implements Runnable {
     @Slot
     public void quit() {
 	logger.info("Quitting application...");
-	stopThreads();
+	stopAllThreads();
 	dispose();
     }
 
@@ -92,11 +92,17 @@ public class Application extends JFrame implements Runnable {
 	}
     }
 
-    private void stopThreads() {
+    private void stopAllThreads() {
 	for (Thread thread : threads) {
 	    thread.interrupt();
 	}
 	threads.clear();
+    }
+
+    public Thread getThread(Runnable runnable) {
+	Thread thread = new Thread(runnable);
+	addThread(thread);
+	return thread;
     }
 
     public void addThread(Thread thread) {
