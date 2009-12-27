@@ -5,7 +5,12 @@
             <key>Language</key>
             <value>
                 <source>Language</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Sprache</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
                     <line>65</line>
@@ -34,7 +39,12 @@
             <key>Reservoir</key>
             <value>
                 <source>Reservoir</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Lager</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
                     <line>80</line>
@@ -63,7 +73,12 @@
             <key>The file {0} could not be found!</key>
             <value>
                 <source>The file {0} could not be found!</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Die Datei{0} wurde nicht gefunden!</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
                     <line>160</line>
@@ -109,27 +124,15 @@
             <key>Source:</key>
             <value>
                 <source>Source:</source>
-                <translated/>
-                <locations>
-                    <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>84</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Save</key>
-            <value>
-                <source>Save</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Speichern</value>
+                        <value>Quelle:</value>
                     </entry>
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>109</line>
+                    <line>84</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -147,6 +150,23 @@
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
                     <line>70</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Save</key>
+            <value>
+                <source>Save</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Speichern</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
+                    <line>109</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
