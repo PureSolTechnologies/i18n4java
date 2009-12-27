@@ -9,13 +9,10 @@ import javax.swingx.ComboBox;
 
 public class LanguageChooser extends ComboBox {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2438620845333994142L;
 
-	private Locale[] locales;
-	private Vector<String> languageNames = null;
+	private String[] languages;
+	private Vector<String> languageCodes = null;
 	private Hashtable<String, Locale> names2Locales = null;
 
 	public LanguageChooser() {
@@ -25,33 +22,31 @@ public class LanguageChooser extends ComboBox {
 	}
 
 	private void readLocales() {
-		locales = Locale.getAvailableLocales();
-		languageNames = new Vector<String>();
+		languages = Locale.getISOLanguages();
+		languageCodes = new Vector<String>();
 		names2Locales = new Hashtable<String, Locale>();
-		for (int index = 0; index < locales.length; index++) {
-			Locale locale = locales[index];
-			String languageName = locale.getLanguage();
-			languageNames.add(languageName);
-			names2Locales.put(languageName, locale);
+		for (String language : languages) {
+			Locale locale = new Locale(language);
+			languageCodes.add(language);
+			names2Locales.put(language, locale);
 		}
-		Collections.sort(languageNames);
+		Collections.sort(languageCodes);
 	}
 
 	private void insertLocales() {
-		for (int index = 0; index < languageNames.size(); index++) {
-			String languageName = languageNames.get(index);
-			Locale locale = names2Locales.get(languageName);
-			addItem(languageName + " / " + locale.getDisplayName());
+		for (String languageCode : languageCodes) {
+			Locale locale = names2Locales.get(languageCode);
+			addItem(languageCode + " / " + locale.getDisplayName());
 		}
 	}
 
 	public Locale getSelectedLocale() {
-		return names2Locales.get(languageNames.get(getSelectedIndex()));
+		return names2Locales.get(languageCodes.get(getSelectedIndex()));
 	}
 
 	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < locales.length; index++) {
-			if (names2Locales.get(languageNames.get(index)).equals(locale)) {
+		for (int index = 0; index < languages.length; index++) {
+			if (names2Locales.get(languageCodes.get(index)).equals(locale)) {
 				setSelectedIndex(index);
 				break;
 			}

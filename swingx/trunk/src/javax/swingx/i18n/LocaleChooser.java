@@ -9,10 +9,7 @@ import javax.swingx.ComboBox;
 
 public class LocaleChooser extends ComboBox {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5751261750747502182L;
 
 	private Locale[] locales;
 	private Vector<String> localeNames = null;
