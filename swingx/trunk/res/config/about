@@ -8,28 +8,29 @@ owner=Rick-Rainer Ludwig
 
 [COPYRIGHT]
 <html><body>
-<font size=\"+1\">%APPLICATION% version %VERSION%</font>
-<br/><br/>
-Copyright (C) %YEARS% by %OWNER%
-<br/><br/>
+<h1>%APPLICATION% version %VERSION%</h1>
+<h2>Copyright (C) %YEARS% by %OWNER%<h2>
+<p>
 Permission to use, copy, modify and distribute<br/>
 this Software its accompanying documentation<br/>
 for any purpose is not allowed without further<br/>
 permission of the copyright holder.<br/>
+</p>
 </body></html>
 
 [VENDOR]
 <html><body>
-	<font size=\"+1\">%OWNER%</font>
+	<h1>%OWNER%</h1>
 </body></html>
 
 [CONTACT]
 <html><body>
-	<font size=\"+1\">%OWNER%</font><br/>
-	<br/>
+	<h1>%OWNER%</h1>
+	<p>
 	<u>Support</u><br/>
 	Rick-Rainer Ludwig<br/>
 	<br/>
 	<u>Bug reports</u><br/>
 	%BUGREPORT%<br/>
+	</p>
 </body></html>
