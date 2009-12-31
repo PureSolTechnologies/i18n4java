@@ -277,7 +277,7 @@
           target: doc
          ================================= -->
 	<target name="doc" description="create documentation">
-		<javadoc packagenames="com.xfab.*" sourcepath="${src.dir}" destdir="${api.dir}" windowtitle="JavaTools API Documentation" />
+		<javadoc packagenames="javax.i18n4j.*" sourcepath="${src.dir}" destdir="${api.dir}" windowtitle="JavaTools API Documentation" />
 	</target>
 
 	<!-- ================================= 
