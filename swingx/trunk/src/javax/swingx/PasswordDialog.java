@@ -23,26 +23,27 @@ public final class PasswordDialog extends Dialog {
 	private static final Translator translator = Translator
 			.getTranslator(PasswordDialog.class);
 
+	private Label message = null;
 	/**
 	 * This JTextField holds the user name.
 	 */
-	private JTextField username;
+	private JTextField username = null;
 
 	/**
 	 * This JPasswordField holds the password. It is not shown and only
 	 * represented as stars.
 	 */
-	private JPasswordField password;
+	private JPasswordField password = null;
 
 	/**
 	 * Ok is for starting the login process.
 	 */
-	private Button ok;
+	private Button ok = null;
 
 	/**
 	 * Cancel is for interrupting the login process.
 	 */
-	private Button cancel;
+	private Button cancel = null;
 
 	private boolean finishedByOk = false;
 
@@ -59,6 +60,7 @@ public final class PasswordDialog extends Dialog {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(message = new Label(""));
 		panel.add(new Label(translator.i18n("Username")));
 		panel.add(username = new JTextField());
 		panel.add(new Label(translator.i18n("Password")));
@@ -77,6 +79,18 @@ public final class PasswordDialog extends Dialog {
 
 		pack();
 		getRootPane().setDefaultButton(ok);
+	}
+
+	public void setMessage(String message) {
+		this.message.setText(message);
+	}
+
+	public String getMessage() {
+		return message.getText();
+	}
+
+	public void setUsername(String username) {
+		this.username.setText(username);
 	}
 
 	/**
