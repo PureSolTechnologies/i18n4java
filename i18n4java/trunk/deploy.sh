@@ -1,5 +1,7 @@
 #!/bin/sh
 
-cp -r bin/* /opt/qsys/lib/
-find /opt/qsys/lib/* -type d -exec chmod 777 {} \;
-find /opt/qsys/lib/* -type f -exec chmod 666 {} \;
+export DEPLOY_DIR=/opt/qsys/lib/
+
+cp -r bin/* $DEPLOY_DIR
+find $DEPLOY_DIR/* -type d -exec chmod 777 {} \;
+find $DEPLOY_DIR/* -type f -exec chmod 666 {} \;
