@@ -44,6 +44,15 @@ abstract public class AbstractExtendedComboBox extends ComboBox {
 		}
 	}
 
+	public void setSelectedItem(Object item) {
+		System.out.println(item.toString());
+		for (Object key : listData.keySet()) {
+			if (listData.get(key).equals(item) || (key.equals(item))) {
+				super.setSelectedItem(key);
+			}
+		}
+	}
+
 	public Object getSelectedItem() {
 		Object value = super.getSelectedItem();
 		if (value != null) {

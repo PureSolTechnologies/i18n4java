@@ -56,6 +56,14 @@ abstract public class AbstractExtendedList extends List {
 		}
 	}
 
+	public void setSelectedValue(Object value, boolean scroll) {
+		for (Object key : listData.keySet()) {
+			if (listData.get(key).equals(value) || key.equals(value)) {
+				super.setSelectedValue(key, scroll);
+			}
+		}
+	}
+
 	public Object getSelectedValue() {
 		Object value = super.getSelectedValue();
 		if (value != null) {
