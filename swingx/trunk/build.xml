@@ -8,10 +8,10 @@
 #
 ############################################## 
 -->
-<project name="I18N" default="all" basedir=".">
+<project name="SwingX" default="all" basedir=".">
 
 	<description>
-	swingx is a package with Java Swing eXtensions and classes providing easy access to standard services.
+	SwingX is a package with Java Swing eXtensions and classes providing easy access to standard services.
 	Copyright (C) 2009 Rick-Rainer Ludwig
 	</description>
 
