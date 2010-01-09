@@ -9,7 +9,7 @@
 ############################################## 
 -->
 
-<project name="JavaTools" default="all" basedir=".">
+<project name="I18N4Java" default="all" basedir=".">
 
 	<description>
 	I18N4Java is a i18n framework for java inspired by QT.
@@ -38,7 +38,7 @@
 	</path>
 
 	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	<taskdef name="findbugs" classpathref="findbugs.classpath" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+	<taskdef name="findbugs" classpathref="findbugs.classpath" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 
 	<!-- ================================= 
           target: all              
@@ -270,6 +270,15 @@
 			<arg value="-xml:withMessages" />
 			<arg value="-output" />
 			<arg value="${findbugs.html.dir}/findbugs_report.html" />
+		</exec>
+	</target>
+
+	<!-- ================================= 
+          target: deploy
+         ================================= -->
+	<target name="deploy" depends="compile,test" description="Deploys the classes to a central directory.">
+		<exec executable="sh">
+			<arg value="deploy.sh" />
 		</exec>
 	</target>
 
