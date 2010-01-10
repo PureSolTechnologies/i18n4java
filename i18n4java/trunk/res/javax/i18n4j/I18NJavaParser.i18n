@@ -5,7 +5,12 @@
             <key>.*</key>
             <value>
                 <source>.*</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>.*</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>Name = &quot;&quot;.I18NJavaParser.java</file>
                     <line>41</line>
