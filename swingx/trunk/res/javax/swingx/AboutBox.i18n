@@ -13,12 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>38</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.swingx.AboutBox.java</file>
-                    <line>124</line>
+                    <line>37</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -33,21 +28,21 @@
                         <value>Kunden-Information</value>
                     </entry>
                 </translated>
-                <locations>
-                    <file>javax.swingx.AboutBox.java</file>
-                    <line>95</line>
-                    <lineCount>1</lineCount>
-                </locations>
             </value>
         </entry>
         <entry>
             <key>Copyright</key>
             <value>
                 <source>Copyright</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Copyright</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>50</line>
+                    <line>49</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -64,7 +59,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>56</line>
+                    <line>55</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -81,7 +76,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>54</line>
+                    <line>53</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -98,7 +93,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>52</line>
+                    <line>51</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

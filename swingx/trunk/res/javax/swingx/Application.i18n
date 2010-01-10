@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.Application.java</file>
-                    <line>102</line>
+                    <line>39</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,7 +30,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.Application.java</file>
-                    <line>103</line>
+                    <line>40</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

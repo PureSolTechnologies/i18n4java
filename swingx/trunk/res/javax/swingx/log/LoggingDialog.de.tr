@@ -2,12 +2,12 @@
 <translations>
     <translations>
         <entry>
-            <key>Cancel</key>
-            <value>Abbruch</value>
+            <key>Configure Logging</key>
+            <value>Protokollierung konfigurieren</value>
         </entry>
         <entry>
-            <key>OK</key>
-            <value>OK</value>
+            <key>Set log level:</key>
+            <value>Setze Protokoll-Level:</value>
         </entry>
     </translations>
 </translations>

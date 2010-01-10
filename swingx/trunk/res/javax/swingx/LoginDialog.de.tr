@@ -3,19 +3,19 @@
     <translations>
         <entry>
             <key>Username</key>
-            <value>Benutzername</value>
+            <value>Benutzer</value>
         </entry>
         <entry>
             <key>Cancel</key>
             <value>Abbruch</value>
         </entry>
         <entry>
-            <key>Password</key>
-            <value>Passwort</value>
+            <key>User Confirmation</key>
+            <value>Benutzeranmeldung</value>
         </entry>
         <entry>
-            <key>User Confirmation</key>
-            <value>Benutzerbestaetigung</value>
+            <key>Password</key>
+            <value>Passwort</value>
         </entry>
         <entry>
             <key>OK</key>

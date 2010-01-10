@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<translations>
+    <translations>
+        <entry>
+            <key>Release...</key>
+            <value>Freigabe...</value>
+        </entry>
+        <entry>
+            <key>Clear</key>
+            <value>Säubern</value>
+        </entry>
+        <entry>
+            <key>Tools</key>
+            <value>Werkzeuge</value>
+        </entry>
+        <entry>
+            <key>Update...</key>
+            <value>Update...</value>
+        </entry>
+        <entry>
+            <key>Error</key>
+            <value>Fehler</value>
+        </entry>
+        <entry>
+            <key>File</key>
+            <value>Datei</value>
+        </entry>
+        <entry>
+            <key>Help</key>
+            <value>Hilfe</value>
+        </entry>
+        <entry>
+            <key>Quit</key>
+            <value>Beenden</value>
+        </entry>
+        <entry>
+            <key>Open...</key>
+            <value>Öffnen...</value>
+        </entry>
+        <entry>
+            <key>Error while choosing file.</key>
+            <value>Fehler bei Dateiauswahl.</value>
+        </entry>
+        <entry>
+            <key>Save</key>
+            <value>Speichern</value>
+        </entry>
+    </translations>
+</translations>
