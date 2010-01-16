@@ -27,11 +27,10 @@ public class FileSearch {
 
 	static public ArrayList<File> find(File directory, String pattern) {
 		ArrayList<File> files = find(directory.getPath() + "/" + pattern);
-		for (int index = 0; index < files.size(); index++) {
-			File file = files.get(index);
+		for (File file : files) {
 			String fileString = file.getPath().substring(
 					directory.getPath().length());
-			files.set(index, new File(fileString));
+			files.add(new File(fileString));
 		}
 		return files;
 	}
@@ -49,40 +48,40 @@ public class FileSearch {
 		File source = new File(pattern);
 		if (source.isFile()) {
 			files.add(source);
+			return files;
+		}
+		boolean recursive = false;
+		if (pattern.contains("*")) {
+			pattern = source.getPath();
+			if (pattern.contains("**")) {
+				recursive = true;
+			}
+			String directory = pattern.replaceAll("\\*.*$", "");
+			directory = directory.replaceAll("/[^/]*$", "");
+			if (directory.isEmpty()) {
+				directory = ".";
+			}
+			source = new File(directory);
+			pattern = pattern.replaceAll("\\.", "\\\\.");
+			pattern = pattern.replaceAll("\\*", "[^/]*");
+			pattern = pattern.replaceAll("\\[\\^/\\]\\*\\[\\^/\\]\\*", ".*");
 		} else {
-			boolean recursive = false;
-			if (pattern.contains("*")) {
-				pattern = source.getPath();
-				if (pattern.contains("**")) {
-					recursive = true;
-				}
-				String directory = pattern.replaceAll("\\*.*$", "");
-				directory = directory.replaceAll("/[^/]*$", "");
-				if (directory.isEmpty()) {
-					directory = ".";
-				}
-				source = new File(directory);
-				pattern = pattern.replaceAll("\\.", "\\\\.");
-				pattern = pattern.replaceAll("\\*", ".*");
-				pattern = pattern.replaceAll("/\\.\\*\\.\\*/", "/(.*/)*");
-			} else {
-				pattern += "/.*";
-			}
-			if (source.isDirectory()) {
-				files.addAll(findFilesInDirectory(source, pattern, recursive));
-			}
+			pattern += "/.*";
+		}
+		if (source.isDirectory()) {
+			files.addAll(findFilesInDirectory(source, Pattern.compile(pattern),
+					recursive));
 		}
 		return files;
 	}
 
 	static private Vector<File> findFilesInDirectory(File directory,
-			String pattern, boolean recursive) {
+			Pattern pattern, boolean recursive) {
 		Vector<File> files = new Vector<File>();
-		String[] fileList = directory.list();
-		for (int index = 0; index < fileList.length; index++) {
-			File file = new File(directory.getPath() + "/" + fileList[index]);
+		for (String fileToCheck : directory.list()) {
+			File file = new File(directory.getPath() + "/" + fileToCheck);
 			if (file.isFile()) {
-				if (Pattern.matches(pattern, file.getPath())) {
+				if (pattern.matcher(file.getPath()).matches()) {
 					files.add(file);
 				}
 			} else if (file.isDirectory()) {

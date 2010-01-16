@@ -10,24 +10,22 @@ import junit.framework.TestCase;
 
 public class FileSearchTest extends TestCase {
 
-    @Test
-    public void testFileSearch() {
-	ArrayList<File> files = FileSearch.find("**/*.java");
-	// check for correct file extension...
-	boolean foundSelf = false;
-	boolean foundClass = false;
-	for (File file : files) {
-	    Assert.assertTrue(file.getName().endsWith(".java"));
-	    if (file.getPath().endsWith(
-		    "/test/javax/i18n4j/FileSearchTest.java")) {
-		foundSelf = true;
-	    }
-	    if (file.getPath().endsWith(
-		    "/src/javax/i18n4j/FileSearch.java")) {
-		foundClass = true;
-	    }
+	@Test
+	public void testFileSearch() {
+		ArrayList<File> files = FileSearch.find("**/*.j*");
+		// check for correct file extension...
+		boolean foundSelf = false;
+		boolean foundClass = false;
+		for (File file : files) {
+			if (file.getPath().endsWith(
+					"/test/javax/i18n4j/FileSearchTest.java")) {
+				foundSelf = true;
+			}
+			if (file.getPath().endsWith("/src/javax/i18n4j/FileSearch.java")) {
+				foundClass = true;
+			}
+		}
+		Assert.assertTrue(foundSelf);
+		Assert.assertTrue(foundClass);
 	}
-	Assert.assertTrue(foundSelf);
-	Assert.assertTrue(foundClass);
-    }
 }
