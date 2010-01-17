@@ -27,12 +27,13 @@ public class FileSearch {
 
 	static public ArrayList<File> find(File directory, String pattern) {
 		ArrayList<File> files = find(directory.getPath() + "/" + pattern);
+		ArrayList<File> result = new ArrayList<File>(); 
 		for (File file : files) {
 			String fileString = file.getPath().substring(
 					directory.getPath().length());
-			files.add(new File(fileString));
+			result.add(new File(fileString));
 		}
-		return files;
+		return result;
 	}
 
 	/**
