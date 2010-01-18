@@ -1,5 +1,7 @@
 package javax.swingx.config;
 
+import javax.swingx.Application;
+
 /**
  * This object contains API constants and configuration settings used for API
  * wide settings and behavior storage.
@@ -70,44 +72,6 @@ public class APIConfig {
 	private static int version = 0;
 
 	/**
-	 * This variable contains the name of the application which was set for
-	 * copyright messages and other information messages.
-	 */
-	private static String applicationName = "";
-
-	/**
-	 * This method sets the application name which is to be shown in copyright
-	 * messages.
-	 * 
-	 * @param name
-	 *            is the name of the application.
-	 * @throws IllegalArgumentException
-	 *             is thrown if name is null or empty.
-	 */
-	public static void setApplicationName(String name)
-			throws IllegalArgumentException {
-		if (name == null) {
-			throw new IllegalArgumentException("name must not be null!");
-		}
-		if (name.isEmpty()) {
-			throw new IllegalArgumentException(
-					"The default value for this name is empty, but if "
-							+ "this method is called a real name has to"
-							+ " be set. Empty is illegal!");
-		}
-		applicationName = name;
-	}
-
-	/**
-	 * This method returns the set application name.
-	 * 
-	 * @return A String is returned containing the application name.
-	 */
-	public static String getApplicationName() {
-		return applicationName;
-	}
-
-	/**
 	 * This method sets the help request flag of the API.
 	 * 
 	 * @param helpRequest
@@ -168,8 +132,11 @@ public class APIConfig {
 	}
 
 	static private String createAboutMessage(String file, String section) {
+		Application application = Application.getInstance();
 		String message = ConfigFile.readSection(file, section);
-		message = message.replaceAll("%APPLICATION%", getApplicationName());
+		message = message.replaceAll("%APPLICATION%", application
+				.getApplicationTitle()
+				+ " " + application.getApplicationVersion());
 		message = message.replaceAll("%VERSION%", PACKAGE_VERSION);
 		message = message.replaceAll("%YEARS%", PACKAGE_YEARS);
 		message = message.replaceAll("%OWNER%", PACKAGE_OWNER);

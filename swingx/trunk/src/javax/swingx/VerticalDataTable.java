@@ -66,24 +66,4 @@ public class VerticalDataTable extends Table {
 	public VerticalData getVerticalData() {
 		return verticalDataTableModel.getVerticalData();
 	}
-
-	public static void main(String[] argv) {
-		Application app = new Application("TEST");
-		VerticalData verticalData = new VerticalData();
-		verticalData.addColumn("Column1", Integer.class);
-		verticalData.addColumn("Column2", Double.class);
-		verticalData.addColumn("Column3", Boolean.class);
-		verticalData.addRow(1, 3.3, true);
-		verticalData.addRow(2, 3.3, false);
-		VerticalDataTable table = new VerticalDataTable(verticalData);
-		table.setVisible(true);
-		BorderLayoutWidget widget = new BorderLayoutWidget();
-		widget.setNorth(new Label("NORTH"));
-		widget.setSouth(new Label("SOUTH"));
-		widget.setEast(new Label("EAST"));
-		widget.setWest(new Label("WEST"));
-		widget.setCenter(new ScrollPane(table));
-		app.getContentPane().add(widget);
-		app.run();
-	}
 }

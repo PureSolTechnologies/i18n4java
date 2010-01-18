@@ -31,7 +31,7 @@ public class I18NLinguist extends Application {
 	private I18NTranslationPanel translationPanel = null;
 
 	public I18NLinguist() {
-		super("I18NLinguist");
+		super("I18NLinguist", "v0.1.0");
 
 		initializeVariables();
 		initializeMenu();
