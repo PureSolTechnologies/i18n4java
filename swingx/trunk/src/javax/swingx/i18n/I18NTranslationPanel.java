@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Set;
@@ -148,6 +149,7 @@ public class I18NTranslationPanel extends Panel {
 	    return;
 	}
 	files = FileSearch.find(directory.getPath() + "/res/**/*.i18n");
+	Collections.sort(files);
 	Hashtable<Object, Object> listData =
 		new Hashtable<Object, Object>();
 	for (File file : files) {
