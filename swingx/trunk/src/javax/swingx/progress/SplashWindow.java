@@ -1,4 +1,4 @@
-package javax.swingx;
+package javax.swingx.progress;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import java.net.URL;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
-import javax.swingx.progress.ProgressObserver;
+import javax.swingx.ImageBox;
 
 import org.apache.log4j.Logger;
 

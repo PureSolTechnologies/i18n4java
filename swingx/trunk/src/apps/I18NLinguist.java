@@ -14,10 +14,10 @@ import javax.swingx.Button;
 import javax.swingx.Menu;
 import javax.swingx.MenuBar;
 import javax.swingx.MenuItem;
-import javax.swingx.SplashWindow;
 import javax.swingx.ToolBar;
 import javax.swingx.connect.Slot;
 import javax.swingx.i18n.I18NTranslationPanel;
+import javax.swingx.progress.SplashWindow;
 
 public class I18NLinguist extends Application {
 
