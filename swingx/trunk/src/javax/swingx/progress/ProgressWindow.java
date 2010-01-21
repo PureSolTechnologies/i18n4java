@@ -1,8 +1,11 @@
 package javax.swingx.progress;
 
+import java.awt.Dimension;
+
 import javax.i18n4j.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JProgressBar;
+import javax.swingx.Application;
 import javax.swingx.Button;
 import javax.swingx.Frame;
 import javax.swingx.Label;
@@ -17,6 +20,7 @@ public class ProgressWindow extends Frame implements ProgressObserver {
     private static final Translator translator =
 	    Translator.getTranslator(ProgressWindow.class);
 
+    private Label description;
     private Label label;
     private JProgressBar progressBar;
     private Button cancel;
@@ -34,12 +38,24 @@ public class ProgressWindow extends Frame implements ProgressObserver {
     private void initUI() {
 	Panel panel = new Panel();
 	setContentPane(panel);
-	panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+	panel.setLayout(layout);
+	panel.add(description = new Label());
 	panel.add(label = new Label());
 	panel.add(progressBar = new JProgressBar());
 	panel.add(cancel = new Button(translator.i18n("Cancel")));
 	cancel.connect("start", this, "cancel");
+	progressBar.setStringPainted(true);
+	progressBar.setString(null);
+	setMinimumSize(new Dimension(400,100));
 	pack();
+    }
+
+    public void pack() {
+	super.pack();
+	if (Application.getInstance() != null) {
+	    setLocationRelativeTo(Application.getInstance());
+	}
     }
 
     @Override
@@ -79,6 +95,23 @@ public class ProgressWindow extends Frame implements ProgressObserver {
     @Signal
     public void finished() {
 	emitSignal("finished");
+    }
+
+    @Override
+    public void setDescription(String description) {
+	this.description.setText(description);
+    }
+
+    @Override
+    public void setProgressText(String text) {
+	progressBar.setStringPainted(true);
+	progressBar.setString(text);
+    }
+
+    @Override
+    public void showProgressPercent() {
+	progressBar.setStringPainted(true);
+	progressBar.setString(null);
     }
 
 }

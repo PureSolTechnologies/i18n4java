@@ -87,9 +87,7 @@ public class SplashWindow extends JWindow implements Runnable,
 
     @Override
     public void setText(String text) {
-	if (progressBar != null) {
-	    progressBar.setString(text);
-	}
+	// not supported in a splash window
     }
 
     @Override
@@ -107,13 +105,37 @@ public class SplashWindow extends JWindow implements Runnable,
 	}
     }
 
+    @Override
+    public void setDescription(String description) {
+	// not supported in a splash window
+    }
+
+    @Override
+    public void setProgressText(String text) {
+	if (progressBar != null) {
+	    progressBar.setString(text);
+	}
+	this.showText(true);
+    }
+
+    @Override
+    public void showProgressPercent() {
+	progressBar.setString(null);
+	this.showText(true);
+    }
+
+    @Override
+    public void finish() {
+	dispose();
+    }
+
     public void setClosable(boolean dispose) {
 	final boolean disposable = dispose;
 	addMouseListener(new MouseAdapter() {
 	    public void mousePressed(MouseEvent e) {
 		setVisible(false);
 		if (disposable) {
-		    dispose();
+		    finish();
 		}
 	    }
 	});
@@ -124,7 +146,7 @@ public class SplashWindow extends JWindow implements Runnable,
 	final Runnable closerRunner = new Runnable() {
 	    public void run() {
 		setVisible(false);
-		dispose();
+		finish();
 	    }
 	};
 	Runnable waitRunner = new Runnable() {
@@ -150,34 +172,4 @@ public class SplashWindow extends JWindow implements Runnable,
 	setVisible(true);
     }
 
-    public static void main(String[] args) {
-	SplashWindow splash =
-		new SplashWindow(SplashWindow.class
-			.getResource("/splashtest.jpg"), 200, 150);
-	splash.setClosable(true);
-	// splash.setTimer(10);
-	splash.showProgressBar(true);
-	splash.showText(true);
-	splash.setText(null);
-	splash.setRange(0, 99);
-	// Thread t = new Thread(splash,"splash");
-	// t.run();
-	splash.run();
-	for (int i = 0; i < 100; i++) {
-	    try {
-		Thread.sleep(100);
-	    } catch (InterruptedException e) {
-		e.printStackTrace();
-	    }
-	    System.out.println(i);
-	    // splash.setProgressBarText("Step: " + String.valueOf(i));
-	    splash.setStatus(i);
-	}
-	System.out.println("Fertig...");
-    }
-
-    @Override
-    public void finish() {
-	dispose();
-    }
 }
