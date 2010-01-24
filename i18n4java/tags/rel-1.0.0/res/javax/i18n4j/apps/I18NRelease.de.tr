@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<translations>
+    <translations>
+        <entry>
+            <key>Release language {0}  to file {1}</key>
+            <value>Freigabe nach Datei {1} für Sprache {0}</value>
+        </entry>
+        <entry>
+            <key>usage:  I18NRelease &lt;directory&gt;</key>
+            <value>Nutzung:  I18NRelease &lt;Verzeichnis&gt;</value>
+        </entry>
+        <entry>
+            <key>Process file {0}...</key>
+            <value>Prozessiere Datei {0}...</value>
+        </entry>
+        <entry>
+            <key>usage:  I18NUpdate &lt;directory&gt;</key>
+            <value>Nutzung:  I18NUpdate &lt;Projektveryeichnis&gt;</value>
+        </entry>
+    </translations>
+</translations>

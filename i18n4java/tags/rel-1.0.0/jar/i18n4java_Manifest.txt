@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: javax.i18n4j.apps.I18N4Java
+Class-Path: ./log4j.jar
