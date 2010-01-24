@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<translations>
+    <translations>
+        <entry>
+            <key>About</key>
+            <value>Ueber</value>
+        </entry>
+        <entry>
+            <key>Customer Information</key>
+            <value>Kunden-Information</value>
+        </entry>
+        <entry>
+            <key>Copyright</key>
+            <value>Copyright</value>
+        </entry>
+        <entry>
+            <key>Contact</key>
+            <value>Kontakt</value>
+        </entry>
+        <entry>
+            <key>Customer</key>
+            <value>Kunde</value>
+        </entry>
+        <entry>
+            <key>Vendor</key>
+            <value>Anbieter</value>
+        </entry>
+    </translations>
+</translations>

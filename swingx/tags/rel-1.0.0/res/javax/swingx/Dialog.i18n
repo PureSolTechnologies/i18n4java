@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+    <translations>
+        <entry>
+            <key>Cancel</key>
+            <value>
+                <source>Cancel</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Abbruch</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.swingx.Dialog.java</file>
+                    <line>156</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>OK</key>
+            <value>
+                <source>OK</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>OK</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.swingx.Dialog.java</file>
+                    <line>141</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>
