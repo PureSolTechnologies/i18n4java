@@ -1,6 +1,6 @@
 [GENERAL]
-version=0.99.0
-years=2009
+version=1.0.0
+years=2009-2010
 author=Rick-Rainer Ludwig
 bugreport=rl719236@sourceforge.net
 copyright=Rick-Rainer Ludwig
@@ -9,13 +9,6 @@ owner=Rick-Rainer Ludwig
 [COPYRIGHT]
 <html><body>
 <h1>%APPLICATION% version %VERSION%</h1>
-<h2>Copyright (C) %YEARS% by %OWNER%<h2>
-<p>
-Permission to use, copy, modify and distribute<br/>
-this Software its accompanying documentation<br/>
-for any purpose is not allowed without further<br/>
-permission of the copyright holder.<br/>
-</p>
 </body></html>
 
 [VENDOR]
@@ -25,11 +18,6 @@ permission of the copyright holder.<br/>
 
 [CONTACT]
 <html><body>
-	<h1>%OWNER%</h1>
-	<p>
-	<u>Support</u><br/>
-	Rick-Rainer Ludwig<br/>
-	<br/>
 	<u>Bug reports</u><br/>
 	%BUGREPORT%<br/>
 	</p>
