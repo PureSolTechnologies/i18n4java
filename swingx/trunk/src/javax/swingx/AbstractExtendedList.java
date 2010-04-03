@@ -41,12 +41,9 @@ abstract public class AbstractExtendedList extends List {
 	}
 
 	protected void setListData(Hashtable<Object, Object> listData) {
-		this.listData = listData;
-		if (listData == null) {
-			this.removeAll();
-		} else if (listData.size() == 0) {
-			this.removeAll();
-		} else {
+		removeAll();
+		if (listData != null) {
+			this.listData.putAll(listData);
 			setListData(new Vector<Object>(listData.keySet()));
 		}
 	}
@@ -75,4 +72,8 @@ abstract public class AbstractExtendedList extends List {
 		return values;
 	}
 
+	public void removeAll() {
+		super.removeAll();
+		listData.clear();
+	}
 }

@@ -59,4 +59,8 @@ public interface ProgressObserver {
      */
     public void finish();
 
+    /**
+     * 
+     */
+    public ProgressObserver startSubProgress(ProgressObservable thread);
 }
