@@ -57,11 +57,17 @@ public class ProgressWindow extends Frame {
 	@Slot
 	public void finishedPanel() {
 		finished();
+		finished(observable);
 		this.dispose();
 	}
 
 	@Signal
 	public void finished() {
 		emitSignal("finished");
+	}
+
+	@Signal
+	public void finished(ProgressObservable observable) {
+		emitSignal("finished", observable);
 	}
 }

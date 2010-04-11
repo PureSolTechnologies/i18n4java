@@ -73,6 +73,7 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	@Slot
 	public void cancel() {
 		thread.interrupt();
+		ownThreadFinished = true;
 		finish();
 	}
 
@@ -80,9 +81,14 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	public void finish() {
 		ownThreadFinished = true;
 		if (isFinished()) {
-			finished();
-			finished(this);
+			sendFinishedSignal();
 		}
+	}
+
+	private void sendFinishedSignal() {
+		finished();
+		finished(this);
+		finished(observable);
 	}
 
 	@Signal
@@ -93,6 +99,11 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	@Signal
 	public void finished(ProgressPanel progressPanel) {
 		connectionManager.emitSignal("finished", progressPanel);
+	}
+
+	@Signal
+	public void finished(ProgressObservable progressObservable) {
+		connectionManager.emitSignal("finished", progressObservable);
 	}
 
 	public boolean isFinished() {
@@ -133,8 +144,8 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 		repaint();
 		subProgressPanels.remove(progressPanel);
 		if (isFinished()) {
-			finished();
-			finished(this);
+			sendFinishedSignal();
 		}
 	}
+
 }
