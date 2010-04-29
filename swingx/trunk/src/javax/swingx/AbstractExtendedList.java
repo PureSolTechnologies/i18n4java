@@ -2,6 +2,7 @@ package javax.swingx;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ListModel;
@@ -15,65 +16,65 @@ import javax.swing.ListModel;
  */
 abstract public class AbstractExtendedList extends List {
 
-	private static final long serialVersionUID = 34435300495300631L;
+    private static final long serialVersionUID = 34435300495300631L;
 
-	private Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
+    private final Map<Object, Object> listData = new Hashtable<Object, Object>();
 
-	public AbstractExtendedList() {
-		super();
+    public AbstractExtendedList() {
+	super();
+    }
+
+    public AbstractExtendedList(ListModel listModel) {
+	super(listModel);
+    }
+
+    protected void setListData(ArrayList<Object> displayItems,
+	    ArrayList<Object> assignedItems) {
+	if (displayItems.size() != assignedItems.size()) {
+	    throw new IllegalArgumentException(
+		    "The length of displayItems is unequal to assignedItems!");
 	}
-
-	public AbstractExtendedList(ListModel listModel) {
-		super(listModel);
+	Map<Object, Object> listData = new Hashtable<Object, Object>();
+	for (int index = 0; index < displayItems.size(); index++) {
+	    listData.put(displayItems.get(index), assignedItems.get(index));
 	}
+	setListData(listData);
+    }
 
-	protected void setListData(ArrayList<Object> displayItems,
-			ArrayList<Object> assignedItems) {
-		if (displayItems.size() != assignedItems.size()) {
-			throw new IllegalArgumentException(
-					"The length of displayItems is unequal to assignedItems!");
-		}
-		Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
-		for (int index = 0; index < displayItems.size(); index++) {
-			listData.put(displayItems.get(index), assignedItems.get(index));
-		}
-		setListData(listData);
+    protected void setListData(Map<Object, Object> listData) {
+	removeAll();
+	if (listData != null) {
+	    this.listData.putAll(listData);
+	    setListData(new Vector<Object>(listData.keySet()));
 	}
+    }
 
-	protected void setListData(Hashtable<Object, Object> listData) {
-		removeAll();
-		if (listData != null) {
-			this.listData.putAll(listData);
-			setListData(new Vector<Object>(listData.keySet()));
-		}
+    public void setSelectedValue(Object value, boolean scroll) {
+	for (Object key : listData.keySet()) {
+	    if (listData.get(key).equals(value) || key.equals(value)) {
+		super.setSelectedValue(key, scroll);
+	    }
 	}
+    }
 
-	public void setSelectedValue(Object value, boolean scroll) {
-		for (Object key : listData.keySet()) {
-			if (listData.get(key).equals(value) || key.equals(value)) {
-				super.setSelectedValue(key, scroll);
-			}
-		}
+    public Object getSelectedValue() {
+	Object value = super.getSelectedValue();
+	if (value != null) {
+	    value = listData.get(super.getSelectedValue());
 	}
+	return value;
+    }
 
-	public Object getSelectedValue() {
-		Object value = super.getSelectedValue();
-		if (value != null) {
-			value = listData.get(super.getSelectedValue());
-		}
-		return value;
+    public Object[] getSelectedValues() {
+	Object[] values = super.getSelectedValues();
+	for (int index = 0; index < values.length; index++) {
+	    values[index] = listData.get(values[index]);
 	}
+	return values;
+    }
 
-	public Object[] getSelectedValues() {
-		Object[] values = super.getSelectedValues();
-		for (int index = 0; index < values.length; index++) {
-			values[index] = listData.get(values[index]);
-		}
-		return values;
-	}
-
-	public void removeAll() {
-		super.removeAll();
-		listData.clear();
-	}
+    public void removeAll() {
+	super.removeAll();
+	listData.clear();
+    }
 }
