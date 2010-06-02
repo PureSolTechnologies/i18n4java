@@ -131,4 +131,11 @@ public class Application extends Frame implements Runnable {
 	public void removeThreadToQuit(Thread thread) {
 		threads.remove(thread);
 	}
+
+	public static void showStandardErrorMessage(String string, Throwable e) {
+		JOptionPane.showConfirmDialog(getInstance(), string
+				+ "\n\nMessage:\n\"" + e.getMessage() + "\"",
+				"An error occured", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.ERROR_MESSAGE);
+	}
 }
