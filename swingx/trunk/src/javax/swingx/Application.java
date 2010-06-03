@@ -133,9 +133,13 @@ public class Application extends Frame implements Runnable {
 	}
 
 	public static void showStandardErrorMessage(String string, Throwable e) {
+		StringBuffer stackTrace = new StringBuffer();
+		for (StackTraceElement element : e.getStackTrace()) {
+			stackTrace.append(element.toString() + "\n");
+		}
 		JOptionPane.showConfirmDialog(getInstance(), string
-				+ "\n\nMessage:\n\"" + e.getMessage() + "\"",
-				"An error occured", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.ERROR_MESSAGE);
+				+ "\n\nMessage:\n\"" + e.getMessage() + "\"\n\nTrace:\n\""
+				+ stackTrace.toString() + "\"", "An error occured",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 	}
 }
