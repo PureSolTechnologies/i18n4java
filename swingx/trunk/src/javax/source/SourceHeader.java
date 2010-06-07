@@ -12,18 +12,16 @@ import org.apache.log4j.Logger;
 
 public class SourceHeader {
 
-    private static final Logger logger =
-	    Logger.getLogger(SourceHeader.class);
+    private static final Logger logger = Logger.getLogger(SourceHeader.class);
 
     public static void addHeaderToFiles(File template, File about,
 	    File directory) {
-	addHeaderToFiles(template, about, directory, "**/*");
+	addHeaderToFiles(template, about, directory, "*.java");
     }
 
     public static void addHeaderToFiles(File template, File about,
 	    File directory, String pattern) {
-	for (File file : FileSearch.find(directory.getPath() + "/"
-		+ pattern)) {
+	for (File file : FileSearch.find(directory, pattern)) {
 	    logger.info("Processing file '" + file.getPath() + "'...");
 	    addHeaderToFile(template, about, file);
 	    logger.info("done.");
@@ -72,24 +70,18 @@ public class SourceHeader {
 	    String line = in.readLine();
 	    while (line != null) {
 		line = line.replaceAll("%SOURCEFILE%", outFile.getName());
-		line =
-			line.replaceAll("%OWNER%", about.read("GENERAL",
-				"owner"));
-		line =
-			line.replaceAll("%YEARS%", about.read("GENERAL",
-				"years"));
-		line =
-			line.replaceAll("%COPYRIGHT%", about.read(
-				"GENERAL", "copyright"));
-		line =
-			line.replaceAll("%AUTHOR%", about.read("GENERAL",
-				"author"));
-		line =
-			line.replaceAll("%BUGREPORT%", about.read(
-				"GENERAL", "bugreport"));
-		line =
-			line.replaceAll("%VERSION%", about.read("GENERAL",
-				"version"));
+		line = line.replaceAll("%OWNER%", about
+			.read("GENERAL", "owner"));
+		line = line.replaceAll("%YEARS%", about
+			.read("GENERAL", "years"));
+		line = line.replaceAll("%COPYRIGHT%", about.read("GENERAL",
+			"copyright"));
+		line = line.replaceAll("%AUTHOR%", about.read("GENERAL",
+			"author"));
+		line = line.replaceAll("%BUGREPORT%", about.read("GENERAL",
+			"bugreport"));
+		line = line.replaceAll("%VERSION%", about.read("GENERAL",
+			"version"));
 		out.writeBytes(line + "\n");
 		line = in.readLine();
 	    }

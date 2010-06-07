@@ -48,18 +48,18 @@
             </value>
         </entry>
         <entry>
-            <key>Contact</key>
+            <key>Vendor</key>
             <value>
-                <source>Contact</source>
+                <source>Vendor</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Kontakt</value>
+                        <value>Anbieter</value>
                     </entry>
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>55</line>
+                    <line>51</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -82,18 +82,18 @@
             </value>
         </entry>
         <entry>
-            <key>Vendor</key>
+            <key>Contact</key>
             <value>
-                <source>Vendor</source>
+                <source>Contact</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Anbieter</value>
+                        <value>Kontakt</value>
                     </entry>
                 </translated>
                 <locations>
                     <file>javax.swingx.AboutBox.java</file>
-                    <line>51</line>
+                    <line>55</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

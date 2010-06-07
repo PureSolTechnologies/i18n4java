@@ -36,23 +36,6 @@
             </value>
         </entry>
         <entry>
-            <key>User Confirmation</key>
-            <value>
-                <source>User Confirmation</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Benutzeranmeldung</value>
-                    </entry>
-                </translated>
-                <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
-                    <line>58</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
             <key>Password</key>
             <value>
                 <source>Password</source>
@@ -65,6 +48,23 @@
                 <locations>
                     <file>javax.swingx.LoginDialog.java</file>
                     <line>64</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>User Confirmation</key>
+            <value>
+                <source>User Confirmation</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Benutzeranmeldung</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.swingx.LoginDialog.java</file>
+                    <line>58</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

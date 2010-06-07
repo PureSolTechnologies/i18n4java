@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>70</line>
+                    <line>69</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,7 +30,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>92</line>
+                    <line>91</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -47,7 +47,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>86</line>
+                    <line>84</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -64,7 +64,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>185</line>
+                    <line>178</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -76,7 +76,7 @@
                 <translated/>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>185</line>
+                    <line>178</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -88,7 +88,7 @@
                 <translated/>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>122</line>
+                    <line>115</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -105,7 +105,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>101</line>
+                    <line>99</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -122,24 +122,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>90</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Classes</key>
-            <value>
-                <source>Classes</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Klassen</value>
-                    </entry>
-                </translated>
-                <locations>
-                    <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>75</line>
+                    <line>88</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -156,7 +139,24 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
-                    <line>122</line>
+                    <line>115</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Classes</key>
+            <value>
+                <source>Classes</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Klassen</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.swingx.i18n.I18NTranslationPanel.java</file>
+                    <line>74</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

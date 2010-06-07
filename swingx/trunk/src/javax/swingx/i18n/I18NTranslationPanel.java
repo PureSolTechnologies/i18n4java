@@ -3,9 +3,9 @@ package javax.swingx.i18n;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -31,14 +31,14 @@ public class I18NTranslationPanel extends Panel {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger =
-	    Logger.getLogger(I18NTranslationPanel.class);
-    private static final Translator translator =
-	    Translator.getTranslator(I18NTranslationPanel.class);
+    private static final Logger logger = Logger
+	    .getLogger(I18NTranslationPanel.class);
+    private static final Translator translator = Translator
+	    .getTranslator(I18NTranslationPanel.class);
 
     private File i18nFile = null;
     private FreeList classes = null;
-    private ArrayList<File> files = null;
+    private List<File> files = null;
     private MultiLanguageTranslations translationsHash = null;
     private LanguageChooser locales = null;
     private Locale currentLocale = Locale.getDefault();
@@ -65,23 +65,20 @@ public class I18NTranslationPanel extends Panel {
 
 	locales = new LanguageChooser();
 	locales.setSelectedLocale(currentLocale);
-	locales.connect("changedSelection", this, "setLocale",
-		Object.class);
-	add(Label.addTo(new ScrollPane(locales), translator
-		.i18n("Language"), Label.TOP), BorderLayout.NORTH);
+	locales.connect("changedSelection", this, "setLocale", Object.class);
+	add(Label.addTo(new ScrollPane(locales), translator.i18n("Language"),
+		Label.TOP), BorderLayout.NORTH);
 
 	classes = new FreeList();
 	classes.connect("valueChanged", this, "openFile", Object.class);
-	add(Label.addTo(new ScrollPane(classes), translator
-		.i18n("Classes"), Label.TOP), BorderLayout.WEST);
+	add(Label.addTo(new ScrollPane(classes), translator.i18n("Classes"),
+		Label.TOP), BorderLayout.WEST);
 
 	Panel centerPanel = new Panel();
-	centerPanel
-		.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+	centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 	reservoir = new FreeList();
-	reservoir.connect("valueChanged", this, "changeSource",
-		Object.class);
+	reservoir.connect("valueChanged", this, "changeSource", Object.class);
 
 	centerPanel.add(Label.addTo(new ScrollPane(reservoir), translator
 		.i18n("Reservoir"), Label.TOP));
@@ -90,8 +87,8 @@ public class I18NTranslationPanel extends Panel {
 	centerPanel.add(Label.addTo(new ScrollPane(source), translator
 		.i18n("Source:"), Label.TOP));
 	translation = new TextArea();
-	centerPanel.add(Label.addTo(new ScrollPane(translation),
-		translator.i18n("Translation:"), Label.TOP));
+	centerPanel.add(Label.addTo(new ScrollPane(translation), translator
+		.i18n("Translation:"), Label.TOP));
 	translation.connect("changeText", this, "changeTranslation",
 		String.class);
 	add(centerPanel, BorderLayout.CENTER);
@@ -115,15 +112,10 @@ public class I18NTranslationPanel extends Panel {
 	if (!hasChanged()) {
 	    return true;
 	}
-	int result =
-		JOptionPane
-			.showConfirmDialog(
-				Application.getInstance(),
-				translator
-					.i18n("Changes were made.\nDo you want to save?"),
-				translator.i18n("Save"),
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
+	int result = JOptionPane.showConfirmDialog(Application.getInstance(),
+		translator.i18n("Changes were made.\nDo you want to save?"),
+		translator.i18n("Save"), JOptionPane.YES_NO_CANCEL_OPTION,
+		JOptionPane.QUESTION_MESSAGE);
 	if (result == JOptionPane.CANCEL_OPTION) {
 	    return false;
 	}
@@ -148,10 +140,9 @@ public class I18NTranslationPanel extends Panel {
 	if (!saveIfChanged()) {
 	    return;
 	}
-	files = FileSearch.find(directory.getPath() + "/res/**/*.i18n");
+	files = FileSearch.find(directory, "res/**/*.i18n");
 	Collections.sort(files);
-	Hashtable<Object, Object> listData =
-		new Hashtable<Object, Object>();
+	Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
 	for (File file : files) {
 	    boolean finished = I18NFile.isFinished(file);
 	    String listEntry = "<html><body>";
@@ -164,8 +155,7 @@ public class I18NTranslationPanel extends Panel {
 		logger.debug("File '" + file.getPath()
 			+ "' is not finished, yet.");
 	    }
-	    listEntry +=
-		    file.getPath().substring(directory.getPath().length());
+	    listEntry += file.getPath().substring(directory.getPath().length());
 	    listEntry += "</font>";
 	    listEntry += "</body></html>";
 	    listData.put(listEntry, file);
@@ -184,16 +174,15 @@ public class I18NTranslationPanel extends Panel {
 	    updateReservoir();
 	    changed = false;
 	} catch (FileNotFoundException e) {
-	    JOptionPane.showConfirmDialog(Application.getInstance(),
-		    translator.i18n("The file {0} could not be found!",
-			    i18nFile), translator.i18n("File not found"),
-		    JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showConfirmDialog(Application.getInstance(), translator
+		    .i18n("The file {0} could not be found!", i18nFile),
+		    translator.i18n("File not found"), JOptionPane.OK_OPTION,
+		    JOptionPane.ERROR_MESSAGE);
 	    i18nFile = null;
 	}
     }
 
-    public void setTranslationsHash(
-	    MultiLanguageTranslations translationsHash) {
+    public void setTranslationsHash(MultiLanguageTranslations translationsHash) {
 	this.translationsHash = translationsHash;
     }
 
@@ -216,13 +205,11 @@ public class I18NTranslationPanel extends Panel {
 	    return;
 	}
 	Set<String> sources = translationsHash.getSources();
-	Hashtable<Object, Object> listData =
-		new Hashtable<Object, Object>();
+	Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
 	boolean color = false;
 	for (String source : sources) {
-	    boolean translated =
-		    translationsHash.getAvailableLanguages(source)
-			    .contains(currentLocale.getLanguage());
+	    boolean translated = translationsHash.getAvailableLanguages(source)
+		    .contains(currentLocale.getLanguage());
 	    String html = "<html><body><br/>";
 	    if (translated) {
 		html += "<font color=\"green\">";
