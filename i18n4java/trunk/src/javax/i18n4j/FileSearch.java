@@ -20,7 +20,7 @@ package javax.i18n4j;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -31,9 +31,19 @@ import java.util.regex.Pattern;
  */
 public class FileSearch {
 
-    static public ArrayList<File> find(File directory, String pattern) {
-	ArrayList<File> files = find(directory.getPath() + "/" + pattern);
-	ArrayList<File> result = new ArrayList<File>();
+    public static String wildcardsToRegExp(String pattern) {
+	pattern = pattern.replaceAll("\\.", "\\\\.");
+	pattern = pattern.replaceAll("\\*", "[^/]*");
+	pattern = pattern.replaceAll("\\?", ".");
+	pattern = pattern.replaceAll("(\\[\\^/\\]\\*){2}", ".*");
+	return pattern;
+    }
+
+    public static List<File> find(File directory, String pattern) {
+	pattern = wildcardsToRegExp(pattern);
+	List<File> files = findFilesInDirectory(directory, Pattern
+		.compile(new File(directory, pattern).getPath()), true);
+	List<File> result = new ArrayList<File>();
 	for (File file : files) {
 	    String fileString = file.getPath().substring(
 		    directory.getPath().length());
@@ -43,67 +53,31 @@ public class FileSearch {
     }
 
     /**
-     * This method scans a directory Apache Foundation like with path pattern
-     * /some/thing/here/ * * / *.xml.
-     * 
-     * @param pattern
-     *            a Apache like directory pattern.
-     * @return A Vector of found File classes is returned.
-     */
-    static public ArrayList<File> find(String pattern) {
-	ArrayList<File> files = new ArrayList<File>();
-	File source = new File(pattern);
-	if (source.isFile()) {
-	    files.add(source);
-	    return files;
-	}
-	boolean recursive = false;
-	if (pattern.contains("*")) {
-	    pattern = source.getPath();
-	    if (pattern.contains("**")) {
-		recursive = true;
-	    }
-	    String directory = pattern.replaceAll("\\*.*$", "");
-	    directory = directory.replaceAll("/[^/]*$", "");
-	    if (directory.isEmpty()) {
-		directory = ".";
-	    }
-	    source = new File(directory);
-	    pattern = pattern.replaceAll("\\.", "\\\\.");
-	    pattern = pattern.replaceAll("\\*", "[^/]*");
-	    pattern = pattern.replaceAll("\\[\\^/\\]\\*\\[\\^/\\]\\*", ".*");
-	} else {
-	    pattern += "/.*";
-	}
-	if (source.isDirectory()) {
-	    files.addAll(findFilesInDirectory(source, Pattern.compile(pattern),
-		    recursive));
-	}
-	return files;
-    }
-
-    /**
      * This class is the recursive part of the file search.
      * 
      * @param directory
      * @param pattern
-     * @param recursive
+     * @param scanRecursive
      * @return
      */
-    static private Vector<File> findFilesInDirectory(File directory,
-	    Pattern pattern, boolean recursive) {
-	Vector<File> files = new Vector<File>();
-	for (String fileToCheck : directory.list()) {
-	    File file = new File(directory.getPath() + "/" + fileToCheck);
+    private static List<File> findFilesInDirectory(File directory,
+	    Pattern pattern, boolean scanRecursive) {
+	List<File> files = new ArrayList<File>();
+	String[] filesInDirectory = directory.list();
+	if (filesInDirectory == null) {
+	    return files;
+	}
+	for (String fileToCheck : filesInDirectory) {
+	    File file = new File(directory, fileToCheck);
 	    if (file.isFile()) {
-		if (pattern.matcher(file.getPath()).matches()) {
+		if (pattern.matcher(new File(directory, fileToCheck).getPath())
+			.matches()) {
 		    files.add(file);
 		}
 	    } else if (file.isDirectory()) {
-		if (recursive) {
-		    files
-			    .addAll(findFilesInDirectory(file, pattern,
-				    recursive));
+		if (scanRecursive) {
+		    files.addAll(findFilesInDirectory(file, pattern,
+			    scanRecursive));
 		}
 	    }
 	}

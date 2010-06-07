@@ -13,7 +13,19 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>75</line>
+                    <line>110</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>This application converts all i18n files in the\nthe specified directory and converts them into\ntr files for usage in internationalized applications.</key>
+            <value>
+                <source>This application converts all i18n files in the\nthe specified directory and converts them into\ntr files for usage in internationalized applications.</source>
+                <translated/>
+                <locations>
+                    <file>javax.i18n4j.apps.I18NRelease.java</file>
+                    <line>74</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,7 +42,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>35</line>
+                    <line>70</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -47,7 +59,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>60</line>
+                    <line>96</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
