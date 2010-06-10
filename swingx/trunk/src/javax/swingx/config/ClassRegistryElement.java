@@ -5,8 +5,7 @@ public class ClassRegistryElement {
     private ClassRegistryElementType type;
     private String className = "";
 
-    public ClassRegistryElement(ClassRegistryElementType type,
-	    String className) {
+    public ClassRegistryElement(ClassRegistryElementType type, String className) {
 	this.type = type;
 	this.className = className;
     }

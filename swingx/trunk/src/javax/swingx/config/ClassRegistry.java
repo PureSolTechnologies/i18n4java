@@ -7,42 +7,36 @@ import java.util.Hashtable;
 import org.apache.log4j.Logger;
 
 /**
- * This class is a central register for applications to register classes
- * for interfaces. This is used to decouple dependencies.
+ * This class is a central register for applications to register classes for
+ * interfaces. This is used to decouple dependencies.
  * 
  * @author Rick-Rainer Ludwig
  * 
  */
 public class ClassRegistry {
 
-    static private final Logger logger =
-	    Logger.getLogger(ClassRegistry.class);
+    static private final Logger logger = Logger.getLogger(ClassRegistry.class);
 
     static public final String REGISTRY_FILE = "/config/registry";
 
-    static private Hashtable<String, ClassRegistryElement> register =
-	    new Hashtable<String, ClassRegistryElement>();
-    static private Hashtable<String, Object> classes =
-	    new Hashtable<String, Object>();
+    static private Hashtable<String, ClassRegistryElement> register = new Hashtable<String, ClassRegistryElement>();
+    static private Hashtable<String, Object> classes = new Hashtable<String, Object>();
 
-    static public void register(Class<?> interfce,
-	    ClassRegistryElement element) {
+    static public void register(Class<?> interfce, ClassRegistryElement element) {
 	register.put(interfce.getName(), element);
     }
 
     static public void register(Class<?> interfce) {
 	try {
 	    logger.info("Register interface '" + interfce.getName() + "'");
-	    String className =
-		    Configurator.getEntry(REGISTRY_FILE, interfce
-			    .getName(), "class", true);
+	    String className = Configurator.getEntry(REGISTRY_FILE, interfce
+		    .getName(), "class", true);
 	    logger.debug("class: '" + className + "'");
-	    String typeName =
-		    Configurator.getEntry(REGISTRY_FILE, interfce
-			    .getName(), "type", true);
+	    String typeName = Configurator.getEntry(REGISTRY_FILE, interfce
+		    .getName(), "type", true);
 	    logger.debug("type: '" + typeName + "'");
-	    ClassRegistryElementType type =
-		    ClassRegistryElementType.from(typeName);
+	    ClassRegistryElementType type = ClassRegistryElementType
+		    .from(typeName);
 	    register(interfce, new ClassRegistryElement(type, className));
 	} catch (IllegalArgumentException e) {
 	    logger.error(e.getMessage(), e);
@@ -57,7 +51,7 @@ public class ClassRegistry {
 	register.remove(interfce.getName());
     }
 
-    static public Object create(Class<?> interfce) {
+    static public <T> T create(Class<T> interfce) {
 	logger.debug("create for interface '" + interfce.getName() + "'");
 	if (!isRegistered(interfce)) {
 	    register(interfce);
@@ -74,10 +68,10 @@ public class ClassRegistry {
 	return factory(interfce, element);
     }
 
-    static private Object factory(Class<?> interfce,
-	    ClassRegistryElement element) {
+    static private <T> T factory(Class<T> interfce, ClassRegistryElement element) {
 	try {
-	    Class<?> clazz = Class.forName(element.getClassName());
+	    @SuppressWarnings("unchecked")
+	    Class<T> clazz = (Class<T>) Class.forName(element.getClassName());
 	    return clazz.getConstructor().newInstance();
 	} catch (ClassNotFoundException e) {
 	    logger.error(e.getMessage(), e);
@@ -103,19 +97,21 @@ public class ClassRegistry {
 	}
     }
 
-    static private Object singleton(Class<?> interfce,
+    static private <T> T singleton(Class<T> interfce,
 	    ClassRegistryElement element) {
 	if (!classes.containsKey(interfce.getName())) {
 	    createSingleton(interfce, element);
 	}
-	return classes.get(interfce.getName());
+	@SuppressWarnings("unchecked")
+	T result = (T) classes.get(interfce.getName());
+	return result;
     }
 
     /**
      * This method is used for a synchronized creation of the singleton
-     * instance. The instance should be created here and not in singleton()
-     * to avoid a permanent synchronized call to get the singleton instance
-     * to avoid a speed issue.
+     * instance. The instance should be created here and not in singleton() to
+     * avoid a permanent synchronized call to get the singleton instance to
+     * avoid a speed issue.
      * 
      * @param interfce
      * @param element
@@ -127,13 +123,10 @@ public class ClassRegistry {
 	}
     }
 
-    static private Object cloned(Class<?> interfce,
-	    ClassRegistryElement element) {
+    static private <T> T cloned(Class<T> interfce, ClassRegistryElement element) {
 	try {
 	    if (!classes.containsKey(interfce.getName())) {
-		classes
-			.put(interfce.getName(),
-				factory(interfce, element));
+		classes.put(interfce.getName(), factory(interfce, element));
 	    }
 	    Object o = classes.get(interfce.getName());
 	    if (o == null) {
@@ -141,7 +134,9 @@ public class ClassRegistry {
 	    }
 	    if (Cloneable.class.isAssignableFrom(interfce)) {
 		Method clone = o.getClass().getMethod("clone");
-		return clone.invoke(o);
+		@SuppressWarnings("unchecked")
+		T result = (T) clone.invoke(o);
+		return result;
 	    } else {
 		return factory(interfce, element);
 	    }
