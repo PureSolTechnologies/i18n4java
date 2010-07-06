@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: javax.i18n4j.apps.I18NUpdate
-
