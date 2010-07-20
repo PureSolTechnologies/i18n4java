@@ -18,20 +18,27 @@
 
 package javax.swingx.i18n;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.swingx.ComboBox;
 
+/**
+ * This class provides a combobox with all available locales for choosing.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public class LocaleChooser extends ComboBox {
 
 	private static final long serialVersionUID = -5751261750747502182L;
 
-	private Locale[] locales;
-	private Vector<String> localeNames = null;
-	private Hashtable<String, Locale> names2Locales = null;
+	private final List<String> localeNames = new ArrayList<String>();
+	private final Map<String, Locale> names2Locales = new Hashtable<String, Locale>();
 
 	public LocaleChooser() {
 		super();
@@ -40,9 +47,7 @@ public class LocaleChooser extends ComboBox {
 	}
 
 	private void readLocales() {
-		locales = Locale.getAvailableLocales();
-		localeNames = new Vector<String>();
-		names2Locales = new Hashtable<String, Locale>();
+		Locale[] locales = Locale.getAvailableLocales();
 		for (int index = 0; index < locales.length; index++) {
 			Locale locale = locales[index];
 			String localeName = locale.toString();
@@ -65,7 +70,7 @@ public class LocaleChooser extends ComboBox {
 	}
 
 	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < locales.length; index++) {
+		for (int index = 0; index < localeNames.size(); index++) {
 			if (names2Locales.get(localeNames.get(index)).equals(locale)) {
 				setSelectedIndex(index);
 				break;

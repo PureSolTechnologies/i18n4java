@@ -26,6 +26,12 @@ import org.apache.log4j.TTCCLayout;
 import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.apache.log4j.spi.LoggingEvent;
 
+/**
+ * This appender is used to send logging information to the LoggingDialog.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public class LogViewerAppender extends AsyncAppender {
 
 	// TODO check weigher a this logger or the RootLogger should be used!

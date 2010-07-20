@@ -23,8 +23,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -56,7 +57,7 @@ public class Configurator {
 	 * This variable is static because of the wish, that each configuration file
 	 * is only read once. Reading files is very time consuming.
 	 */
-	private static volatile Hashtable<String, ConfigHash> configuratorHash = new Hashtable<String, ConfigHash>();
+	private static volatile Map<String, ConfigHash> configuratorHash = new Hashtable<String, ConfigHash>();
 
 	/**
 	 * This is a standard configurator with default values. It's declared as
@@ -115,16 +116,13 @@ public class Configurator {
 	 */
 	private void readAll(String resource, boolean firstValid)
 			throws ConfigException {
-		logger
-				.debug("Try to read information from resource '" + resource
-						+ "'");
-		if (!configuratorHash.contains(resource)) {
+		logger.debug("Try to read information from resource '" + resource + "'");
+		if (!configuratorHash.containsKey(resource)) {
 			configuratorHash.put(resource, new ConfigHash());
 		}
 		boolean found = loadResource(resource);
 		if ((!found) || (!firstValid)) {
-			ArrayList<String> files = ConfigFile
-					.getAvailableConfigFiles(resource);
+			List<String> files = ConfigFile.getAvailableConfigFiles(resource);
 			for (String configFile : files) {
 				try {
 					found |= load(resource, new FileInputStream(new File(

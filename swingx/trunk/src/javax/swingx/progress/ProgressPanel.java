@@ -20,6 +20,7 @@ package javax.swingx.progress;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.i18n4j.Translator;
 import javax.swing.BoxLayout;
@@ -30,6 +31,14 @@ import javax.swingx.Panel;
 import javax.swingx.connect.Signal;
 import javax.swingx.connect.Slot;
 
+/**
+ * This class provides a simple progress bar panel with advanced functionality
+ * for showing the progress of a given thread and sub threads if they are
+ * created.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public class ProgressPanel extends Panel implements ProgressObserver {
 
 	private static final long serialVersionUID = -5428306694138966408L;
@@ -41,15 +50,16 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	private Label label;
 	private JProgressBar progressBar;
 	private Button cancel;
-	private Thread thread = null;
 	private boolean ownThreadFinished = false;
+	private final Thread thread;
 	private final ProgressObservable observable;
-	private final ArrayList<ProgressPanel> subProgressPanels = new ArrayList<ProgressPanel>();
+	private final List<ProgressPanel> subProgressPanels = new ArrayList<ProgressPanel>();
 
-	public ProgressPanel(ProgressObservable thread) {
+	public ProgressPanel(ProgressObservable observable) {
 		super();
-		this.observable = thread;
-		thread.setMonitor(this);
+		this.observable = observable;
+		observable.setMonitor(this);
+		this.thread = new Thread(observable);
 		initUI();
 	}
 
@@ -84,7 +94,6 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 
 	public void run() {
 		setVisible(true);
-		thread = new Thread(observable);
 		thread.start();
 	}
 
@@ -125,7 +134,9 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	}
 
 	public boolean isFinished() {
-		return (ownThreadFinished && (subProgressPanels.size() == 0));
+		synchronized (subProgressPanels) {
+			return (ownThreadFinished && (subProgressPanels.size() == 0));
+		}
 	}
 
 	@Override
@@ -148,7 +159,9 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	@Override
 	public ProgressObserver startSubProgress(ProgressObservable thread) {
 		ProgressPanel subProgressPanel = new ProgressPanel(thread);
-		subProgressPanels.add(subProgressPanel);
+		synchronized (subProgressPanels) {
+			subProgressPanels.add(subProgressPanel);
+		}
 		add(subProgressPanel);
 		subProgressPanel.connect("finished", this, "finishedSubPanel",
 				ProgressPanel.class);
@@ -160,7 +173,9 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	public void finishedSubPanel(ProgressPanel progressPanel) {
 		remove(progressPanel);
 		repaint();
-		subProgressPanels.remove(progressPanel);
+		synchronized (subProgressPanels) {
+			subProgressPanels.remove(progressPanel);
+		}
 		if (isFinished()) {
 			sendFinishedSignal();
 		}

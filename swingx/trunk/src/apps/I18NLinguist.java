@@ -1,18 +1,18 @@
 /***************************************************************************
  *
- * Copyright 2009-2010 PureSol Technologies 
+ * Copyright 2009-2010 PureSol Technologies
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at 
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ***************************************************************************/
 
@@ -39,184 +39,184 @@ import javax.swingx.progress.SplashWindow;
 
 public class I18NLinguist extends Application {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final Translator translator = Translator
-	    .getTranslator(I18NLinguist.class);
+	private static final Translator translator = Translator
+			.getTranslator(I18NLinguist.class);
 
-    private static SplashWindow splash = null;
+	private static SplashWindow splash = null;
 
-    private I18NTranslationPanel translationPanel = null;
+	private I18NTranslationPanel translationPanel = null;
 
-    public I18NLinguist() {
-	super("I18NLinguist", "v0.1.0");
+	public I18NLinguist() {
+		super("I18NLinguist", "v0.1.0");
 
-	initializeVariables();
-	initializeMenu();
-	initializeDesktop();
-	initializeToolBar();
-    }
-
-    private void initializeVariables() {
-
-    }
-
-    private void initializeMenu() {
-	MenuBar menuBar = new MenuBar();
-	setJMenuBar(menuBar);
-
-	Menu fileMenu = new Menu(translator.i18n("File"));
-	Menu toolsMenu = new Menu(translator.i18n("Tools"));
-	Menu helpMenu = new Menu(translator.i18n("Help"));
-
-	menuBar.add(fileMenu);
-	menuBar.add(toolsMenu);
-	menuBar.add(helpMenu);
-
-	MenuItem update = new MenuItem(translator.i18n("Update..."));
-	update.connect("start", this, "update");
-
-	MenuItem release = new MenuItem(translator.i18n("Release..."));
-	release.connect("start", this, "release");
-
-	MenuItem clear = new MenuItem(translator.i18n("Clear"));
-	clear.connect("start", this, "clear");
-
-	MenuItem open = new MenuItem(translator.i18n("Open..."));
-	open.connect("start", this, "open");
-
-	MenuItem save = new MenuItem(translator.i18n("Save"));
-	save.connect("start", this, "save");
-
-	MenuItem exit = new MenuItem(translator.i18n("Quit"));
-	exit.connect("start", this, "quit");
-
-	fileMenu.add(open);
-	fileMenu.add(save);
-	fileMenu.addSeparator();
-	fileMenu.add(exit);
-
-	toolsMenu.add(update);
-	toolsMenu.add(release);
-	toolsMenu.add(clear);
-
-	helpMenu.addDefaultAboutItem();
-    }
-
-    private void initializeDesktop() {
-	setLayout(new BorderLayout());
-	add(translationPanel = new I18NTranslationPanel());
-    }
-
-    private void initializeToolBar() {
-	ToolBar tools = new ToolBar();
-	Button open = new Button(translator.i18n("Open..."));
-	open.connect("start", this, "open");
-	Button update = new Button(translator.i18n("Update..."));
-	update.connect("start", this, "update");
-	Button release = new Button(translator.i18n("Release..."));
-	release.connect("start", this, "release");
-	tools.add(open);
-	tools.add(update);
-	tools.add(release);
-	add(tools, BorderLayout.NORTH);
-    }
-
-    @Slot
-    public void update() {
-	JFileChooser fileChooser = new JFileChooser();
-	fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	int result = fileChooser.showOpenDialog(this);
-	if (result == JFileChooser.CANCEL_OPTION) {
-	    return;
+		initializeVariables();
+		initializeMenu();
+		initializeDesktop();
+		initializeToolBar();
 	}
-	if (result == JFileChooser.ERROR_OPTION) {
-	    JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-		    translator.i18n("Error while choosing file."),
-		    JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-	    return;
-	}
-	if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
-	    I18NUpdate update = new I18NUpdate(fileChooser.getSelectedFile());
-	    update.update();
-	}
-    }
 
-    @Slot
-    public void release() {
-	JFileChooser fileChooser = new JFileChooser();
-	fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	int result = fileChooser.showOpenDialog(this);
-	if (result == JFileChooser.CANCEL_OPTION) {
-	    return;
-	}
-	if (result == JFileChooser.ERROR_OPTION) {
-	    JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-		    translator.i18n("Error while choosing file."),
-		    JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-	    return;
-	}
-	I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
-	release.release();
-    }
+	private void initializeVariables() {
 
-    @Slot
-    public void clear() {
-	translationPanel.removeWithoutLocation();
-    }
+	}
 
-    @Slot
-    public void open() {
-	JFileChooser fileChooser = new JFileChooser();
-	fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	int result = fileChooser.showOpenDialog(this);
-	if (result == JFileChooser.CANCEL_OPTION) {
-	    return;
-	}
-	if (result == JFileChooser.ERROR_OPTION) {
-	    JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-		    translator.i18n("Error while choosing file."),
-		    JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-	    return;
-	}
-	if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
-	    translationPanel.openDirectory(fileChooser.getSelectedFile());
-	}
-    }
+	private void initializeMenu() {
+		MenuBar menuBar = new MenuBar();
+		setJMenuBar(menuBar);
 
-    @Slot
-    public void save() {
-	if (!translationPanel.saveFile()) {
-	    JOptionPane.showConfirmDialog(Application.getInstance(), translator
-		    .i18n("I18NFile could not be saved!"), translator
-		    .i18n("Error"), JOptionPane.DEFAULT_OPTION,
-		    JOptionPane.ERROR_MESSAGE);
-	}
-    }
+		Menu fileMenu = new Menu(translator.i18n("File"));
+		Menu toolsMenu = new Menu(translator.i18n("Tools"));
+		Menu helpMenu = new Menu(translator.i18n("Help"));
 
-    private boolean isCorrectProjectDirectory(File directory) {
-	if (!I18NUpdate.isCorrectProjectDirectory(directory)) {
-	    JOptionPane
-		    .showConfirmDialog(
-			    Application.getInstance(),
-			    translator
-				    .i18n("Directory does not contain a weither a src or res directory!"),
-			    translator.i18n("Error"),
-			    JOptionPane.DEFAULT_OPTION,
-			    JOptionPane.ERROR_MESSAGE);
-	    return false;
-	}
-	return true;
-    }
+		menuBar.add(fileMenu);
+		menuBar.add(toolsMenu);
+		menuBar.add(helpMenu);
 
-    static public void main(String[] args) {
-	splash = new SplashWindow(I18NLinguist.class
-		.getResource("/splashtest.jpg"), 400, 300);
-	splash.run();
-	Locale.setDefault(new Locale("de", "DE"));
-	Translator.setDefault(Locale.getDefault());
-	I18NLinguist app = new I18NLinguist();
-	splash.dispose();
-	app.run();
-    }
+		MenuItem update = new MenuItem(translator.i18n("Update..."));
+		update.connect("start", this, "update");
+
+		MenuItem release = new MenuItem(translator.i18n("Release..."));
+		release.connect("start", this, "release");
+
+		MenuItem clear = new MenuItem(translator.i18n("Clear"));
+		clear.connect("start", this, "clear");
+
+		MenuItem open = new MenuItem(translator.i18n("Open..."));
+		open.connect("start", this, "open");
+
+		MenuItem save = new MenuItem(translator.i18n("Save"));
+		save.connect("start", this, "save");
+
+		MenuItem exit = new MenuItem(translator.i18n("Quit"));
+		exit.connect("start", this, "quit");
+
+		fileMenu.add(open);
+		fileMenu.add(save);
+		fileMenu.addSeparator();
+		fileMenu.add(exit);
+
+		toolsMenu.add(update);
+		toolsMenu.add(release);
+		toolsMenu.add(clear);
+
+		helpMenu.addDefaultAboutItem();
+	}
+
+	private void initializeDesktop() {
+		setLayout(new BorderLayout());
+		add(translationPanel = new I18NTranslationPanel());
+	}
+
+	private void initializeToolBar() {
+		ToolBar tools = new ToolBar();
+		Button open = new Button(translator.i18n("Open..."));
+		open.connect("start", this, "open");
+		Button update = new Button(translator.i18n("Update..."));
+		update.connect("start", this, "update");
+		Button release = new Button(translator.i18n("Release..."));
+		release.connect("start", this, "release");
+		tools.add(open);
+		tools.add(update);
+		tools.add(release);
+		add(tools, BorderLayout.NORTH);
+	}
+
+	@Slot
+	public void update() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int result = fileChooser.showOpenDialog(this);
+		if (result == JFileChooser.CANCEL_OPTION) {
+			return;
+		}
+		if (result == JFileChooser.ERROR_OPTION) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("Error while choosing file."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
+			I18NUpdate update = new I18NUpdate(fileChooser.getSelectedFile());
+			update.update();
+		}
+	}
+
+	@Slot
+	public void release() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int result = fileChooser.showOpenDialog(this);
+		if (result == JFileChooser.CANCEL_OPTION) {
+			return;
+		}
+		if (result == JFileChooser.ERROR_OPTION) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("Error while choosing file."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
+		release.release();
+	}
+
+	@Slot
+	public void clear() {
+		translationPanel.removeWithoutLocation();
+	}
+
+	@Slot
+	public void open() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int result = fileChooser.showOpenDialog(this);
+		if (result == JFileChooser.CANCEL_OPTION) {
+			return;
+		}
+		if (result == JFileChooser.ERROR_OPTION) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("Error while choosing file."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
+			translationPanel.openDirectory(fileChooser.getSelectedFile());
+		}
+	}
+
+	@Slot
+	public void save() {
+		if (!translationPanel.saveFile()) {
+			JOptionPane.showConfirmDialog(Application.getInstance(), translator
+					.i18n("I18NFile could not be saved!"), translator
+					.i18n("Error"), JOptionPane.DEFAULT_OPTION,
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private boolean isCorrectProjectDirectory(File directory) {
+		if (!I18NUpdate.isCorrectProjectDirectory(directory)) {
+			JOptionPane
+					.showConfirmDialog(
+							Application.getInstance(),
+							translator
+									.i18n("Directory does not contain a weither a src or res directory!"),
+							translator.i18n("Error"),
+							JOptionPane.DEFAULT_OPTION,
+							JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	static public void main(String[] args) {
+		splash = new SplashWindow(I18NLinguist.class
+				.getResource("/splashtest.jpg"), 400, 300);
+		splash.run();
+		Locale.setDefault(new Locale("de", "DE"));
+		Translator.setDefault(Locale.getDefault());
+		I18NLinguist app = new I18NLinguist();
+		splash.dispose();
+		app.run();
+	}
 }

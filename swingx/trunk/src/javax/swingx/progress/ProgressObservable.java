@@ -18,7 +18,19 @@
 
 package javax.swingx.progress;
 
+/**
+ * This interfaces is used for classes which are to be monitored.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public interface ProgressObservable extends Runnable {
 
-    public void setMonitor(ProgressObserver observer);
+	/**
+	 * The monitor (observer) is set here and the class itself has to take care
+	 * about the information which are set to the monitor.
+	 * 
+	 * @param observer
+	 */
+	public void setMonitor(ProgressObserver observer);
 }

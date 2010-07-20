@@ -35,6 +35,13 @@ import javax.swingx.ImageBox;
 
 import org.apache.log4j.Logger;
 
+/**
+ * This class is a simple implementation for a splash screen for application
+ * start ups.
+ * 
+ * @author Rick-Rainer ludwig
+ * 
+ */
 public class SplashWindow extends JWindow implements Runnable, ProgressObserver {
 
 	private static final long serialVersionUID = 4191554073727049318L;
@@ -180,6 +187,7 @@ public class SplashWindow extends JWindow implements Runnable, ProgressObserver 
 		splashThread = new Thread(waitRunner, "SplashThread");
 	}
 
+	@Override
 	public void run() {
 		if (splashThread != null) {
 			splashThread.start();

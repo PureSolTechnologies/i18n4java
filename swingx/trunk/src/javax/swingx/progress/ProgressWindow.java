@@ -29,6 +29,12 @@ import javax.swingx.ScrollPane;
 import javax.swingx.connect.Signal;
 import javax.swingx.connect.Slot;
 
+/**
+ * This is a dedicated window for showing a progress panel.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public class ProgressWindow extends Frame {
 
 	private static final long serialVersionUID = -5428306694138966408L;
@@ -37,7 +43,7 @@ public class ProgressWindow extends Frame {
 			.getTranslator(ProgressWindow.class);
 
 	private ProgressPanel progressPanel;
-	private ProgressObservable observable;
+	private final ProgressObservable observable;
 
 	public ProgressWindow(ProgressObservable thread) {
 		super(translator.i18n("Progress..."));
