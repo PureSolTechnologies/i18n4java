@@ -22,8 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.log4j.Logger;
 
@@ -39,6 +42,8 @@ import org.apache.log4j.Logger;
  * <tt>private static final Translator translator = 
  * Translator.getTranslator(Class)</tt>
  * 
+ * This class is thread safe.
+ * 
  * @author Rick-Rainer Ludwig
  */
 public class Translator implements Serializable {
@@ -47,32 +52,25 @@ public class Translator implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(Translator.class);
 
+	/**
+	 * This variable contains the current default language for the translator.
+	 */
 	private static Locale defaultLocale;
 	static {
-		Locale locale = Locale.getDefault();
-		logger.info("Setting default locale to '" + locale.toString() + "'");
-		defaultLocale = locale;
+		defaultLocale = Locale.getDefault();
+		logger.info("Setting default locale to '" + defaultLocale.toString()
+				+ "'");
 	}
 
-	private static Locale[] additionalLocales = new Locale[0];
+	private static final List<Locale> additionalLocales = new ArrayList<Locale>();
+	private static final Object ADDITIONAL_LOCALES_LOCK = new Object();
+
 	/**
 	 * This variable keeps the references to the system wide unique context
 	 * sensitive instances.
 	 */
-	private static Hashtable<String, Translator> instances = new Hashtable<String, Translator>();
-
-	/**
-	 * This method creates a new instance of Translator. This method should only
-	 * be used, if it is really necessary. getInstance() should be used instead.
-	 * 
-	 * @see #getTranslator()
-	 * 
-	 * @return A reference to a newly created Translator object is returned.
-	 */
-	public static Translator newInstance(Class<?> clazz) {
-		logger.debug("Creating instance for class '" + clazz.getName() + "'");
-		return new Translator(clazz);
-	}
+	private static final ConcurrentMap<String, Translator> instances = new ConcurrentHashMap<String, Translator>();
+	private static final Object INSTANCES_LOCK = new Object();
 
 	/**
 	 * This method creates a the unique instance of Translator for Singleton
@@ -85,11 +83,16 @@ public class Translator implements Serializable {
 	 * @return A reference to a newly created Translator object is returned.
 	 */
 	private static synchronized Translator createInstance(Class<?> clazz) {
-		String context = clazz.getName();
-		if (!instances.containsKey(context)) {
-			instances.put(context, newInstance(clazz));
+		synchronized (INSTANCES_LOCK) {
+			String context = clazz.getName();
+			Translator translator = (Translator) instances.get(context);
+			if (translator == null) {
+				logger.debug("Creating instance for class '" + context + "'");
+				translator = new Translator(clazz);
+				instances.putIfAbsent(context, translator);
+			}
+			return translator;
 		}
-		return instances.get(context);
 	}
 
 	/**
@@ -107,58 +110,60 @@ public class Translator implements Serializable {
 		return translator;
 	}
 
-	static public void setDefault(Locale locale) {
+	/**
+	 * This method sets the current defaut locale for all translations to
+	 * follow.
+	 * 
+	 * @param locale
+	 */
+	public static synchronized void setDefault(Locale locale) {
 		logger.info("Set default locale to '" + locale.toString() + "'");
 		defaultLocale = locale;
 		resetAllInstances();
 	}
 
-	static public Locale getDefault() {
+	public static Locale getDefault() {
 		return defaultLocale;
 	}
 
-	static public String getDefaultLanguage() {
+	public static String getDefaultLanguage() {
 		return getDefault().getLanguage();
 	}
 
-	static public String getDefaultCountry() {
+	public static String getDefaultCountry() {
 		return getDefault().getCountry();
 	}
 
-	static public void setSingleLanguageMode() {
-		logger.info("Set to single language mode");
-		additionalLocales = new Locale[0];
-		resetAllInstances();
+	public static void setSingleLanguageMode() {
+		synchronized (ADDITIONAL_LOCALES_LOCK) {
+			logger.info("Set to single language mode");
+			additionalLocales.clear();
+			resetAllInstances();
+		}
 	}
 
-	static public void setAdditionalLocales(Locale... additionalLocales) {
-		if (additionalLocales == null) {
-			setSingleLanguageMode();
-			return;
-		}
-		if (logger.isInfoEnabled()) {
-			StringBuffer s = new StringBuffer("Set additional locales: ");
-			boolean first = true;
-			for (Locale locale : additionalLocales) {
-				if (!first) {
-					s.append(", ");
-				}
-				s.append(locale.toString());
+	public static void addAdditionalLocale(Locale locale) {
+		synchronized (ADDITIONAL_LOCALES_LOCK) {
+			logger.info("Set additional locale " + locale.toString());
+			if (!additionalLocales.contains(locale)) {
+				additionalLocales.add(locale);
 			}
-			logger.info(s.toString());
+			resetAllInstances();
 		}
-		Translator.additionalLocales = additionalLocales;
-		resetAllInstances();
 	}
 
-	static public Locale[] getAdditionalLocales() {
-		return additionalLocales.clone();
+	public static List<Locale> getAdditionalLocales() {
+		synchronized (ADDITIONAL_LOCALES_LOCK) {
+			return additionalLocales;
+		}
 	}
 
-	static private void resetAllInstances() {
-		logger.info("Reset all instances");
-		for (String context : instances.keySet()) {
-			instances.get(context).reset();
+	private static void resetAllInstances() {
+		synchronized (INSTANCES_LOCK) {
+			logger.info("Reset all instances");
+			for (String context : instances.keySet()) {
+				instances.get(context).reset();
+			}
 		}
 	}
 
@@ -166,12 +171,13 @@ public class Translator implements Serializable {
 	 * This is the Hashtable for the context translations. Everything is kept in
 	 * there. The context is the name of the class including the package name.
 	 */
-	private Hashtable<String, SingleLanguageTranslations> translations = null;
+	private final ConcurrentMap<String, SingleLanguageTranslations> translations = new ConcurrentHashMap<String, SingleLanguageTranslations>();;
+	private final Object TRANSLATIONS_LOCK = new Object();
 
 	/**
 	 * This variable keeps the name of the class which is used as a context.
 	 */
-	private String context = "";
+	private final String context;
 
 	/**
 	 * This is the standard constructor which performs some default
@@ -191,29 +197,22 @@ public class Translator implements Serializable {
 
 	private void reset() {
 		logger.info("reset '" + context + "'");
-		translations = null;
+		translations.clear();
 	}
 
-	protected void setTranslation(String source, String language,
+	synchronized void setTranslation(String source, String language,
 			String translation) {
-		if (translations == null) {
-			translations = new Hashtable<String, SingleLanguageTranslations>();
-		}
 		if (!translations.containsKey(language)) {
-			translations.put(language, new SingleLanguageTranslations());
+			translations
+					.putIfAbsent(language, new SingleLanguageTranslations());
 		}
-		translations.get(language).set(source, translation);
+		translations.get(language).add(source, translation);
 	}
 
 	private void readContextTranslation() {
-		if (translations == null) {
-			translations = new Hashtable<String, SingleLanguageTranslations>();
-		}
 		readContextTranslation(getDefaultLanguage());
-		if (getAdditionalLocales() != null) {
-			for (Locale addLocale : getAdditionalLocales()) {
-				readContextTranslation(addLocale.getLanguage());
-			}
+		for (Locale addLocale : getAdditionalLocales()) {
+			readContextTranslation(addLocale.getLanguage());
 		}
 	}
 
@@ -221,7 +220,7 @@ public class Translator implements Serializable {
 		logger.debug("read context translation for context '" + context
 				+ "' and language '" + language + "'");
 		if (language.equals("en")) {
-			translations.put("en", new SingleLanguageTranslations());
+			translations.putIfAbsent("en", new SingleLanguageTranslations());
 			return;
 		}
 		String resource = TRFile.getResource(context, language);
@@ -232,8 +231,7 @@ public class Translator implements Serializable {
 					+ "'");
 			return;
 		}
-		SingleLanguageTranslations translations = readFromStream(is);
-		this.translations.put(language, translations);
+		translations.putIfAbsent(language, readFromStream(is));
 	}
 
 	private SingleLanguageTranslations readFromStream(InputStream is) {
@@ -245,7 +243,26 @@ public class Translator implements Serializable {
 		}
 	}
 
-	public String translate(String text, String language) {
+	/**
+	 * This method translates the given string. The original string and the
+	 * translation can be a MessageFormat string, but the parameters are not put
+	 * into the string. This method is just a hash map lookup.
+	 * 
+	 * If there is no translated string available, the original string is
+	 * returned.
+	 * 
+	 * @param text
+	 *            is the text to be translated.
+	 * @param language
+	 *            are the parameters for the MessageFormat.
+	 * @return The translated and localized string is returned.
+	 */
+	String translate(String text, String language) {
+		synchronized (TRANSLATIONS_LOCK) {
+			if (translations.size() == 0) {
+				readContextTranslation();
+			}
+		}
 		SingleLanguageTranslations singleLanguageTranslations = translations
 				.get(language);
 		if (singleLanguageTranslations == null) {
@@ -258,57 +275,38 @@ public class Translator implements Serializable {
 		return translation;
 	}
 
-	public String i18n(String text) {
-		if (translations == null) {
-			readContextTranslation();
-		}
-		StringBuffer translation = new StringBuffer(translate(text,
-				getDefaultLanguage()));
+	/**
+	 * This method translates the given string into the localized form. The
+	 * original string and the translation can be a MessageFormat string. Used
+	 * is the current set locale and language.
+	 * 
+	 * @param text
+	 *            is the text to be translated.
+	 * @param params
+	 *            are the parameters for the MessageFormat.
+	 * @return The translated and localized string is returned.
+	 */
+	public String i18n(String text, Object... params) {
+		StringBuffer translation = new StringBuffer(
+				new MessageFormat(translate(text, getDefaultLanguage()),
+						getDefault()).format(params));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
 		}
-		if (additionalLocales != null) {
-			for (Locale locale : getAdditionalLocales()) {
-				if (useLineBreak) {
-					translation.append("\n");
-				} else {
-					translation.append(" ");
-				}
-				translation.append("(").append(
-						translate(text, locale.getLanguage())).append(")");
+		for (Locale locale : getAdditionalLocales()) {
+			if (useLineBreak) {
+				translation.append("\n");
+			} else {
+				translation.append(" ");
 			}
+			translation
+					.append("(")
+					.append(new MessageFormat(translate(text,
+							locale.getLanguage()), locale).format(params))
+					.append(")");
 		}
 		return translation.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public String i18n(String text, Object... params) {
-		if (translations == null) {
-			readContextTranslation();
-		}
-		StringBuffer translation = new StringBuffer(new MessageFormat(
-				translate(text, getDefaultLanguage()), getDefault())
-				.format(params));
-		boolean useLineBreak = false;
-		if (translation.toString().contains("\n")) {
-			useLineBreak = true;
-		}
-		if (additionalLocales != null) {
-			for (Locale locale : getAdditionalLocales()) {
-				if (useLineBreak) {
-					translation.append("\n");
-				} else {
-					translation.append(" ");
-				}
-				translation.append("(").append(
-						new MessageFormat(
-								translate(text, locale.getLanguage()), locale)
-								.format(params)).append(")");
-			}
-		}
-		return translation.toString();
-	}
 }

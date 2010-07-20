@@ -28,6 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  * This class just keeps the information about a single location within a source
  * file. The location with the source is specified by a file and a line number.
  * 
+ * This class is designed as value object for thread safty.
+ * 
+ * This class is thread safe.
+ * 
  * @author Rick-Rainer Ludwig
  * 
  */
@@ -38,29 +42,21 @@ public class SourceLocation implements Cloneable, Serializable,
 
 	private static final long serialVersionUID = 1L;
 
-	private String file;
-	private int line;
-	private int lineCount;
+	private final String file;
+	private final int line;
+	private final int lineCount;
 
-	public SourceLocation() {
-		file = "";
-		line = 0;
-		lineCount = 0;
+	public SourceLocation(SourceLocation sourceLocation) {
+		this.file = sourceLocation.getFile();
+		this.line = sourceLocation.getLine();
+		this.lineCount = sourceLocation.getLineCount();
 	}
 
 	public SourceLocation(String file, int line) {
-		setFile(file);
-		setLine(line);
-		setLineCount(1);
+		this(file, line, 1);
 	}
 
 	public SourceLocation(String file, int line, int lineCount) {
-		setFile(file);
-		setLine(line);
-		setLineCount(lineCount);
-	}
-
-	public void setFile(String file) {
 		if (file == null) {
 			throw new IllegalArgumentException("file must not be null!");
 		}
@@ -68,29 +64,23 @@ public class SourceLocation implements Cloneable, Serializable,
 			throw new IllegalArgumentException("file must not be empty!");
 		}
 		this.file = file;
+		if (line < 1) {
+			throw new IllegalArgumentException("Line has to be 1 or greater!");
+		}
+		this.line = line;
+		if (lineCount < 1) {
+			throw new IllegalArgumentException(
+					"Line count has to be 1 or greater!");
+		}
+		this.lineCount = lineCount;
 	}
 
 	public String getFile() {
 		return file;
 	}
 
-	public void setLine(int line) {
-		if (line < 1) {
-			throw new IllegalArgumentException("Line has to be 1 or greater!");
-		}
-		this.line = line;
-	}
-
 	public int getLine() {
 		return line;
-	}
-
-	public void setLineCount(int lineCount) {
-		if (lineCount < 1) {
-			throw new IllegalArgumentException(
-					"Line count has to be 1 or greater!");
-		}
-		this.lineCount = lineCount;
 	}
 
 	public int getLineCount() {
@@ -106,13 +96,8 @@ public class SourceLocation implements Cloneable, Serializable,
 	}
 
 	@Override
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		}
+	public SourceLocation clone() {
+		return new SourceLocation(this);
 	}
 
 	@Override

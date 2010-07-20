@@ -34,8 +34,8 @@ public class SingleLanguageTranslationsTest extends TestCase {
 	@Test
 	public void testSetterAndGetter() {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
-		translations.set("Source", "Quelle");
-		translations.set("Translation", "Uebersetzung");
+		translations.add("Source", "Quelle");
+		translations.add("Translation", "Uebersetzung");
 		Assert.assertEquals("Quelle", translations.get("Source"));
 		Assert.assertEquals("Uebersetzung", translations.get("Translation"));
 	}
@@ -43,8 +43,8 @@ public class SingleLanguageTranslationsTest extends TestCase {
 	@Test
 	public void testToString() {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
-		translations.set("Source", "Quelle");
-		translations.set("Translation", "Uebersetzung");
+		translations.add("Source", "Quelle");
+		translations.add("Translation", "Uebersetzung");
 		System.out.println(translations.toString());
 		Assert.assertEquals(
 				"Translation --> Uebersetzung\nSource --> Quelle\n",
@@ -66,11 +66,11 @@ public class SingleLanguageTranslationsTest extends TestCase {
 		Assert.assertTrue(translations.equals(translations2));
 		Assert.assertTrue(translations2.equals(translations));
 
-		translations.set("Source", "Quelle");
+		translations.add("Source", "Quelle");
 		Assert.assertFalse(translations.equals(translations2));
 		Assert.assertFalse(translations2.equals(translations));
 
-		translations2.set("Source", "Quelle");
+		translations2.add("Source", "Quelle");
 		Assert.assertTrue(translations.equals(translations2));
 		Assert.assertTrue(translations2.equals(translations));
 	}
@@ -78,7 +78,7 @@ public class SingleLanguageTranslationsTest extends TestCase {
 	@Test
 	public void testClone() {
 		SingleLanguageTranslations origin = new SingleLanguageTranslations();
-		origin.set("Source", "Quelle");
+		origin.add("Source", "Quelle");
 		SingleLanguageTranslations cloned = (SingleLanguageTranslations) origin
 				.clone();
 		Assert.assertNotSame(origin, cloned);

@@ -18,73 +18,138 @@
 
 package javax.i18n4j;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.lang.reflect.Field;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * This class is for storing translations for a single language. Therefore, it
+ * is only a wrapper for a ConcurrentMap object.
+ * 
+ * This class is thread safe.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 @XmlRootElement(name = "translations")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SingleLanguageTranslations implements Cloneable {
 
-	private Hashtable<String, String> translations = new Hashtable<String, String>();
+	private final ConcurrentMap<String, String> translations = new ConcurrentHashMap<String, String>();
 
 	public SingleLanguageTranslations() {
 	}
 
+	/**
+	 * Sets a new translation. An old translation will be overwritten.
+	 * 
+	 * @param source
+	 * @param translation
+	 */
 	public void set(String source, String translation) {
 		translations.put(source, translation);
 	}
 
+	/**
+	 * Adds a translation if the origin is not present. Already existing
+	 * translations are not overwritten!
+	 * 
+	 * @param source
+	 * @param translation
+	 */
+	public void add(String source, String translation) {
+		translations.putIfAbsent(source, translation);
+	}
+
 	public String get(String source) {
-		if (translations.containsKey(source)) {
-			return translations.get(source);
+		String string = translations.get(source);
+		if (string == null) {
+			return source;
 		}
-		return source;
+		return string;
 	}
 
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		for (String source : translations.keySet()) {
-			result.append(source).append(" --> ").append(
-					translations.get(source)).append("\n");
+			result.append(source).append(" --> ")
+					.append(translations.get(source)).append("\n");
 		}
 		return result.toString();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + translations.hashCode();
+		result = prime * result
+				+ ((translations == null) ? 0 : translations.hashCode());
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		SingleLanguageTranslations other = (SingleLanguageTranslations) obj;
-		if (!translations.equals(other.translations))
+		if (translations == null) {
+			if (other.translations != null) {
+				return false;
+			}
+		} else if (!translations.equals(other.translations)) {
 			return false;
+		}
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object clone() {
 		try {
 			SingleLanguageTranslations cloned = (SingleLanguageTranslations) super
 					.clone();
-			cloned.translations = (Hashtable<String, String>) this.translations
-					.clone();
+			Field translationsField;
+			translationsField = cloned.getClass().getDeclaredField(
+					"translations");
+			translationsField.setAccessible(true);
+			translationsField.set(cloned,
+					new ConcurrentHashMap<String, String>());
+			for (String source : this.translations.keySet()) {
+				cloned.translations.put(source, this.translations.get(source));
+			}
 			return cloned;
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
@@ -92,9 +157,7 @@ public class SingleLanguageTranslations implements Cloneable {
 	}
 
 	public void removeLineBreaks() {
-		Enumeration<String> sources = translations.keys();
-		while (sources.hasMoreElements()) {
-			String source = sources.nextElement();
+		for (String source : translations.keySet()) {
 			String translation = translations.get(source);
 			translations.remove(source);
 			source = source.replaceAll("\\n", "\\\\n");
@@ -104,9 +167,7 @@ public class SingleLanguageTranslations implements Cloneable {
 	}
 
 	public void addLineBreaks() {
-		Enumeration<String> sources = translations.keys();
-		while (sources.hasMoreElements()) {
-			String source = sources.nextElement();
+		for (String source : translations.keySet()) {
 			String translation = translations.get(source);
 			translations.remove(source);
 			source = source.replaceAll("\\\\n", "\n");
