@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
             <key>Release language {0}  to file {1}</key>

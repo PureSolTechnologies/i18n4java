@@ -20,12 +20,14 @@ package javax.i18n4j.apps;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.i18n4j.FileSearch;
 import javax.i18n4j.I18NFile;
+import javax.i18n4j.I18NProjectConfiguration;
 import javax.i18n4j.LanguageSet;
 import javax.i18n4j.MultiLanguageTranslations;
 import javax.i18n4j.SingleLanguageTranslations;
@@ -46,34 +48,12 @@ public class I18NRelease {
 	private static final Translator translator = Translator
 			.getTranslator(I18NRelease.class);
 
-	private final File i18nDirectory;
+	private final I18NProjectConfiguration configuration;
 	private final List<File> inputFiles = new ArrayList<File>();
 
-	public I18NRelease(File i18nDirectory) {
-		this.i18nDirectory = i18nDirectory;
-	}
-
-	public I18NRelease(String args[]) {
-		if ((args.length == 0) || (args.length > 1)) {
-			i18nDirectory = null;
-			showUsage();
-			return;
-		}
-		this.i18nDirectory = new File(args[0]);
-	}
-
-	private void showUsage() {
-		System.out.println("===========");
-		System.out.println("I18NRelease");
-		System.out.println("===========");
-		System.out.println();
-		System.out.println(translator.i18n("usage:  I18NRelease <directory>"));
-		System.out.println();
-		System.out
-				.println(translator
-						.i18n("This application converts all i18n files in the\n"
-								+ "the specified directory and converts them into\n"
-								+ "tr files for usage in internationalized applications."));
+	public I18NRelease(File projectDirectory) throws FileNotFoundException,
+			IOException {
+		configuration = new I18NProjectConfiguration(projectDirectory);
 	}
 
 	public void release() {
@@ -82,12 +62,14 @@ public class I18NRelease {
 	}
 
 	private void findAllInputFiles() {
-		inputFiles.addAll(FileSearch.find(i18nDirectory, "*.i18n"));
+		inputFiles.addAll(FileSearch.find(configuration.getI18nDirectory(),
+				"*.i18n"));
 	}
 
 	private void processFiles() {
 		for (File file : inputFiles) {
-			processFile(new File(i18nDirectory, file.toString()));
+			processFile(new File(configuration.getI18nDirectory(),
+					file.toString()));
 		}
 	}
 
@@ -120,7 +102,33 @@ public class I18NRelease {
 		TRFile.write(file, translations);
 	}
 
+	private static void showUsage() {
+		System.out.println("===========");
+		System.out.println("I18NRelease");
+		System.out.println("===========");
+		System.out.println();
+		System.out.println(translator.i18n("usage:  I18NRelease <directory>"));
+		System.out.println();
+		System.out
+				.println(translator
+						.i18n("This application converts all i18n files in the\n"
+								+ "the specified directory and converts them into\n"
+								+ "tr files for usage in internationalized applications."));
+	}
+
 	public static void main(String[] args) {
-		new I18NRelease(args).release();
+		if ((args.length == 0) || (args.length > 1)) {
+			showUsage();
+			return;
+		}
+		try {
+			new I18NRelease(new File(args[0])).release();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 }

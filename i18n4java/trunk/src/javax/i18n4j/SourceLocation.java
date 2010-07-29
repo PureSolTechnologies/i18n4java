@@ -35,16 +35,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Rick-Rainer Ludwig
  * 
  */
-@XmlRootElement(name = "location", namespace = "http://ludwig.endofinternet.net")
+@XmlRootElement(name = "location")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SourceLocation implements Cloneable, Serializable,
 		Comparable<SourceLocation> {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String file;
-	private final int line;
-	private final int lineCount;
+	private String file;
+	private int line;
+	private int lineCount;
+
+	public SourceLocation() {
+	}
 
 	public SourceLocation(SourceLocation sourceLocation) {
 		this.file = sourceLocation.getFile();
@@ -72,6 +75,30 @@ public class SourceLocation implements Cloneable, Serializable,
 			throw new IllegalArgumentException(
 					"Line count has to be 1 or greater!");
 		}
+		this.lineCount = lineCount;
+	}
+
+	/**
+	 * @param file
+	 *            the file to set
+	 */
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	/**
+	 * @param line
+	 *            the line to set
+	 */
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	/**
+	 * @param lineCount
+	 *            the lineCount to set
+	 */
+	public void setLineCount(int lineCount) {
 		this.lineCount = lineCount;
 	}
 

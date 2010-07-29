@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Rick-Rainer Ludwig
  * 
  */
-@XmlRootElement(name = "translation", namespace = "http://overstock.com/example")
+@XmlRootElement(name = "translation")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LanguageSet implements Cloneable {
 
