@@ -25,13 +25,13 @@ import java.util.regex.Pattern;
 
 /**
  * This class was implemented for recursive file search.
- *
+ * 
  * @author Rick-Rainer Ludwig
- *
+ * 
  */
 public class FileSearch {
 
-	public static String wildcardsToRegExp(String pattern) {
+	static String wildcardsToRegExp(String pattern) {
 		pattern = pattern.replaceAll("\\.", "\\\\.");
 		if (File.separator.equals("\\")) {
 			pattern = pattern.replaceAll("\\*", "[^\\\\\\\\]*");
@@ -45,8 +45,8 @@ public class FileSearch {
 
 	public static List<File> find(File directory, String pattern) {
 		pattern = wildcardsToRegExp(pattern);
-		List<File> files = findFilesInDirectory(directory, Pattern
-				.compile(pattern), true);
+		List<File> files = findFilesInDirectory(directory,
+				Pattern.compile(pattern), true);
 		List<File> result = new ArrayList<File>();
 		for (File file : files) {
 			String fileString = file.getPath().substring(
@@ -58,7 +58,7 @@ public class FileSearch {
 
 	/**
 	 * This class is the recursive part of the file search.
-	 *
+	 * 
 	 * @param directory
 	 * @param pattern
 	 * @param scanRecursive
