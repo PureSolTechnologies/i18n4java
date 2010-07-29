@@ -66,18 +66,19 @@ public class I18NUpdate {
 
 	private void processFiles() {
 		for (File file : inputFiles) {
-			processFile(new File(configuration.getSourceDirectory(),
-					file.toString()));
+			processFile(file);
 		}
 	}
 
 	private void processFile(File file) {
 		try {
 			logger.info("Process file " + file.getPath() + "...");
-			MultiLanguageTranslations i18nSources = collectI18NSource(file);
+			File sourceFile = new File(configuration.getSourceDirectory(),
+					file.getPath());
+			MultiLanguageTranslations i18nSources = collectI18NSource(sourceFile);
 			if (i18nSources.hasTranslations()) {
 				File i18nFile = new File(configuration.getI18nDirectory(),
-						I18NFile.getResource(file).getPath());
+						I18NFile.getResource(sourceFile).getPath());
 				addNewSourcesToExistingFile(i18nFile, i18nSources);
 			}
 		} catch (FileNotFoundException e) {

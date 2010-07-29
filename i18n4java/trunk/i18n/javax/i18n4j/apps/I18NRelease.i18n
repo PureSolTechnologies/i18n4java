@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>110</line>
+                    <line>96</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -25,7 +25,7 @@
                 <translated/>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>74</line>
+                    <line>118</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -42,7 +42,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>70</line>
+                    <line>114</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -59,7 +59,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4j.apps.I18NRelease.java</file>
-                    <line>96</line>
+                    <line>77</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

@@ -68,19 +68,23 @@ public class I18NRelease {
 
 	private void processFiles() {
 		for (File file : inputFiles) {
-			processFile(new File(configuration.getI18nDirectory(),
-					file.toString()));
+			processFile(file);
 		}
 	}
 
 	private void processFile(File file) {
 		try {
 			logger.info(translator.i18n("Process file {0}...", file.getPath()));
-			MultiLanguageTranslations mlTranslations = I18NFile.read(file);
+			File sourceFile = new File(configuration.getI18nDirectory(),
+					file.getPath());
+			MultiLanguageTranslations mlTranslations = I18NFile
+					.read(sourceFile);
 			Set<String> languages = mlTranslations.getAvailableLanguages();
 			for (String language : languages) {
-				release(mlTranslations, language, new File(file.getPath()
-						.replaceAll("\\.i18n", "." + language + ".tr")));
+				File destinationFile = new File(
+						configuration.getDestinationDirectory(), file.getPath()
+								.replaceAll("\\.i18n", "." + language + ".tr"));
+				release(mlTranslations, language, destinationFile);
 			}
 		} catch (FileNotFoundException e) {
 			logger.error(e.getMessage(), e);
