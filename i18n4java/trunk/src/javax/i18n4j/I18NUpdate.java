@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-package javax.i18n4j.apps;
+package javax.i18n4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;

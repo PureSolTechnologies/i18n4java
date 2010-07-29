@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-package javax.i18n4j.apps;
+package apps;
 
 /**
  * This is the main class for the I18N tools included within this package. The
@@ -49,9 +49,9 @@ public class I18N4Java {
             toolArgs[index - 1] = args[index];
         }
         if (args[0].equals("update")) {
-            I18NUpdate.main(toolArgs);
+            I18NUpdateApp.main(toolArgs);
         } else if (args[0].equals("release")) {
-            I18NRelease.main(toolArgs);
+            I18NReleaseApp.main(toolArgs);
         } else if (args[0].equals("--help")) {
             showUsage();
         } else {
