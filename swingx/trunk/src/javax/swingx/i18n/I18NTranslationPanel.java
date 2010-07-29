@@ -21,6 +21,7 @@ package javax.swingx.i18n;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import javax.i18n4j.FileSearch;
 import javax.i18n4j.I18NFile;
+import javax.i18n4j.I18NProjectConfiguration;
 import javax.i18n4j.LanguageSet;
 import javax.i18n4j.MultiLanguageTranslations;
 import javax.i18n4j.SourceLocation;
@@ -98,23 +100,23 @@ public class I18NTranslationPanel extends Panel {
 		reservoir = new FreeList();
 		reservoir.connect("valueChanged", this, "changeSource", Object.class);
 
-		centerPanel.add(Label.addTo(new ScrollPane(reservoir), translator
-				.i18n("Reservoir"), Label.TOP));
+		centerPanel.add(Label.addTo(new ScrollPane(reservoir),
+				translator.i18n("Reservoir"), Label.TOP));
 		source = new TextArea();
 		source.setEditable(false);
-		centerPanel.add(Label.addTo(new ScrollPane(source), translator
-				.i18n("Source:"), Label.TOP));
+		centerPanel.add(Label.addTo(new ScrollPane(source),
+				translator.i18n("Source:"), Label.TOP));
 		translation = new TextArea();
-		centerPanel.add(Label.addTo(new ScrollPane(translation), translator
-				.i18n("Translation:"), Label.TOP));
+		centerPanel.add(Label.addTo(new ScrollPane(translation),
+				translator.i18n("Translation:"), Label.TOP));
 		translation.connect("changeText", this, "changeTranslation",
 				String.class);
 		add(centerPanel, BorderLayout.CENTER);
 
 		location = new TextArea();
 		location.setEditable(false);
-		centerPanel.add(Label.addTo(new ScrollPane(location), translator
-				.i18n("Location(s)"), Label.TOP));
+		centerPanel.add(Label.addTo(new ScrollPane(location),
+				translator.i18n("Location(s)"), Label.TOP));
 
 		add(new Label("Some I18NFile statistics"), BorderLayout.SOUTH);
 		add(new Label("<html>Some project<br/>statistics</html>"),
@@ -155,32 +157,48 @@ public class I18NTranslationPanel extends Panel {
 	}
 
 	public void openDirectory(File directory) {
-		if (!saveIfChanged()) {
-			return;
-		}
-		File resDirectory = new File(directory, "res");
-		files = FileSearch.find(resDirectory, "*.i18n");
-		Collections.sort(files);
-		Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
-		for (File file : files) {
-			boolean finished = I18NFile.isFinished(new File(resDirectory, file
-					.getPath()));
-			String listEntry = "<html><body>";
-			if (finished) {
-				listEntry += "<font color=\"green\">";
-				logger.debug("File '" + file.getPath()
-						+ "' is already finished.");
-			} else {
-				listEntry += "<font color=\"red\">";
-				logger.debug("File '" + file.getPath()
-						+ "' is not finished, yet.");
+		try {
+			if (!saveIfChanged()) {
+				return;
 			}
-			listEntry += file.getPath();
-			listEntry += "</font>";
-			listEntry += "</body></html>";
-			listData.put(listEntry, new File(resDirectory, file.getPath()));
+			I18NProjectConfiguration configuration = new I18NProjectConfiguration(
+					directory);
+			files = FileSearch.find(configuration.getI18nDirectory(), "*.i18n");
+			Collections.sort(files);
+			Hashtable<Object, Object> listData = new Hashtable<Object, Object>();
+			for (File file : files) {
+				boolean finished = I18NFile.isFinished(new File(configuration
+						.getI18nDirectory(), file.getPath()));
+				String listEntry = "<html><body>";
+				if (finished) {
+					listEntry += "<font color=\"green\">";
+					logger.debug("File '" + file.getPath()
+							+ "' is already finished.");
+				} else {
+					listEntry += "<font color=\"red\">";
+					logger.debug("File '" + file.getPath()
+							+ "' is not finished, yet.");
+				}
+				listEntry += file.getPath();
+				listEntry += "</font>";
+				listEntry += "</body></html>";
+				listData.put(
+						listEntry,
+						new File(configuration.getI18nDirectory(), file
+								.getPath()));
+			}
+			classes.setListData(listData);
+		} catch (FileNotFoundException e) {
+			logger.error(e.getMessage(), e);
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("File was not found."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("IO error in file reading."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 		}
-		classes.setListData(listData);
 	}
 
 	@Slot
@@ -305,8 +323,8 @@ public class I18NTranslationPanel extends Panel {
 	private void updateHash() {
 		if ((!translation.getText().isEmpty()) && (translationChanged)) {
 			if ((!oldSource.isEmpty()) && (!oldLanguage.isEmpty())) {
-				translationsHash.set(oldSource, oldLanguage, translation
-						.getText());
+				translationsHash.set(oldSource, oldLanguage,
+						translation.getText());
 				changed = true;
 				translationChanged = false;
 			}

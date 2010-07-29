@@ -23,9 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.i18n4j.I18NRelease;
+import javax.i18n4j.I18NUpdate;
 import javax.i18n4j.Translator;
-import javax.i18n4j.apps.I18NRelease;
-import javax.i18n4j.apps.I18NUpdate;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swingx.Application;
