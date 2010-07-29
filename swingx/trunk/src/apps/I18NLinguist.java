@@ -19,7 +19,8 @@
 package apps;
 
 import java.awt.BorderLayout;
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.i18n4j.Translator;
@@ -124,40 +125,58 @@ public class I18NLinguist extends Application {
 
 	@Slot
 	public void update() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int result = fileChooser.showOpenDialog(this);
-		if (result == JFileChooser.CANCEL_OPTION) {
-			return;
-		}
-		if (result == JFileChooser.ERROR_OPTION) {
-			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("Error while choosing file."),
-					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
+		try {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int result = fileChooser.showOpenDialog(this);
+			if (result == JFileChooser.CANCEL_OPTION) {
+				return;
+			}
+			if (result == JFileChooser.ERROR_OPTION) {
+				JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+						translator.i18n("Error while choosing file."),
+						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			I18NUpdate update = new I18NUpdate(fileChooser.getSelectedFile());
 			update.update();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("File was not found."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("IO error in file reading."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	@Slot
 	public void release() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int result = fileChooser.showOpenDialog(this);
-		if (result == JFileChooser.CANCEL_OPTION) {
-			return;
-		}
-		if (result == JFileChooser.ERROR_OPTION) {
+		try {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int result = fileChooser.showOpenDialog(this);
+			if (result == JFileChooser.CANCEL_OPTION) {
+				return;
+			}
+			if (result == JFileChooser.ERROR_OPTION) {
+				JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+						translator.i18n("Error while choosing file."),
+						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
+			release.release();
+		} catch (FileNotFoundException e) {
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("Error while choosing file."),
+					translator.i18n("File was not found."),
 					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-			return;
+		} catch (IOException e) {
+			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
+					translator.i18n("IO error in file reading."),
+					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 		}
-		I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
-		release.release();
 	}
 
 	@Slot
@@ -179,39 +198,22 @@ public class I18NLinguist extends Application {
 					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (isCorrectProjectDirectory(fileChooser.getSelectedFile())) {
-			translationPanel.openDirectory(fileChooser.getSelectedFile());
-		}
+		translationPanel.openDirectory(fileChooser.getSelectedFile());
 	}
 
 	@Slot
 	public void save() {
 		if (!translationPanel.saveFile()) {
-			JOptionPane.showConfirmDialog(Application.getInstance(), translator
-					.i18n("I18NFile could not be saved!"), translator
-					.i18n("Error"), JOptionPane.DEFAULT_OPTION,
+			JOptionPane.showConfirmDialog(Application.getInstance(),
+					translator.i18n("I18NFile could not be saved!"),
+					translator.i18n("Error"), JOptionPane.DEFAULT_OPTION,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	private boolean isCorrectProjectDirectory(File directory) {
-		if (!I18NUpdate.isCorrectProjectDirectory(directory)) {
-			JOptionPane
-					.showConfirmDialog(
-							Application.getInstance(),
-							translator
-									.i18n("Directory does not contain a weither a src or res directory!"),
-							translator.i18n("Error"),
-							JOptionPane.DEFAULT_OPTION,
-							JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
-	}
-
 	static public void main(String[] args) {
-		splash = new SplashWindow(I18NLinguist.class
-				.getResource("/splashtest.jpg"), 400, 300);
+		splash = new SplashWindow(
+				I18NLinguist.class.getResource("/splashtest.jpg"), 400, 300);
 		splash.run();
 		Locale.setDefault(new Locale("de", "DE"));
 		Translator.setDefault(Locale.getDefault());
