@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.proc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.i18n4java.FileSearch;
-import javax.i18n4java.I18NFile;
-import javax.i18n4java.I18NJavaParser;
-import javax.i18n4java.I18NProjectConfiguration;
-import javax.i18n4java.MultiLanguageTranslations;
+import javax.i18n4java.data.I18NFile;
+import javax.i18n4java.data.MultiLanguageTranslations;
+import javax.i18n4java.proc.I18NJavaParser;
+import javax.i18n4java.proc.I18NProjectConfiguration;
+import javax.i18n4java.utils.FileSearch;
 
 import org.apache.log4j.Logger;
 

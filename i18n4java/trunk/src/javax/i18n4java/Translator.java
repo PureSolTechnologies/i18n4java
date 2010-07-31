@@ -28,6 +28,9 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.i18n4java.data.SingleLanguageTranslations;
+import javax.i18n4java.data.TRFile;
+
 import org.apache.log4j.Logger;
 
 /**

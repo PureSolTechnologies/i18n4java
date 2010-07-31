@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.data;
 
 import java.util.ArrayList;
 import java.util.Enumeration;

@@ -16,9 +16,9 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.data;
 
-import javax.i18n4java.SingleLanguageTranslations;
+import javax.i18n4java.data.SingleLanguageTranslations;
 
 import org.junit.Test;
 

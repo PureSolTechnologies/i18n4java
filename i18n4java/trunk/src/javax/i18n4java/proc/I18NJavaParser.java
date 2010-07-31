@@ -16,13 +16,15 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.proc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Pattern;
+
+import javax.i18n4java.data.MultiLanguageTranslations;
 
 import org.apache.log4j.Logger;
 

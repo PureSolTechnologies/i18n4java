@@ -16,14 +16,14 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.data;
 
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.i18n4java.LanguageSet;
-import javax.i18n4java.MultiLanguageTranslations;
-import javax.i18n4java.SourceLocation;
+import javax.i18n4java.data.LanguageSet;
+import javax.i18n4java.data.MultiLanguageTranslations;
+import javax.i18n4java.data.SourceLocation;
 
 import org.junit.Test;
 
@@ -138,5 +138,18 @@ public class MultiLanguageTranslationsTest extends TestCase {
 				.clone();
 		Assert.assertNotSame(origin, cloned);
 		Assert.assertEquals(origin, cloned);
+	}
+
+	@Test
+	public void testSetAndGetTranslation() {
+		MultiLanguageTranslations hash = new MultiLanguageTranslations();
+		Assert.assertEquals("English", hash.get("English", "de"));
+
+		hash.set("English", "de", "Deutsch");
+		hash.set("English", "vi", "Tieng Viet");
+
+		Assert.assertEquals("English", hash.get("English", ""));
+		Assert.assertEquals("Deutsch", hash.get("English", "de"));
+		Assert.assertEquals("Tieng Viet", hash.get("English", "vi"));
 	}
 }

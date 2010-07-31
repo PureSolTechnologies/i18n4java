@@ -1,4 +1,4 @@
-package javax.i18n4java;
+package javax.i18n4java.proc;
 
 public interface ProgressListener {
 

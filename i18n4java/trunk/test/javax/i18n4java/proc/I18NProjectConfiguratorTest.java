@@ -1,10 +1,10 @@
-package javax.i18n4java;
+package javax.i18n4java.proc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.i18n4java.I18NProjectConfiguration;
+import javax.i18n4java.proc.I18NProjectConfiguration;
 
 import org.junit.Test;
 

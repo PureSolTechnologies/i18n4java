@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.i18n4java.I18NUpdate;
 import javax.i18n4java.Translator;
+import javax.i18n4java.proc.I18NUpdate;
 
 /**
  * This applications reads files and directories given by command line and

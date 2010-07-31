@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.utils;
 
 import java.io.File;
 import java.util.ArrayList;

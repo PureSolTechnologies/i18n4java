@@ -16,13 +16,13 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.utils;
 
 import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.i18n4java.FileSearch;
+import javax.i18n4java.utils.FileSearch;
 
 import org.junit.Test;
 
@@ -73,10 +73,10 @@ public class FileSearchTest extends TestCase {
 		boolean foundClass = false;
 		for (File file : files) {
 			// System.out.println(file);
-			if (file.equals(new File("/test/javax/i18n4j/FileSearchTest.java"))) {
+			if (file.equals(new File("/test/javax/i18n4java/utils/FileSearchTest.java"))) {
 				foundSelf = true;
 			}
-			if (file.equals(new File("/src/javax/i18n4j/FileSearch.java"))) {
+			if (file.equals(new File("/src/javax/i18n4java/utils/FileSearch.java"))) {
 				foundClass = true;
 			}
 		}

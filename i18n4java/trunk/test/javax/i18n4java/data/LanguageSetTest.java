@@ -16,13 +16,13 @@
  *
  ***************************************************************************/
 
-package javax.i18n4java;
+package javax.i18n4java.data;
 
 import java.util.Set;
 import java.util.Vector;
 
-import javax.i18n4java.LanguageSet;
-import javax.i18n4java.SourceLocation;
+import javax.i18n4java.data.LanguageSet;
+import javax.i18n4java.data.SourceLocation;
 
 import org.junit.Test;
 
