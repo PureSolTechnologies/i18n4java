@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import javax.i18n4java.FileSearch;
+import javax.i18n4java.utils.FileSearch;
 import javax.swingx.config.ConfigFile;
 
 import org.apache.log4j.Logger;
