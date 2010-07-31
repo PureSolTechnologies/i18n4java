@@ -22,7 +22,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JProgressBar;
 import javax.swingx.Button;

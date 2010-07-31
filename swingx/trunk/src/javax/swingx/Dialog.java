@@ -22,7 +22,7 @@ import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.JDialog;
 import javax.swingx.connect.ConnectionManager;
 import javax.swingx.connect.Slot;

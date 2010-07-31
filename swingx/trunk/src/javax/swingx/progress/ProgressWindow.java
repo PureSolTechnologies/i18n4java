@@ -20,7 +20,7 @@ package javax.swingx.progress;
 
 import java.awt.Dimension;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
 import javax.swingx.Application;
 import javax.swingx.Frame;

@@ -21,7 +21,7 @@ package javax.swingx.config;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;

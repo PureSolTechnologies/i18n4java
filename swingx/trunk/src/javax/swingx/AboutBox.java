@@ -21,7 +21,7 @@ package javax.swingx;
 import java.awt.FlowLayout;
 import java.util.Locale;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swingx.config.APIConfig;
 import javax.swingx.config.CustomerConfig;
 

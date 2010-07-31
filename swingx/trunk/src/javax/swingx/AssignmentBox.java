@@ -25,7 +25,7 @@ import java.awt.Insets;
 import java.util.Collections;
 import java.util.Vector;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swingx.connect.Slot;
 
 public class AssignmentBox extends Panel {

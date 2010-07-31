@@ -23,9 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.i18n4j.I18NRelease;
-import javax.i18n4j.I18NUpdate;
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swingx.Application;
@@ -35,7 +33,10 @@ import javax.swingx.MenuBar;
 import javax.swingx.MenuItem;
 import javax.swingx.ToolBar;
 import javax.swingx.connect.Slot;
+import javax.swingx.i18n.I18NRelease;
 import javax.swingx.i18n.I18NTranslationPanel;
+import javax.swingx.i18n.I18NUpdate;
+import javax.swingx.progress.ProgressWindow;
 import javax.swingx.progress.SplashWindow;
 
 public class I18NLinguist extends Application {
@@ -139,7 +140,8 @@ public class I18NLinguist extends Application {
 				return;
 			}
 			I18NUpdate update = new I18NUpdate(fileChooser.getSelectedFile());
-			update.update();
+			ProgressWindow progressWindow = new ProgressWindow(update);
+			progressWindow.run();
 		} catch (FileNotFoundException e) {
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
 					translator.i18n("File was not found."),
@@ -167,7 +169,8 @@ public class I18NLinguist extends Application {
 				return;
 			}
 			I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
-			release.release();
+			ProgressWindow progressWindow = new ProgressWindow(release);
+			progressWindow.run();
 		} catch (FileNotFoundException e) {
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
 					translator.i18n("File was not found."),

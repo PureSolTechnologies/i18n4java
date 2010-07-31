@@ -20,7 +20,7 @@ package javax.swingx;
 
 import java.io.IOException;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;

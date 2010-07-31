@@ -20,7 +20,7 @@ package javax.swingx.log;
 
 import java.awt.BorderLayout;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swingx.ComboBox;
 import javax.swingx.Dialog;
 import javax.swingx.Label;

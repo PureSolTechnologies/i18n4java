@@ -21,7 +21,7 @@ package javax.swingx;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;

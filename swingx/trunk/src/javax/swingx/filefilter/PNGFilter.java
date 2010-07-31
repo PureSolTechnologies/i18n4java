@@ -20,7 +20,7 @@ package javax.swingx.filefilter;
 
 import java.io.Serializable;
 
-import javax.i18n4j.Translator;
+import javax.i18n4java.Translator;
 
 public class PNGFilter extends AbstractFileFilter implements Serializable {
 
