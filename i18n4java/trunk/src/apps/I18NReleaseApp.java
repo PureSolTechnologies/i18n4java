@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.i18n4j.I18NRelease;
-import javax.i18n4j.Translator;
+import javax.i18n4java.I18NRelease;
+import javax.i18n4java.Translator;
 
 /**
  * This application converts all i18n files in the the specified directory and
