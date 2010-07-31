@@ -2,16 +2,8 @@
 <translations>
     <translations>
         <entry>
-            <key>Username</key>
-            <value>Benutzer</value>
-        </entry>
-        <entry>
             <key>Cancel</key>
             <value>Abbruch</value>
-        </entry>
-        <entry>
-            <key>User Confirmation</key>
-            <value>Benutzeranmeldung</value>
         </entry>
         <entry>
             <key>Password</key>
@@ -20,6 +12,14 @@
         <entry>
             <key>OK</key>
             <value>OK</value>
+        </entry>
+        <entry>
+            <key>User Confirmation</key>
+            <value>Benutzeranmeldung</value>
+        </entry>
+        <entry>
+            <key>Username</key>
+            <value>Benutzer</value>
         </entry>
     </translations>
 </translations>

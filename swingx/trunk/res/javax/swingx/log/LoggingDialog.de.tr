@@ -2,12 +2,12 @@
 <translations>
     <translations>
         <entry>
-            <key>Configure Logging</key>
-            <value>Protokollierung konfigurieren</value>
-        </entry>
-        <entry>
             <key>Set log level:</key>
             <value>Setze Protokoll-Level:</value>
+        </entry>
+        <entry>
+            <key>Configure Logging</key>
+            <value>Protokollierung konfigurieren</value>
         </entry>
     </translations>
 </translations>

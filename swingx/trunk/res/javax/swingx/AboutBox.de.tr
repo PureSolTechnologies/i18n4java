@@ -2,8 +2,8 @@
 <translations>
     <translations>
         <entry>
-            <key>About</key>
-            <value>Ueber</value>
+            <key>Vendor</key>
+            <value>Anbieter</value>
         </entry>
         <entry>
             <key>Customer Information</key>
@@ -18,12 +18,12 @@
             <value>Kontakt</value>
         </entry>
         <entry>
-            <key>Customer</key>
-            <value>Kunde</value>
+            <key>About</key>
+            <value>Ueber</value>
         </entry>
         <entry>
-            <key>Vendor</key>
-            <value>Anbieter</value>
+            <key>Customer</key>
+            <value>Kunde</value>
         </entry>
     </translations>
 </translations>

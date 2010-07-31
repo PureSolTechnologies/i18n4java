@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
             <key>Assigned</key>
@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AssignmentBox.java</file>
-                    <line>50</line>
+                    <line>68</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,7 +30,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AssignmentBox.java</file>
-                    <line>76</line>
+                    <line>94</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -47,7 +47,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AssignmentBox.java</file>
-                    <line>64</line>
+                    <line>82</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -64,7 +64,7 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.AssignmentBox.java</file>
-                    <line>66</line>
+                    <line>84</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

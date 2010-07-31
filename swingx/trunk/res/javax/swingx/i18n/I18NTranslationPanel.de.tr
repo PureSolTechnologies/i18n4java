@@ -2,32 +2,32 @@
 <translations>
     <translations>
         <entry>
-            <key>Language</key>
-            <value>Sprache</value>
-        </entry>
-        <entry>
-            <key>Source:</key>
-            <value>Quelle:</value>
+            <key>Classes</key>
+            <value>Klassen</value>
         </entry>
         <entry>
             <key>Reservoir</key>
             <value>Reservoir</value>
         </entry>
         <entry>
-            <key>Classes</key>
-            <value>Klassen</value>
+            <key>Source:</key>
+            <value>Quelle:</value>
         </entry>
         <entry>
-            <key>Save</key>
-            <value>Speichern</value>
+            <key>Language</key>
+            <value>Sprache</value>
+        </entry>
+        <entry>
+            <key>Location(s)</key>
+            <value>Quelle(n)</value>
         </entry>
         <entry>
             <key>Translation:</key>
             <value>Übersetzung:</value>
         </entry>
         <entry>
-            <key>Location(s)</key>
-            <value>Quelle(n)</value>
+            <key>Save</key>
+            <value>Speichern</value>
         </entry>
         <entry>
             <key>File not found</key>

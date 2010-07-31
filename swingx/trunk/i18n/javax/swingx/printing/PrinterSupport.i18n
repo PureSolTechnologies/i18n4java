@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
             <key>No printing services available.</key>
@@ -13,17 +13,17 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>125</line>
+                    <line>143</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>170</line>
+                    <line>188</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>202</line>
+                    <line>220</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -40,17 +40,17 @@
                 </translated>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>126</line>
+                    <line>144</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>171</line>
+                    <line>189</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.swingx.printing.PrinterSupport.java</file>
-                    <line>203</line>
+                    <line>221</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
-            <key>BMP images</key>
+            <key>About...</key>
             <value>
-                <source>BMP images</source>
+                <source>About...</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>BMP-Bilder</value>
+                        <value>Ueber...</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.filefilter.BMPFilter.java</file>
-                    <line>15</line>
+                    <file>javax.swingx.Menu.java</file>
+                    <line>65</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
             <key>Cancel</key>
@@ -8,7 +8,7 @@
                 <translated/>
                 <locations>
                     <file>javax.swingx.progress.ProgressPanel.java</file>
-                    <line>44</line>
+                    <line>72</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

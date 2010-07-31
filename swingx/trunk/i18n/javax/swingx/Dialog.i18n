@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
-            <key>This function is not implemented yet!</key>
+            <key>Cancel</key>
             <value>
-                <source>This function is not implemented yet!</source>
+                <source>Cancel</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Diese Funktion ist noch nicht implementiert!</value>
+                        <value>Abbruch</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.Application.java</file>
-                    <line>33</line>
+                    <file>javax.swingx.Dialog.java</file>
+                    <line>174</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>No Implementation</key>
+            <key>OK</key>
             <value>
-                <source>No Implementation</source>
+                <source>OK</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Keine Implementierung</value>
+                        <value>OK</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.Application.java</file>
-                    <line>34</line>
+                    <file>javax.swingx.Dialog.java</file>
+                    <line>159</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

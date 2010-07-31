@@ -18,13 +18,10 @@
 
 package javax.swingx.i18n;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import javax.i18n4java.I18N4Java;
 import javax.swingx.ComboBox;
 
 /**
@@ -37,41 +34,28 @@ public class LocaleChooser extends ComboBox {
 
 	private static final long serialVersionUID = -5751261750747502182L;
 
-	private final List<String> localeNames = new ArrayList<String>();
-	private final Map<String, Locale> names2Locales = new Hashtable<String, Locale>();
+	private final List<String> availableLocaleNames = I18N4Java
+			.getAvailableLocaleNames();
 
 	public LocaleChooser() {
 		super();
-		readLocales();
 		insertLocales();
 	}
 
-	private void readLocales() {
-		Locale[] locales = Locale.getAvailableLocales();
-		for (int index = 0; index < locales.length; index++) {
-			Locale locale = locales[index];
-			String localeName = locale.toString();
-			localeNames.add(localeName);
-			names2Locales.put(localeName, locale);
-		}
-		Collections.sort(localeNames);
-	}
-
 	private void insertLocales() {
-		for (int index = 0; index < localeNames.size(); index++) {
-			String localeName = localeNames.get(index);
-			Locale locale = names2Locales.get(localeName);
-			addItem(localeName + " / " + locale.getDisplayName());
+		for (String localeName : availableLocaleNames) {
+			addItem(localeName + " / "
+					+ new Locale(localeName).getDisplayName());
 		}
 	}
 
 	public Locale getSelectedLocale() {
-		return names2Locales.get(localeNames.get(getSelectedIndex()));
+		return new Locale(availableLocaleNames.get(getSelectedIndex()));
 	}
 
 	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < localeNames.size(); index++) {
-			if (names2Locales.get(localeNames.get(index)).equals(locale)) {
+		for (int index = 0; index < availableLocaleNames.size(); index++) {
+			if (new Locale(availableLocaleNames.get(index)).equals(locale)) {
 				setSelectedIndex(index);
 				break;
 			}

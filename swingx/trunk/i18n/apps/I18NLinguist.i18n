@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
             <key>I18NFile could not be saved!</key>
@@ -8,7 +8,7 @@
                 <translated/>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>173</line>
+                    <line>210</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -25,7 +25,7 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>64</line>
+                    <line>84</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -42,12 +42,12 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>61</line>
+                    <line>81</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>99</line>
+                    <line>119</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -64,7 +64,24 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>51</line>
+                    <line>71</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>File was not found.</key>
+            <value>
+                <source>File was not found.</source>
+                <translated/>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>146</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>175</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -81,12 +98,29 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>58</line>
+                    <line>78</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>97</line>
+                    <line>117</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>IO error in file reading.</key>
+            <value>
+                <source>IO error in file reading.</source>
+                <translated/>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>150</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>179</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -103,27 +137,42 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>116</line>
+                    <line>137</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>136</line>
+                    <line>146</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>159</line>
+                    <line>150</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>174</line>
+                    <line>166</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>185</line>
+                    <line>175</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>179</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>199</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>210</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -133,11 +182,6 @@
             <value>
                 <source>Directory does not contain a weither a src or res directory!</source>
                 <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>185</line>
-                    <lineCount>1</lineCount>
-                </locations>
             </value>
         </entry>
         <entry>
@@ -152,24 +196,7 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>50</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Quit</key>
-            <value>
-                <source>Quit</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Beenden</value>
-                    </entry>
-                </translated>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>73</line>
+                    <line>70</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -186,7 +213,24 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>52</line>
+                    <line>72</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Quit</key>
+            <value>
+                <source>Quit</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Beenden</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>93</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -203,12 +247,12 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>67</line>
+                    <line>87</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>95</line>
+                    <line>115</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -225,17 +269,17 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>116</line>
+                    <line>137</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>136</line>
+                    <line>166</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>159</line>
+                    <line>199</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -252,7 +296,7 @@
                 </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>70</line>
+                    <line>90</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

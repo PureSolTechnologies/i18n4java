@@ -1,86 +1,98 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
-            <key>Username</key>
+            <key>About</key>
             <value>
-                <source>Username</source>
+                <source>About</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Benutzer</value>
+                        <value>Ueber</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
-                    <line>62</line>
+                    <file>javax.swingx.AboutBox.java</file>
+                    <line>55</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>Cancel</key>
+            <key>Customer Information</key>
             <value>
-                <source>Cancel</source>
+                <source>Customer Information</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Abbruch</value>
+                        <value>Kunden-Information</value>
+                    </entry>
+                </translated>
+            </value>
+        </entry>
+        <entry>
+            <key>Copyright</key>
+            <value>
+                <source>Copyright</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Copyright</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
-                    <line>70</line>
+                    <file>javax.swingx.AboutBox.java</file>
+                    <line>67</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>Password</key>
+            <key>Contact</key>
             <value>
-                <source>Password</source>
+                <source>Contact</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Passwort</value>
+                        <value>Kontakt</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
-                    <line>64</line>
+                    <file>javax.swingx.AboutBox.java</file>
+                    <line>73</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>User Confirmation</key>
+            <key>Customer</key>
             <value>
-                <source>User Confirmation</source>
+                <source>Customer</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Benutzeranmeldung</value>
+                        <value>Kunde</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
-                    <line>58</line>
+                    <file>javax.swingx.AboutBox.java</file>
+                    <line>71</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>OK</key>
+            <key>Vendor</key>
             <value>
-                <source>OK</source>
+                <source>Vendor</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>OK</value>
+                        <value>Anbieter</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.LoginDialog.java</file>
+                    <file>javax.swingx.AboutBox.java</file>
                     <line>69</line>
                     <lineCount>1</lineCount>
                 </locations>

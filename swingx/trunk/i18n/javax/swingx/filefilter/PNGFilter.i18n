@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
-            <key>JPEG images</key>
+            <key>PNG images</key>
             <value>
-                <source>JPEG images</source>
+                <source>PNG images</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>JPEG-Bilder</value>
+                        <value>PNG-Bilder</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.filefilter.JPEGFilter.java</file>
-                    <line>14</line>
+                    <file>javax.swingx.filefilter.PNGFilter.java</file>
+                    <line>33</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

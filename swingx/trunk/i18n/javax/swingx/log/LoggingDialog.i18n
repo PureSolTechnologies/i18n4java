@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<internationalization xmlns:ns2="http://ludwig.endofinternet.net" xmlns:ns3="http://overstock.com/example">
+<internationalization>
     <translations>
         <entry>
-            <key>Cancel</key>
+            <key>Configure Logging</key>
             <value>
-                <source>Cancel</source>
+                <source>Configure Logging</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>Abbruch</value>
+                        <value>Protokollierung konfigurieren</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.Dialog.java</file>
-                    <line>156</line>
+                    <file>javax.swingx.log.LoggingDialog.java</file>
+                    <line>48</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>OK</key>
+            <key>Set log level:</key>
             <value>
-                <source>OK</source>
+                <source>Set log level:</source>
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>OK</value>
+                        <value>Setze Protokoll-Level:</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.swingx.Dialog.java</file>
-                    <line>141</line>
+                    <file>javax.swingx.log.LoggingDialog.java</file>
+                    <line>69</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
