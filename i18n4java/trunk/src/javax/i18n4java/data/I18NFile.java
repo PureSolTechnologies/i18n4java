@@ -21,7 +21,6 @@ package javax.i18n4java.data;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -76,9 +75,8 @@ public class I18NFile {
 
 	public static boolean isFinished(File file) {
 		try {
-			MultiLanguageTranslations translations = read(file);
-			return translations.isTranslationFinished();
-		} catch (FileNotFoundException e) {
+			return read(file).isTranslationFinished();
+		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return false;
@@ -102,24 +100,8 @@ public class I18NFile {
 		}
 	}
 
-	static public MultiLanguageTranslations read(File file)
-			throws FileNotFoundException {
-		try {
-			if (!file.exists()) {
-				throw new FileNotFoundException("File " + file.getPath()
-						+ " could not be found!");
-			}
-			JAXBContext context = JAXBContext
-					.newInstance(MultiLanguageTranslations.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			MultiLanguageTranslations translations = (MultiLanguageTranslations) unmarshaller
-					.unmarshal(file);
-			translations.addLineBreaks();
-			return translations;
-		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
+	static public MultiLanguageTranslations read(File file) throws IOException {
+		return read(new FileInputStream(file));
 	}
 
 	static public MultiLanguageTranslations read(InputStream inputStream)

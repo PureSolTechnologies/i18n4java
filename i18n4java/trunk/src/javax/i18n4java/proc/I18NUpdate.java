@@ -114,7 +114,7 @@ public class I18NUpdate extends I18NProgress {
 			MultiLanguageTranslations hash = I18NFile.read(file);
 			hash.removeLocations();
 			return hash;
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			logger.warn(e.getMessage(), e);
 			return new MultiLanguageTranslations();
 		}

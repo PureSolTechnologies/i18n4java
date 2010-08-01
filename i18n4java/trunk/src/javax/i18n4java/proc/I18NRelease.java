@@ -85,7 +85,7 @@ public class I18NRelease extends I18NProgress {
 								.replaceAll("\\.i18n", "." + language + ".tr"));
 				release(mlTranslations, language, destinationFile);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
