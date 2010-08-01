@@ -211,9 +211,9 @@ public class I18NTranslationPanel extends Panel {
 			setTranslationsHash(I18NFile.read(i18nFile));
 			updateReservoir();
 			changed = false;
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			JOptionPane.showConfirmDialog(Application.getInstance(), translator
-					.i18n("The file {0} could not be found!", i18nFile),
+					.i18n("The file {0} could not be read!", i18nFile),
 					translator.i18n("File not found"), JOptionPane.OK_OPTION,
 					JOptionPane.ERROR_MESSAGE);
 			i18nFile = null;
