@@ -74,7 +74,7 @@ public class FileSearch {
 		for (String fileToCheck : filesInDirectory) {
 			File file = new File(directory, fileToCheck);
 			if (file.isFile()) {
-				if (pattern.matcher(file.getName()).matches()) {
+				if (pattern.matcher(fileToCheck).matches()) {
 					files.add(file);
 				}
 			} else if (file.isDirectory()) {
