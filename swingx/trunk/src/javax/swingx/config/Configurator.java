@@ -78,7 +78,8 @@ public class Configurator {
 	 */
 	private boolean loadResource(String resource) {
 		logger.debug("Load resource '" + resource + "'");
-		InputStream inStream = getClass().getResourceAsStream(resource);
+		InputStream inStream;
+		inStream = ClassLoader.getSystemResourceAsStream(resource);
 		if (inStream == null) {
 			logger.debug("Resource '" + resource + "' not found!");
 			return false;
