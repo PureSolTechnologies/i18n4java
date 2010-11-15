@@ -58,10 +58,17 @@ public class MenuBar extends JMenuBar implements Widget {
 		connectionManager.release(signal, receiver, slot, types);
 	}
 
+	@Override
 	public void addMediator(Mediator mediator) {
 		connectionManager.connect("changed", mediator, "widgetChanged");
 	}
 
+	@Override
+	public void removeMediator(Mediator mediator) {
+		connectionManager.release("changed", mediator, "widgetChanged");
+	}
+
+	@Override
 	public void changed(Widget widget) {
 		connectionManager.emitSignal("changed", widget);
 	}

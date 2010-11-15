@@ -20,9 +20,7 @@ package javax.swingx.progress;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class ProgressWindowTest extends TestCase {
+public class ProgressWindowTest {
 
 	@Test
 	public void test() {

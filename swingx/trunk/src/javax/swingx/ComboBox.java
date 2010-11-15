@@ -97,10 +97,17 @@ public class ComboBox extends JComboBox implements Widget, ActionListener,
 		connectionManager.emitSignal("focusLost", focusEvent);
 	}
 
+	@Override
 	public void addMediator(Mediator mediator) {
 		connectionManager.connect("changed", mediator, "widgetChanged");
 	}
 
+	@Override
+	public void removeMediator(Mediator mediator) {
+		connectionManager.release("changed", mediator, "widgetChanged");
+	}
+
+	@Override
 	public void changed(Widget widget) {
 		connectionManager.emitSignal("changed", widget);
 	}

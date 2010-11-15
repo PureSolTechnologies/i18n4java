@@ -18,16 +18,15 @@
 
 package javax.swingx.config;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class ConfigExceptionTest extends TestCase {
+public class ConfigExceptionTest {
 
 	@Test
 	public void testConstructor() {
 		ConfigException exception = new ConfigException("Test Message");
-		Assert.assertEquals("Test Message", exception.getMessage());
+		assertEquals("Test Message", exception.getMessage());
 	}
 }

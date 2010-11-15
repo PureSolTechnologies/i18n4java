@@ -18,18 +18,19 @@
 
 package javax.swingx.config;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class APIConfigTest extends TestCase {
+public class APIConfigTest {
 
 	@Test
 	public void testGettersAndSetters() {
 		APIConfig.setHelpRequest(1);
 		APIConfig.setVersionRequest(2);
-		Assert.assertEquals(1, APIConfig.getHelpRequest());
-		Assert.assertEquals(2, APIConfig.getVersionRequest());
+		assertEquals(Integer.valueOf(1),
+				Integer.valueOf(APIConfig.getHelpRequest()));
+		assertEquals(Integer.valueOf(2),
+				Integer.valueOf(APIConfig.getVersionRequest()));
 	}
 }

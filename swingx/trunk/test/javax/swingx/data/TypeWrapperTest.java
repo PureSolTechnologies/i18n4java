@@ -18,85 +18,76 @@
 
 package javax.swingx.data;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class TypeWrapperTest extends TestCase {
+public class TypeWrapperTest {
 
 	@Test
 	public void testPrimitiveAndWrapperConfig() {
-		Assert.assertEquals(8, TypeWrapper.PRIMITIVES.length);
-		Assert.assertEquals(8, TypeWrapper.PRIMITIVE_WRAPPERS.length);
+		assertEquals(Integer.valueOf(8),
+				Integer.valueOf(TypeWrapper.PRIMITIVES.length));
+		assertEquals(Integer.valueOf(8),
+				Integer.valueOf(TypeWrapper.PRIMITIVE_WRAPPERS.length));
 	}
 
 	@Test
 	public void testIsPrimitiveWrapper() {
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Byte.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Short.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Integer.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Long.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Float.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Double.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Character.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Boolean.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Byte.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Short.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Integer.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Long.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Float.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Double.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Character.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Boolean.class));
 	}
 
 	@Test
 	public void testIsPrimitiveOrWrapper() {
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Byte.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Short.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Integer.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Long.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Float.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Double.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(Character.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveWrapper(Boolean.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Byte.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Short.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Integer.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Long.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Float.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Double.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(Character.class));
+		assertTrue(TypeWrapper.isPrimitiveWrapper(Boolean.class));
 
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(byte.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(short.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(int.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(long.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(float.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(double.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(char.class));
-		Assert.assertTrue(TypeWrapper.isPrimitiveOrWrapper(boolean.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(byte.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(short.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(int.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(long.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(float.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(double.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(char.class));
+		assertTrue(TypeWrapper.isPrimitiveOrWrapper(boolean.class));
 	}
 
 	@Test
 	public void testToPrimitive() {
-		Assert.assertEquals(byte.class, TypeWrapper.toPrimitive(Byte.class));
-		Assert.assertEquals(short.class, TypeWrapper.toPrimitive(Short.class));
-		Assert.assertEquals(int.class, TypeWrapper.toPrimitive(Integer.class));
-		Assert.assertEquals(long.class, TypeWrapper.toPrimitive(Long.class));
-		Assert.assertEquals(float.class, TypeWrapper.toPrimitive(Float.class));
-		Assert
-				.assertEquals(double.class, TypeWrapper
-						.toPrimitive(Double.class));
-		Assert.assertEquals(char.class, TypeWrapper
-				.toPrimitive(Character.class));
-		Assert.assertEquals(boolean.class, TypeWrapper
-				.toPrimitive(Boolean.class));
+		assertEquals(byte.class, TypeWrapper.toPrimitive(Byte.class));
+		assertEquals(short.class, TypeWrapper.toPrimitive(Short.class));
+		assertEquals(int.class, TypeWrapper.toPrimitive(Integer.class));
+		assertEquals(long.class, TypeWrapper.toPrimitive(Long.class));
+		assertEquals(float.class, TypeWrapper.toPrimitive(Float.class));
+		assertEquals(double.class, TypeWrapper.toPrimitive(Double.class));
+		assertEquals(char.class, TypeWrapper.toPrimitive(Character.class));
+		assertEquals(boolean.class, TypeWrapper.toPrimitive(Boolean.class));
 	}
 
 	@Test
 	public void testToPrimitiveWrapper() {
-		Assert.assertEquals(Byte.class, TypeWrapper
-				.toPrimitiveWrapper(byte.class));
-		Assert.assertEquals(Short.class, TypeWrapper
-				.toPrimitiveWrapper(short.class));
-		Assert.assertEquals(Integer.class, TypeWrapper
-				.toPrimitiveWrapper(int.class));
-		Assert.assertEquals(Long.class, TypeWrapper
-				.toPrimitiveWrapper(long.class));
-		Assert.assertEquals(Float.class, TypeWrapper
-				.toPrimitiveWrapper(float.class));
-		Assert.assertEquals(Double.class, TypeWrapper
-				.toPrimitiveWrapper(double.class));
-		Assert.assertEquals(Character.class, TypeWrapper
-				.toPrimitiveWrapper(char.class));
-		Assert.assertEquals(Boolean.class, TypeWrapper
-				.toPrimitiveWrapper(boolean.class));
+		assertEquals(Byte.class, TypeWrapper.toPrimitiveWrapper(byte.class));
+		assertEquals(Short.class, TypeWrapper.toPrimitiveWrapper(short.class));
+		assertEquals(Integer.class, TypeWrapper.toPrimitiveWrapper(int.class));
+		assertEquals(Long.class, TypeWrapper.toPrimitiveWrapper(long.class));
+		assertEquals(Float.class, TypeWrapper.toPrimitiveWrapper(float.class));
+		assertEquals(Double.class, TypeWrapper.toPrimitiveWrapper(double.class));
+		assertEquals(Character.class,
+				TypeWrapper.toPrimitiveWrapper(char.class));
+		assertEquals(Boolean.class,
+				TypeWrapper.toPrimitiveWrapper(boolean.class));
 	}
 }

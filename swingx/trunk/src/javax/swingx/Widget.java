@@ -52,6 +52,14 @@ public interface Widget extends ConnectionHandler {
 	public void addMediator(Mediator mediator);
 
 	/**
+	 * This method removes a mediator out of the mediator list.
+	 * 
+	 * @param mediator
+	 *            is the mediator to be removed.
+	 */
+	public void removeMediator(Mediator mediator);
+
+	/**
 	 * This method is called when an update took place. This method emits all
 	 * signals connected and also calls all widgetChanged(Widget) methods from
 	 * all connected mediators.

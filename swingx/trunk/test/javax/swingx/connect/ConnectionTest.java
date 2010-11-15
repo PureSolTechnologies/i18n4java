@@ -18,12 +18,11 @@
 
 package javax.swingx.connect;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class ConnectionTest extends TestCase {
+public class ConnectionTest {
 
 	private int testIntValue = 0;
 	private String testStringValue = "";
@@ -52,19 +51,18 @@ public class ConnectionTest extends TestCase {
 	public void testConstructor() {
 		Connection connection = new Connection(this, "testSignal", this,
 				"testSlot");
-		Assert.assertEquals(this, connection.getEmitter());
-		Assert.assertEquals(this, connection.getReceiver());
+		assertEquals(this, connection.getEmitter());
+		assertEquals(this, connection.getReceiver());
 		try {
-			Assert.assertEquals(getClass().getMethod("testSignal"), connection
-					.getSignal());
-			Assert.assertEquals(getClass().getMethod("testSlot"), connection
-					.getSlot());
+			assertEquals(getClass().getMethod("testSignal"),
+					connection.getSignal());
+			assertEquals(getClass().getMethod("testSlot"), connection.getSlot());
 		} catch (SecurityException e) {
 			e.printStackTrace();
-			Assert.fail();
+			fail();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
-			Assert.fail();
+			fail();
 		}
 	}
 
@@ -72,28 +70,28 @@ public class ConnectionTest extends TestCase {
 	public void testEmit() {
 		Connection connection = new Connection(this, "testSignal", this,
 				"testSlot");
-		Assert.assertEquals(0, testIntValue);
-		Assert.assertEquals("", testStringValue);
+		assertEquals(Integer.valueOf(0), Integer.valueOf(testIntValue));
+		assertEquals("", testStringValue);
 		connection.emit();
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("", testStringValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("", testStringValue);
 		try {
 			connection.emit("Hallo!");
-			Assert.fail("IllegalArgumentException had to be thrown!");
+			fail("IllegalArgumentException had to be thrown!");
 		} catch (IllegalArgumentException e) {
 			// nothing to catch, exception was expected
 		}
 
 		connection = new Connection(this, "testSignal", this, "testSlot",
 				String.class);
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("", testStringValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("", testStringValue);
 		connection.emit("Signal emitted");
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("Signal emitted", testStringValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("Signal emitted", testStringValue);
 		try {
 			connection.emit();
-			Assert.fail("IllegalArgumentException had to be thrown!");
+			fail("IllegalArgumentException had to be thrown!");
 		} catch (IllegalArgumentException e) {
 			// nothing to catch, exception was expected
 		}

@@ -18,18 +18,18 @@
 
 package javax.swingx.data;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class VerticalDataTest extends TestCase {
+public class VerticalDataTest {
 
 	@Test
 	public void testConstructor() {
 		VerticalData data = new VerticalData();
-		Assert.assertEquals(0, data.getColumnNumber());
-		Assert.assertEquals(0, data.getRowNumber());
+		assertEquals(Integer.valueOf(0),
+				Integer.valueOf(data.getColumnNumber()));
+		assertEquals(Integer.valueOf(0), Integer.valueOf(data.getRowNumber()));
 	}
 
 	@Test
@@ -37,16 +37,20 @@ public class VerticalDataTest extends TestCase {
 		VerticalData data = new VerticalData();
 		data.addColumn("String", String.class);
 		data.addColumn("Integer", Integer.class);
-		Assert.assertEquals(0, data.getColumnID("String"));
-		Assert.assertEquals(1, data.getColumnID("Integer"));
+		assertEquals(Integer.valueOf(0),
+				Integer.valueOf(data.getColumnID("String")));
+		assertEquals(Integer.valueOf(1),
+				Integer.valueOf(data.getColumnID("Integer")));
 		data.addRow("Row1", 1);
 		data.addRow("Row2", 2);
-		Assert.assertEquals(0, data.getColumnID("String"));
-		Assert.assertEquals(1, data.getColumnID("Integer"));
-		Assert.assertEquals("Row1", data.getString(0, 0));
-		Assert.assertEquals("Row2", data.getString(1, 0));
-		Assert.assertEquals(1, (int) data.getInteger(0, 1));
-		Assert.assertEquals(2, (int) data.getInteger(1, 1));
+		assertEquals(Integer.valueOf(0),
+				Integer.valueOf(data.getColumnID("String")));
+		assertEquals(Integer.valueOf(1),
+				Integer.valueOf(data.getColumnID("Integer")));
+		assertEquals("Row1", data.getString(0, 0));
+		assertEquals("Row2", data.getString(1, 0));
+		assertEquals(Integer.valueOf(1), Integer.valueOf(data.getInteger(0, 1)));
+		assertEquals(Integer.valueOf(2), Integer.valueOf(data.getInteger(1, 1)));
 	}
 
 	@Test
@@ -56,8 +60,8 @@ public class VerticalDataTest extends TestCase {
 		data.addColumn("Integer", Integer.class);
 		data.addColumn("Double", Double.class);
 		data.addRow("S", "1", "1.1");
-		Assert.assertEquals("S", data.getString(0, 0));
-		Assert.assertEquals(1, (int) data.getInteger(0, 1));
-		Assert.assertEquals(1.1, (double) data.getDouble(0, 2));
+		assertEquals("S", data.getString(0, 0));
+		assertEquals(Integer.valueOf(1), Integer.valueOf(data.getInteger(0, 1)));
+		assertEquals(Double.valueOf(1.1), data.getDouble(0, 2));
 	}
 }

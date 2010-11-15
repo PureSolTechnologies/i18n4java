@@ -18,81 +18,80 @@
 
 package javax.swingx.data;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
-public class ValueTypeTest extends TestCase {
+public class ValueTypeTest {
 
 	@Test
 	public void testRecognizeType() {
-		Assert.assertEquals(Boolean.class, ValueType
-				.recognizeFromString("true").getClassObject());
-		Assert.assertEquals(Boolean.class, ValueType.recognizeFromString(
-				"false").getClassObject());
-
-		Assert.assertEquals(Byte.class, ValueType.recognizeFromString("-128")
+		assertEquals(Boolean.class, ValueType.recognizeFromString("true")
 				.getClassObject());
-		Assert.assertEquals(Byte.class, ValueType.recognizeFromString("0")
-				.getClassObject());
-		Assert.assertEquals(Byte.class, ValueType.recognizeFromString("127")
+		assertEquals(Boolean.class, ValueType.recognizeFromString("false")
 				.getClassObject());
 
-		Assert.assertEquals(Short.class, ValueType
-				.recognizeFromString("-32768").getClassObject());
-		Assert.assertEquals(Short.class, ValueType.recognizeFromString("-129")
+		assertEquals(Byte.class, ValueType.recognizeFromString("-128")
 				.getClassObject());
-		Assert.assertEquals(Short.class, ValueType.recognizeFromString("128")
+		assertEquals(Byte.class, ValueType.recognizeFromString("0")
 				.getClassObject());
-		Assert.assertEquals(Short.class, ValueType.recognizeFromString("32767")
+		assertEquals(Byte.class, ValueType.recognizeFromString("127")
 				.getClassObject());
 
-		Assert.assertEquals(Integer.class, ValueType.recognizeFromString(
-				"-2147483648").getClassObject());
-		Assert.assertEquals(Integer.class, ValueType.recognizeFromString(
-				"-32769").getClassObject());
-		Assert.assertEquals(Integer.class, ValueType.recognizeFromString(
-				"32768").getClassObject());
-		Assert.assertEquals(Integer.class, ValueType.recognizeFromString(
-				"2147483647").getClassObject());
-
-		Assert.assertEquals(Long.class, ValueType.recognizeFromString(
-				"-2147483649").getClassObject());
-		Assert.assertEquals(Long.class, ValueType.recognizeFromString(
-				"2147483648").getClassObject());
-
-		Assert.assertEquals(Float.class, ValueType.recognizeFromString(
-				"-1.1E+38").getClassObject());
-		Assert.assertEquals(Float.class, ValueType.recognizeFromString("-1.1")
+		assertEquals(Short.class, ValueType.recognizeFromString("-32768")
 				.getClassObject());
-		Assert.assertEquals(Float.class, ValueType.recognizeFromString("0.0")
+		assertEquals(Short.class, ValueType.recognizeFromString("-129")
 				.getClassObject());
-		Assert.assertEquals(Float.class, ValueType.recognizeFromString("1.1")
+		assertEquals(Short.class, ValueType.recognizeFromString("128")
 				.getClassObject());
-		Assert.assertEquals(Float.class, ValueType.recognizeFromString(
-				"1.1E+38").getClassObject());
-
-		Assert.assertEquals(Double.class, ValueType.recognizeFromString(
-				"-1.1E+308").getClassObject());
-		Assert.assertEquals(Double.class, ValueType.recognizeFromString(
-				"-1.1E+39").getClassObject());
-		Assert.assertEquals(Double.class, ValueType.recognizeFromString(
-				"1.1E+39").getClassObject());
-		Assert.assertEquals(Double.class, ValueType.recognizeFromString(
-				"1.1E+308").getClassObject());
-
-		Assert.assertEquals(Character.class, ValueType.recognizeFromString("C")
+		assertEquals(Short.class, ValueType.recognizeFromString("32767")
 				.getClassObject());
 
-		Assert.assertEquals(String.class, ValueType.recognizeFromString(
-				"-1.1E+309").getClassObject());
-		Assert.assertEquals(String.class, ValueType.recognizeFromString(
-				"1.1E+309").getClassObject());
+		assertEquals(Integer.class, ValueType
+				.recognizeFromString("-2147483648").getClassObject());
+		assertEquals(Integer.class, ValueType.recognizeFromString("-32769")
+				.getClassObject());
+		assertEquals(Integer.class, ValueType.recognizeFromString("32768")
+				.getClassObject());
+		assertEquals(Integer.class, ValueType.recognizeFromString("2147483647")
+				.getClassObject());
+
+		assertEquals(Long.class, ValueType.recognizeFromString("-2147483649")
+				.getClassObject());
+		assertEquals(Long.class, ValueType.recognizeFromString("2147483648")
+				.getClassObject());
+
+		assertEquals(Float.class, ValueType.recognizeFromString("-1.1E+38")
+				.getClassObject());
+		assertEquals(Float.class, ValueType.recognizeFromString("-1.1")
+				.getClassObject());
+		assertEquals(Float.class, ValueType.recognizeFromString("0.0")
+				.getClassObject());
+		assertEquals(Float.class, ValueType.recognizeFromString("1.1")
+				.getClassObject());
+		assertEquals(Float.class, ValueType.recognizeFromString("1.1E+38")
+				.getClassObject());
+
+		assertEquals(Double.class, ValueType.recognizeFromString("-1.1E+308")
+				.getClassObject());
+		assertEquals(Double.class, ValueType.recognizeFromString("-1.1E+39")
+				.getClassObject());
+		assertEquals(Double.class, ValueType.recognizeFromString("1.1E+39")
+				.getClassObject());
+		assertEquals(Double.class, ValueType.recognizeFromString("1.1E+308")
+				.getClassObject());
+
+		assertEquals(Character.class, ValueType.recognizeFromString("C")
+				.getClassObject());
+
+		assertEquals(String.class, ValueType.recognizeFromString("-1.1E+309")
+				.getClassObject());
+		assertEquals(String.class, ValueType.recognizeFromString("1.1E+309")
+				.getClassObject());
 	}
 
 	@Test
@@ -108,14 +107,14 @@ public class ValueTypeTest extends TestCase {
 		list.add(ValueType.fromClass(Character.class));
 		list.add(ValueType.fromClass(Boolean.class));
 		Collections.sort(list);
-		Assert.assertEquals(Byte.class, list.get(0).getClassObject());
-		Assert.assertEquals(Short.class, list.get(1).getClassObject());
-		Assert.assertEquals(Integer.class, list.get(2).getClassObject());
-		Assert.assertEquals(Long.class, list.get(3).getClassObject());
-		Assert.assertEquals(Float.class, list.get(4).getClassObject());
-		Assert.assertEquals(Double.class, list.get(5).getClassObject());
-		Assert.assertEquals(Character.class, list.get(6).getClassObject());
-		Assert.assertEquals(Boolean.class, list.get(7).getClassObject());
-		Assert.assertEquals(String.class, list.get(8).getClassObject());
+		assertEquals(Byte.class, list.get(0).getClassObject());
+		assertEquals(Short.class, list.get(1).getClassObject());
+		assertEquals(Integer.class, list.get(2).getClassObject());
+		assertEquals(Long.class, list.get(3).getClassObject());
+		assertEquals(Float.class, list.get(4).getClassObject());
+		assertEquals(Double.class, list.get(5).getClassObject());
+		assertEquals(Character.class, list.get(6).getClassObject());
+		assertEquals(Boolean.class, list.get(7).getClassObject());
+		assertEquals(String.class, list.get(8).getClassObject());
 	}
 }

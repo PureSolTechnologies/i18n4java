@@ -18,9 +18,9 @@
 
 package javax.swingx.connect;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,11 +31,9 @@ import org.junit.Test;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class ConnectionManagerTest extends TestCase implements
-		ConnectionHandler {
+public class ConnectionManagerTest implements ConnectionHandler {
 
-	private ConnectionManager connectionManager = ConnectionManager
-			.createFor(this);
+	private ConnectionManager connectionManager = null;
 
 	public void connect(String signal, Object receiver, String slot,
 			Class<?>... types) {
@@ -83,10 +81,10 @@ public class ConnectionManagerTest extends TestCase implements
 		testBooleanValue = value;
 	}
 
-	@Test
+	@Before
 	public void testCreation() {
-		ConnectionManager manager = ConnectionManager.createFor(this);
-		Assert.assertEquals(this, manager.getEmitter());
+		connectionManager = ConnectionManager.createFor(this);
+		assertEquals(this, connectionManager.getEmitter());
 	}
 
 	@Test
@@ -95,23 +93,24 @@ public class ConnectionManagerTest extends TestCase implements
 		connectionManager.connect("testSignal", this, "testSlot", String.class);
 		connectionManager
 				.connect("testSignal", this, "testSlot", boolean.class);
-		Assert.assertEquals(0, testIntValue);
-		Assert.assertEquals("", testStringValue);
-		Assert.assertEquals(false, testBooleanValue);
+
+		assertEquals(Integer.valueOf(0), Integer.valueOf(testIntValue));
+		assertEquals("", testStringValue);
+		assertEquals(false, testBooleanValue);
 
 		connectionManager.emitSignal("testSignal");
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("", testStringValue);
-		Assert.assertEquals(false, testBooleanValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("", testStringValue);
+		assertEquals(false, testBooleanValue);
 
 		connectionManager.emitSignal("testSignal", "Hallo!");
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("Hallo!", testStringValue);
-		Assert.assertEquals(false, testBooleanValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("Hallo!", testStringValue);
+		assertEquals(false, testBooleanValue);
 
 		connectionManager.emitSignal("testSignal", true);
-		Assert.assertEquals(1, testIntValue);
-		Assert.assertEquals("Hallo!", testStringValue);
-		Assert.assertEquals(true, testBooleanValue);
+		assertEquals(Integer.valueOf(1), Integer.valueOf(testIntValue));
+		assertEquals("Hallo!", testStringValue);
+		assertEquals(true, testBooleanValue);
 	}
 }

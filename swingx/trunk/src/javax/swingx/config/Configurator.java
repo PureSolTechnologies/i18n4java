@@ -78,8 +78,10 @@ public class Configurator {
 	 */
 	private boolean loadResource(String resource) {
 		logger.debug("Load resource '" + resource + "'");
-		InputStream inStream;
-		inStream = ClassLoader.getSystemResourceAsStream(resource);
+		InputStream inStream = ClassLoader.getSystemResourceAsStream(resource);
+		if (inStream == null) {
+			inStream = ClassLoader.getSystemResourceAsStream("/" + resource);
+		}
 		if (inStream == null) {
 			logger.debug("Resource '" + resource + "' not found!");
 			return false;
@@ -88,9 +90,10 @@ public class Configurator {
 		return load(resource, inStream);
 	}
 
-	public boolean load(String resource, InputStream inStream) {
+	private boolean load(String resource, InputStream inStream) {
 		try {
-			configuratorHash.put(resource, ConfigFile.readToHash(inStream));
+			configuratorHash.get(resource).putAll(
+					ConfigFile.readToHash(inStream));
 			return true;
 		} catch (IOException e) {
 			logger.warn(e.getMessage(), e);
@@ -123,11 +126,10 @@ public class Configurator {
 		}
 		boolean found = loadResource(resource);
 		if ((!found) || (!firstValid)) {
-			List<String> files = ConfigFile.getAvailableConfigFiles(resource);
-			for (String configFile : files) {
+			List<File> files = ConfigFile.getAvailableConfigFiles(resource);
+			for (File configFile : files) {
 				try {
-					found |= load(resource, new FileInputStream(new File(
-							configFile)));
+					found |= load(resource, new FileInputStream(configFile));
 				} catch (FileNotFoundException e) {
 					logger.debug("File '" + configFile
 							+ "' not found. Skipping.");
@@ -165,18 +167,24 @@ public class Configurator {
 			if (!configuratorHash.containsKey(resource)) {
 				readAll(resource, firstValid);
 			}
-		} catch (ConfigException ce) {
+		} catch (ConfigException e) {
+			logger.warn(e.getMessage(), e);
 			return "";
 		}
 		ConfigHash ch = configuratorHash.get(resource);
 		if (ch == null) {
+			logger.warn("Resource '" + resource + "' is not available!");
 			return "";
 		}
 		Hashtable<String, String> sh = ch.get(section);
 		if (sh == null) {
+			logger.warn("Section '" + section + "' in resource '" + resource
+					+ "' is not available!");
 			return "";
 		}
-		return sh.get(key);
+		String result = sh.get(key);
+		logger.trace(resource + ":" + section + "/" + key + " = " + result);
+		return result;
 	}
 
 	/**
@@ -193,7 +201,7 @@ public class Configurator {
 	 *            is the key name to be read and returned.
 	 * @return A String is returned containing the value of the key.
 	 */
-	static public String getEntry(String resource, String section, String key,
+	public static String getEntry(String resource, String section, String key,
 			boolean firstValid) {
 		return getInstance().readEntry(resource, section, key, firstValid);
 	}
@@ -209,11 +217,11 @@ public class Configurator {
 		return configuratorHash.get(resource);
 	}
 
-	static public ConfigHash getResource(String resource, boolean firstValid) {
+	public static ConfigHash getResource(String resource, boolean firstValid) {
 		return getInstance().returnResource(resource, firstValid);
 	}
 
-	static private synchronized void createInstance() {
+	private static synchronized void createInstance() {
 		if (instance == null) {
 			instance = new Configurator();
 		}
@@ -226,7 +234,7 @@ public class Configurator {
 	 * 
 	 * @return The reference to the Configurator class is returned.
 	 */
-	static public synchronized Configurator getInstance() {
+	public static synchronized Configurator getInstance() {
 		if (instance == null) {
 			createInstance();
 		}

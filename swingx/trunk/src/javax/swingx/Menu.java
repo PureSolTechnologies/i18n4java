@@ -128,10 +128,17 @@ public class Menu extends JMenu implements Widget, ActionListener, MenuListener 
 		connectionManager.emitSignal("menuSelected", menuEvent);
 	}
 
+	@Override
 	public void addMediator(Mediator mediator) {
 		connect("changed", mediator, "widgetChanged");
 	}
 
+	@Override
+	public void removeMediator(Mediator mediator) {
+		connectionManager.release("changed", mediator, "widgetChanged");
+	}
+
+	@Override
 	public void changed(Widget widget) {
 		connectionManager.emitSignal("changed", widget);
 	}

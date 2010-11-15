@@ -237,6 +237,7 @@ public class Dialog extends JDialog implements Widget {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void addMediator(Mediator mediator) {
 		connectionManager.connect("changed", mediator, "widgetChanged");
 	}
@@ -244,6 +245,15 @@ public class Dialog extends JDialog implements Widget {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public void removeMediator(Mediator mediator) {
+		connectionManager.release("changed", mediator, "widgetChanged");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void changed(Widget widget) {
 		connectionManager.emitSignal("changed", widget);
 	}

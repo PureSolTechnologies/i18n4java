@@ -18,39 +18,38 @@
 
 package javax.swingx.config;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+public class ClassRegistryElementTypeTest {
 
-public class ClassRegistryElementTypeTest extends TestCase {
+	@Test
+	public void testFrom() {
+		assertEquals(ClassRegistryElementType.CLONED,
+				ClassRegistryElementType.from("cloned"));
+		assertEquals(ClassRegistryElementType.CLONED,
+				ClassRegistryElementType.from("CLONED"));
 
-    @Test
-    public void testFrom() {
-	Assert.assertEquals(ClassRegistryElementType.CLONED,
-		ClassRegistryElementType.from("cloned"));
-	Assert.assertEquals(ClassRegistryElementType.CLONED,
-		ClassRegistryElementType.from("CLONED"));
+		assertEquals(ClassRegistryElementType.FACTORY,
+				ClassRegistryElementType.from("factory"));
+		assertEquals(ClassRegistryElementType.FACTORY,
+				ClassRegistryElementType.from("FACTORY"));
 
-	Assert.assertEquals(ClassRegistryElementType.FACTORY,
-		ClassRegistryElementType.from("factory"));
-	Assert.assertEquals(ClassRegistryElementType.FACTORY,
-		ClassRegistryElementType.from("FACTORY"));
-
-	Assert.assertEquals(ClassRegistryElementType.SINGLETON,
-		ClassRegistryElementType.from("singleton"));
-	Assert.assertEquals(ClassRegistryElementType.SINGLETON,
-		ClassRegistryElementType.from("SINGLETON"));
-    }
-
-    @Test
-    public void testInvalidName() {
-	try {
-	    ClassRegistryElementType.from("INVALID");
-	    Assert.fail("IllegalArgumentException was expected!");
-	} catch (IllegalArgumentException e) {
-	    // nothing to catch, because it was expected...
+		assertEquals(ClassRegistryElementType.SINGLETON,
+				ClassRegistryElementType.from("singleton"));
+		assertEquals(ClassRegistryElementType.SINGLETON,
+				ClassRegistryElementType.from("SINGLETON"));
 	}
-    }
+
+	@Test
+	public void testInvalidName() {
+		try {
+			ClassRegistryElementType.from("INVALID");
+			fail("IllegalArgumentException was expected!");
+		} catch (IllegalArgumentException e) {
+			// nothing to catch, because it was expected...
+		}
+	}
 
 }
