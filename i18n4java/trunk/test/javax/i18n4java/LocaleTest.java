@@ -18,15 +18,14 @@
 
 package javax.i18n4java;
 
+import static org.junit.Assert.*;
+
 import java.util.Locale;
 import java.util.Vector;
 
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class LocaleTest extends TestCase {
+public class LocaleTest {
 
 	@Test
 	public void testAvailableLocales() {
@@ -41,11 +40,11 @@ public class LocaleTest extends TestCase {
 					+ locale.getDisplayCountry() + "\t"
 					+ locale.getDisplayVariant());
 		}
-		Assert.assertTrue(localeShortCuts.contains("de_DE"));
-		Assert.assertTrue(localeShortCuts.contains("en_GB"));
-		Assert.assertTrue(localeShortCuts.contains("en_US"));
-		Assert.assertTrue(localeShortCuts.contains("vi_VN"));
-		Assert.assertTrue(localeShortCuts.contains("zh_TW"));
+		assertTrue(localeShortCuts.contains("de_DE"));
+		assertTrue(localeShortCuts.contains("en_GB"));
+		assertTrue(localeShortCuts.contains("en_US"));
+		assertTrue(localeShortCuts.contains("vi_VN"));
+		assertTrue(localeShortCuts.contains("zh_TW"));
 	}
 
 }
