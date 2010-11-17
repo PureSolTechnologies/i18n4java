@@ -26,7 +26,7 @@ import javax.swingx.Application;
  * 
  * @author Rick-Rainer Ludwig
  */
-public class APIConfig {
+public class APIInformation {
 
 	/**
 	 * This is the version of the whole API package. The idea is:
@@ -40,42 +40,54 @@ public class APIConfig {
 	 * 
 	 * fix = bug fix release with no functional changes, but bugs are fixed
 	 */
-	public static final String PACKAGE_VERSION = Configurator.getEntry(
-			"/config/about", "GENERAL", "version", true);
+	public static String getPackageVersion(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"version", true);
+	}
 
 	/**
 	 * This is the constants containing the year range of development. The
 	 * starting point was January 2009.
 	 */
-	public static final String PACKAGE_YEARS = Configurator.getEntry(
-			"/config/about", "GENERAL", "years", true);
+	public static String getPackageYears(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"years", true);
+	}
 
 	/**
 	 * These are all developers which were working on this release as architects
 	 * and leaders. The number of programmers would exceed this variable very
 	 * fast.
 	 */
-	public static final String PACKAGE_AUTHOR = Configurator.getEntry(
-			"/config/about", "GENERAL", "author", true);
+	public static String getPackageAuthor(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"author", true);
+	}
 
 	/**
 	 * This is the email address used for bug reports. This is shown to
 	 * customers to have an email contact.
 	 */
-	public static final String PACKAGE_BUGREPORT = Configurator.getEntry(
-			"/config/about", "GENERAL", "bugreport", true);
+	public static String getPackageBugReport(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"bugreport", true);
+	}
 
 	/**
 	 * This is the copyright message for about boxes.
 	 */
-	public static final String PACKAGE_COPYRIGHT = Configurator.getEntry(
-			"/config/about", "GENERAL", "copyright", true);
+	public static String getPackageCopyright(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"copyright", true);
+	}
 
 	/**
 	 * This is the legal owner of the software package.
 	 */
-	public static final String PACKAGE_OWNER = Configurator.getEntry(
-			"/config/about", "GENERAL", "owner", true);
+	public static String getPackageOwner(Class<?> clazz) {
+		return Configurator.getEntry(clazz, "/config/about", "GENERAL",
+				"owner", true);
+	}
 
 	/**
 	 * This variable is for global usage and is used to keep the help request
@@ -149,18 +161,24 @@ public class APIConfig {
 		return version;
 	}
 
-	static private String createAboutMessage(String file, String section) {
+	static private String createAboutMessage(Class<?> clazz, String file,
+			String section) {
 		Application application = Application.getInstance();
 		String message = ConfigFile.readSection(file, section);
-		message = message.replaceAll("%APPLICATION%", application
-				.getApplicationTitle()
-				+ " " + application.getApplicationVersion());
-		message = message.replaceAll("%VERSION%", PACKAGE_VERSION);
-		message = message.replaceAll("%YEARS%", PACKAGE_YEARS);
-		message = message.replaceAll("%OWNER%", PACKAGE_OWNER);
-		message = message.replaceAll("%AUTHOR%", PACKAGE_AUTHOR);
-		message = message.replaceAll("%COPYRIGHT%", PACKAGE_COPYRIGHT);
-		message = message.replaceAll("%BUGREPORT%", PACKAGE_BUGREPORT);
+		if (application != null) {
+			message = message.replaceAll(
+					"%APPLICATION%",
+					application.getApplicationTitle() + " "
+							+ application.getApplicationVersion());
+		} else {
+			message = message.replaceAll("%APPLICATION%", "Noname Application");
+		}
+		message = message.replaceAll("%VERSION%", getPackageVersion(clazz));
+		message = message.replaceAll("%YEARS%", getPackageYears(clazz));
+		message = message.replaceAll("%OWNER%", getPackageOwner(clazz));
+		message = message.replaceAll("%AUTHOR%", getPackageAuthor(clazz));
+		message = message.replaceAll("%COPYRIGHT%", getPackageCopyright(clazz));
+		message = message.replaceAll("%BUGREPORT%", getPackageBugReport(clazz));
 		return message;
 	}
 
@@ -171,8 +189,8 @@ public class APIConfig {
 	 * @return A String containing the copyright information is returned in HTML
 	 *         code.
 	 */
-	public static String getCopyrightMessage() {
-		return createAboutMessage("config/about", "COPYRIGHT");
+	public static String getCopyrightMessage(Class<?> clazz) {
+		return createAboutMessage(clazz, "config/about", "COPYRIGHT");
 	}
 
 	/**
@@ -182,8 +200,8 @@ public class APIConfig {
 	 * @return A String containing the vendor information is returned in HTML
 	 *         code.
 	 */
-	public static String getVendorInformation() {
-		return createAboutMessage("config/about", "VENDOR");
+	public static String getVendorInformation(Class<?> clazz) {
+		return createAboutMessage(clazz, "config/about", "VENDOR");
 	}
 
 	/**
@@ -193,7 +211,7 @@ public class APIConfig {
 	 * @return A String containing the contact information is returned in HTML
 	 *         code.
 	 */
-	public static String getContactInformation() {
-		return createAboutMessage("config/about", "CONTACT");
+	public static String getContactInformation(Class<?> clazz) {
+		return createAboutMessage(clazz, "config/about", "CONTACT");
 	}
 }

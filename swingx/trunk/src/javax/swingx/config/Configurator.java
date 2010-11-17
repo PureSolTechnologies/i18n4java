@@ -76,11 +76,11 @@ public class Configurator {
 	 * @throws ConfigException
 	 *             is thrown in case of config read file failures.
 	 */
-	private boolean loadResource(String resource) {
+	private boolean loadResource(Class<?> clazz, String resource) {
 		logger.debug("Load resource '" + resource + "'");
-		InputStream inStream = ClassLoader.getSystemResourceAsStream(resource);
+		InputStream inStream = clazz.getResourceAsStream(resource);
 		if (inStream == null) {
-			inStream = ClassLoader.getSystemResourceAsStream("/" + resource);
+			inStream = clazz.getResourceAsStream("/" + resource);
 		}
 		if (inStream == null) {
 			logger.debug("Resource '" + resource + "' not found!");
@@ -118,13 +118,13 @@ public class Configurator {
 	 * @throws ConfigException
 	 *             is thrown in case of config read file failures.
 	 */
-	private void readAll(String resource, boolean firstValid)
+	private void readAll(Class<?> clazz, String resource, boolean firstValid)
 			throws ConfigException {
 		logger.debug("Try to read information from resource '" + resource + "'");
 		if (!configuratorHash.containsKey(resource)) {
 			configuratorHash.put(resource, new ConfigHash());
 		}
-		boolean found = loadResource(resource);
+		boolean found = loadResource(clazz, resource);
 		if ((!found) || (!firstValid)) {
 			List<File> files = ConfigFile.getAvailableConfigFiles(resource);
 			for (File configFile : files) {
@@ -161,11 +161,11 @@ public class Configurator {
 	 *            is the key name to be read and returned.
 	 * @return A String is returned containing the value of the key.
 	 */
-	private String readEntry(String resource, String section, String key,
-			boolean firstValid) {
+	private String readEntry(Class<?> clazz, String resource, String section,
+			String key, boolean firstValid) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				readAll(resource, firstValid);
+				readAll(clazz, resource, firstValid);
 			}
 		} catch (ConfigException e) {
 			logger.warn(e.getMessage(), e);
@@ -192,6 +192,10 @@ public class Configurator {
 	 * section and key. If the specified file was not read before the file's
 	 * content will be read and included into the configHash.
 	 * 
+	 * @param clazz
+	 *            is the class which is calling for the information. This is
+	 *            used to get resources out of the right JAR files by using the
+	 *            clazz's class path.
 	 * @param resource
 	 *            is the short path to the configuration file. The reading will
 	 *            be performed on different places regarding to the OS.
@@ -201,15 +205,29 @@ public class Configurator {
 	 *            is the key name to be read and returned.
 	 * @return A String is returned containing the value of the key.
 	 */
-	public static String getEntry(String resource, String section, String key,
-			boolean firstValid) {
-		return getInstance().readEntry(resource, section, key, firstValid);
+	public static String getEntry(Class<?> clazz, String resource,
+			String section, String key, boolean firstValid) {
+		return getInstance().readEntry(clazz, resource, section, key,
+				firstValid);
 	}
 
-	private ConfigHash returnResource(String resource, boolean firstValid) {
+	/**
+	 * 
+	 * @param clazz
+	 *            is the class which is calling for the information. This is
+	 *            used to get resources out of the right JAR files by using the
+	 *            clazz's class path.
+	 * @param resource
+	 *            is the short path to the configuration file. The reading will
+	 *            be performed on different places regarding to the OS.
+	 * @param firstValid
+	 * @return
+	 */
+	private ConfigHash returnResource(Class<?> clazz, String resource,
+			boolean firstValid) {
 		try {
 			if (!configuratorHash.containsKey(resource)) {
-				readAll(resource, firstValid);
+				readAll(clazz, resource, firstValid);
 			}
 		} catch (ConfigException ce) {
 			return null;
@@ -217,10 +235,26 @@ public class Configurator {
 		return configuratorHash.get(resource);
 	}
 
-	public static ConfigHash getResource(String resource, boolean firstValid) {
-		return getInstance().returnResource(resource, firstValid);
+	/**
+	 * 
+	 * @param clazz
+	 *            is the class which is calling for the information. This is
+	 *            used to get resources out of the right JAR files by using the
+	 *            clazz's class path.
+	 * @param resource
+	 *            is the short path to the configuration file. The reading will
+	 *            be performed on different places regarding to the OS.
+	 * @param firstValid
+	 * @return
+	 */
+	public static ConfigHash getResource(Class<?> clazz, String resource,
+			boolean firstValid) {
+		return getInstance().returnResource(clazz, resource, firstValid);
 	}
 
+	/**
+	 * This method returns a newly created instance for the singleton.
+	 */
 	private static synchronized void createInstance() {
 		if (instance == null) {
 			instance = new Configurator();

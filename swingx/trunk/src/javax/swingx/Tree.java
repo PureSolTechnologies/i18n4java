@@ -32,95 +32,95 @@ import javax.swingx.connect.ConnectionManager;
 import javax.swingx.connect.Signal;
 
 public class Tree extends JTree implements ConnectionHandler,
-	TreeSelectionListener {
+		TreeSelectionListener {
 
-    private static final long serialVersionUID = 8972353294401051153L;
+	private static final long serialVersionUID = 8972353294401051153L;
 
-    public Tree() {
-	super();
-	init();
-    }
+	public Tree() {
+		super();
+		init();
+	}
 
-    public Tree(Hashtable<?, ?> value) {
-	super(value);
-	init();
-    }
+	public Tree(Hashtable<?, ?> value) {
+		super(value);
+		init();
+	}
 
-    public Tree(Object[] value) {
-	super(value);
-	init();
-    }
+	public Tree(Object[] value) {
+		super(value);
+		init();
+	}
 
-    public Tree(TreeModel newModel) {
-	super(newModel);
-	init();
-    }
+	public Tree(TreeModel newModel) {
+		super(newModel);
+		init();
+	}
 
-    public Tree(TreeNode root, boolean asksAllowsChildren) {
-	super(root, asksAllowsChildren);
-	init();
-    }
+	public Tree(TreeNode root, boolean asksAllowsChildren) {
+		super(root, asksAllowsChildren);
+		init();
+	}
 
-    public Tree(TreeNode root) {
-	super(root);
-	init();
-    }
+	public Tree(TreeNode root) {
+		super(root);
+		init();
+	}
 
-    public Tree(Vector<?> value) {
-	super(value);
-	init();
-    }
+	public Tree(Vector<?> value) {
+		super(value);
+		init();
+	}
 
-    private void init() {
-	addTreeSelectionListener(this);
-    }
+	private void init() {
+		addTreeSelectionListener(this);
+	}
 
-    /**
-     * This variable keeps the instance of the connection manager.
-     */
-    protected ConnectionManager connectionManager = ConnectionManager
-	    .createFor(this);
+	/**
+	 * This variable keeps the instance of the connection manager.
+	 */
+	protected ConnectionManager connectionManager = ConnectionManager
+			.createFor(this);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void connect(String signal, Object receiver, String slot,
-	    Class<?>... types) {
-	connectionManager.connect(signal, receiver, slot, types);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void connect(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		connectionManager.connect(signal, receiver, slot, types);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void release(String signal, Object receiver, String slot,
-	    Class<?>... types) {
-	connectionManager.release(signal, receiver, slot, types);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void release(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		connectionManager.release(signal, receiver, slot, types);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isConnected(String signal, Object receiver, String slot,
-	    Class<?>... types) {
-	return connectionManager.isConnected(signal, receiver, slot, types);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnected(String signal, Object receiver, String slot,
+			Class<?>... types) {
+		return connectionManager.isConnected(signal, receiver, slot, types);
+	}
 
-    @Override
-    public void valueChanged(TreeSelectionEvent event) {
-	valueChanged();
-	valueChanged(event.getNewLeadSelectionPath());
-    }
+	@Override
+	public void valueChanged(TreeSelectionEvent event) {
+		valueChanged();
+		valueChanged(event.getNewLeadSelectionPath());
+	}
 
-    @Signal
-    public void valueChanged() {
-	connectionManager.emitSignal("valueChanged");
-    }
+	@Signal
+	public void valueChanged() {
+		connectionManager.emitSignal("valueChanged");
+	}
 
-    @Signal
-    public void valueChanged(TreePath treePath) {
-	connectionManager.emitSignal("valueChanged", treePath);
-    }
+	@Signal
+	public void valueChanged(TreePath treePath) {
+		connectionManager.emitSignal("valueChanged", treePath);
+	}
 }

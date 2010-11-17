@@ -471,9 +471,9 @@ public class RTAParser {
 	 * last is set with Translator.
 	 */
 	public void readStandardSwitches() {
-		APIConfig.setHelpRequest(isSwitchSet("h", "help",
+		APIInformation.setHelpRequest(isSwitchSet("h", "help",
 				RTAParser.RTA_STACKABLE, "show this help page"));
-		APIConfig.setVersionRequest(isSwitchSet("", "version",
+		APIInformation.setVersionRequest(isSwitchSet("", "version",
 				RTAParser.RTA_NOT_STACKABLE, "show current version of tool"));
 		String locale = getParameterString("", "locale",
 				"Localization (L10N) string for language and locale settings.");

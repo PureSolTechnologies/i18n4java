@@ -47,10 +47,10 @@ public class Application extends Frame implements Runnable {
 	}
 
 	static public void showNotImplementedMessage() {
-		JOptionPane.showMessageDialog(getInstance(), translator
-				.i18n("This function is not implemented yet!"), translator
-				.i18n("No Implementation"), JOptionPane.INFORMATION_MESSAGE
-				| JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(getInstance(),
+				translator.i18n("This function is not implemented yet!"),
+				translator.i18n("No Implementation"),
+				JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 	}
 
 	private final String title;
