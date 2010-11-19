@@ -19,11 +19,8 @@
 package javax.swingx.connect;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Enumeration;
-import java.util.Vector;
-
-import org.apache.log4j.Logger;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * This class handles connections which were established and also emits signals.
@@ -56,13 +53,10 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger
-			.getLogger(ConnectionManager.class);
-
 	/**
 	 * This Vector stores all connections which were established.
 	 */
-	private Vector<Connection> connections = new Vector<Connection>();
+	private Set<Connection> connections = new LinkedHashSet<Connection>();
 
 	private ConnectionHandler emitter = null;
 
@@ -83,9 +77,7 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	 */
 	public void connect(String signal, Object receiver, String slot,
 			Class<?>... types) {
-		Connection connection = new Connection(emitter, signal, receiver, slot,
-				types);
-		connections.add(connection);
+		connections.add(new Connection(emitter, signal, receiver, slot, types));
 	}
 
 	/**
@@ -93,14 +85,8 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	 */
 	public void release(String signal, Object receiver, String slot,
 			Class<?>... types) {
-		Enumeration<Connection> enumeration = connections.elements();
-		while (enumeration.hasMoreElements()) {
-			Connection connection = enumeration.nextElement();
-			if (connection.isSignal(emitter, signal, types)
-					&& connection.isSlot(receiver, slot, types)) {
-				connections.remove(connection);
-			}
-		}
+		connections.remove(new Connection(emitter, signal, receiver, slot,
+				types));
 	}
 
 	/**
@@ -108,26 +94,8 @@ final public class ConnectionManager implements ConnectionHandler, Serializable 
 	 */
 	public boolean isConnected(String signal, Object receiver, String slot,
 			Class<?>... types) {
-		try {
-			Method signalMethod = getEmitter().getClass().getMethod(signal,
-					types);
-			Method slotMethod = receiver.getClass().getMethod(slot, types);
-			for (Connection connection : connections) {
-				if ((connection.getEmitter() == emitter)
-						&& (connection.getReceiver() == receiver)
-						&& (signalMethod.equals(connection.getSignal()))
-						&& (slotMethod.equals(connection.getSlot()))) {
-					return true;
-				}
-			}
-			return false;
-		} catch (SecurityException e) {
-			logger.fatal(e.getMessage(), e);
-			throw new RuntimeException();
-		} catch (NoSuchMethodException e) {
-			logger.fatal(e.getMessage(), e);
-			throw new RuntimeException();
-		}
+		return connections.contains(new Connection(emitter, signal, receiver,
+				slot, types));
 	}
 
 	/**
