@@ -1,7 +1,6 @@
 package javax.swingx.rendering;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 /**
  * This interface is used for all classes which provide a rendering service.
@@ -43,7 +42,7 @@ public interface Renderer {
 	 * @param w
 	 * @param h
 	 */
-	public void render(Graphics graphics);
+	public void render();
 
 	/**
 	 * This method sets the position of the object to be rendered. This must not
