@@ -101,12 +101,12 @@ public class Application extends Frame implements Runnable {
 		return version;
 	}
 
-	public void setApplicationSubtitle(String subTitle) {
+	public void setSubtitle(String subTitle) {
 		this.subtitle = subTitle;
 		if (subTitle.isEmpty()) {
-			setTitle(title + " " + version);
+			super.setTitle(title + " " + version);
 		} else {
-			setTitle(title + " " + version + " [" + subTitle + "]");
+			super.setTitle(title + " " + version + " [" + subTitle + "]");
 		}
 		System.out.println(super.getTitle());
 	}
