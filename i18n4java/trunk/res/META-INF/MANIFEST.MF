@@ -5,4 +5,9 @@ Implementation-URL: http://www.puresol-technologies.com
 Implementation-Vendor-Id: http://www.puresol-technologies.com
 Specification-Title: I18n4Java (Internationalization for Java)
 Specification-Vendor: PureSol Technologies (http://www.puresol-technologies.com)
-Main-Class: javax.i18n4j.apps.I18N4Java
+Bundle-Name: I18n4Java
+Bundle-SymbolicName: javax.i18n4java
+Bundle-Description: Contains PureSol Technologies' internationalization framework
+Bundle-Vendor: PureSol Technologies (http://www.puresol-technologies.com)
+Bundle-Version: 1.0.0
+Export-Package: javax.i18n4java
