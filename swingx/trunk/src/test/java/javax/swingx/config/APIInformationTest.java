@@ -50,7 +50,7 @@ public class APIInformationTest {
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals(
-				ConfigFile.readEntry("res/config/about", "GENERAL", "years"),
+				ConfigFile.readEntry("src/main/config/config/about", "GENERAL", "years"),
 				string);
 	}
 
@@ -60,7 +60,7 @@ public class APIInformationTest {
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals(
-				ConfigFile.readEntry("res/config/about", "GENERAL", "author"),
+				ConfigFile.readEntry("src/main/config/config/about", "GENERAL", "author"),
 				string);
 	}
 
@@ -69,7 +69,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageBugReport(this.getClass());
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("res/config/about", "GENERAL",
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about", "GENERAL",
 				"bugreport"), string);
 	}
 
