@@ -50,14 +50,14 @@ public class I18NProjectConfiguration {
 			props.load(new FileInputStream(fileOrDirectory));
 			fileLocation = fileOrDirectory.getParentFile();
 		}
-		relativeProjectTopDirectory = props.contains(PROJECT_DIRECTORY_KEY) ? props
+		relativeProjectTopDirectory = props.containsKey(PROJECT_DIRECTORY_KEY) ? props
 				.getProperty(PROJECT_DIRECTORY_KEY) : ".";
-		relativeSourceDirectory = props.contains(SOURCE_DIRECTORY_KEY) ? props
-				.getProperty(SOURCE_DIRECTORY_KEY) : "src";
-		relativeI18nDirectory = props.contains(I18N_DIRECTORY_KEY) ? props
+		relativeSourceDirectory = props.containsKey(SOURCE_DIRECTORY_KEY) ? props
+				.getProperty(SOURCE_DIRECTORY_KEY) : "src/main/java";
+		relativeI18nDirectory = props.containsKey(I18N_DIRECTORY_KEY) ? props
 				.getProperty(I18N_DIRECTORY_KEY) : "i18n";
 		relativeDestinationDirectory = props
-				.contains(DESTINATION_DIRECTORY_KEY) ? props
+				.containsKey(DESTINATION_DIRECTORY_KEY) ? props
 				.getProperty(DESTINATION_DIRECTORY_KEY) : "res";
 		projectDirectory = new File(fileLocation, relativeProjectTopDirectory);
 	}

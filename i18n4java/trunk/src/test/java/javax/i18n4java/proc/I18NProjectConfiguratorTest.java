@@ -17,10 +17,10 @@ public class I18NProjectConfiguratorTest extends TestCase {
 		try {
 			I18NProjectConfiguration config = new I18NProjectConfiguration(
 					new File("."));
-			assertEquals(".", config.getRelativeProjectTopDirectory());
-			assertEquals("src", config.getRelativeSourceDirectory());
+			assertEquals("src", config.getRelativeProjectTopDirectory());
+			assertEquals("main/java", config.getRelativeSourceDirectory());
 			assertEquals("i18n", config.getRelativeI18nDirectory());
-			assertEquals("res", config.getRelativeDestinationDirectory());
+			assertEquals("main/resources", config.getRelativeDestinationDirectory());
 			assertTrue(config.getProjectDirectory().exists());
 			assertTrue(config.getSourceDirectory().exists());
 			assertTrue(config.getI18nDirectory().exists());
