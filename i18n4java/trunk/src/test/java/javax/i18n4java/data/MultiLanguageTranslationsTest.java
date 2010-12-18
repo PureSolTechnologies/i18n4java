@@ -18,6 +18,8 @@
 
 package javax.i18n4java.data;
 
+import static org.junit.Assert.*;
+
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -27,33 +29,30 @@ import javax.i18n4java.data.SourceLocation;
 
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class MultiLanguageTranslationsTest extends TestCase {
+public class MultiLanguageTranslationsTest {
 
 	@Test
 	public void testDefaultConstructor() {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
-		Assert.assertEquals(0, translations.getAvailableLanguages().size());
-		Assert.assertEquals(0, translations.getSources().size());
-		Assert.assertFalse(translations.hasTranslations());
+		assertEquals(0, translations.getAvailableLanguages().size());
+		assertEquals(0, translations.getSources().size());
+		assertFalse(translations.hasTranslations());
 	}
 
 	@Test
 	public void testFrom() {
 		MultiLanguageTranslations translations = MultiLanguageTranslations
 				.from("Source", "File.java", 123);
-		Assert.assertNotNull(translations);
-		Assert.assertEquals(0, translations.getAvailableLanguages().size());
-		Assert.assertEquals(1, translations.getSources().size());
-		Assert.assertTrue(translations.hasTranslations());
+		assertNotNull(translations);
+		assertEquals(0, translations.getAvailableLanguages().size());
+		assertEquals(1, translations.getSources().size());
+		assertTrue(translations.hasTranslations());
 		LanguageSet languageSet = translations.get("Source");
-		Assert.assertNotNull(languageSet);
-		Assert.assertEquals(0, languageSet.getAvailableLanguages().size());
+		assertNotNull(languageSet);
+		assertEquals(0, languageSet.getAvailableLanguages().size());
 		Vector<SourceLocation> locations = languageSet.getLocations();
-		Assert.assertNotNull(locations);
-		Assert.assertEquals(1, locations.size());
+		assertNotNull(locations);
+		assertEquals(1, locations.size());
 	}
 
 	@Test
@@ -72,62 +71,59 @@ public class MultiLanguageTranslationsTest extends TestCase {
 		locations.add(new SourceLocation("File3_1.java", 1, 2));
 		translations.addLocations("Source3", locations);
 
-		Assert.assertTrue(translations.getTranslations().size() > 0);
-		Assert.assertTrue(translations.hasTranslations());
+		assertTrue(translations.getTranslations().size() > 0);
+		assertTrue(translations.hasTranslations());
 
-		Assert.assertTrue(translations.containsSource("Source1"));
-		Assert.assertEquals(1, translations.getAvailableLanguages().size());
-		Assert.assertEquals(3, translations.getSources().size());
-		Assert.assertEquals(0, translations.getAvailableLanguages("Source1")
-				.size());
-		Assert.assertEquals(1, translations.getLocations("Source1").size());
+		assertTrue(translations.containsSource("Source1"));
+		assertEquals(1, translations.getAvailableLanguages().size());
+		assertEquals(3, translations.getSources().size());
+		assertEquals(0, translations.getAvailableLanguages("Source1").size());
+		assertEquals(1, translations.getLocations("Source1").size());
 		LanguageSet languageSet = translations.get("Source1");
-		Assert.assertNotNull(languageSet);
-		Assert.assertEquals(0, languageSet.getAvailableLanguages().size());
+		assertNotNull(languageSet);
+		assertEquals(0, languageSet.getAvailableLanguages().size());
 		locations = languageSet.getLocations();
-		Assert.assertNotNull(locations);
-		Assert.assertEquals(1, locations.size());
+		assertNotNull(locations);
+		assertEquals(1, locations.size());
 
-		Assert.assertTrue(translations.containsSource("Source2"));
-		Assert.assertEquals(0, translations.getAvailableLanguages("Source2")
-				.size());
-		Assert.assertEquals(1, translations.getLocations("Source2").size());
+		assertTrue(translations.containsSource("Source2"));
+		assertEquals(0, translations.getAvailableLanguages("Source2").size());
+		assertEquals(1, translations.getLocations("Source2").size());
 		languageSet = translations.get("Source2");
-		Assert.assertNotNull(languageSet);
-		Assert.assertEquals(0, languageSet.getAvailableLanguages().size());
+		assertNotNull(languageSet);
+		assertEquals(0, languageSet.getAvailableLanguages().size());
 		locations = languageSet.getLocations();
-		Assert.assertNotNull(locations);
-		Assert.assertEquals(1, locations.size());
+		assertNotNull(locations);
+		assertEquals(1, locations.size());
 
-		Assert.assertTrue(translations.containsSource("Source3"));
-		Assert.assertEquals(1, translations.getAvailableLanguages("Source3")
-				.size());
-		Assert.assertEquals(3, translations.getLocations("Source3").size());
+		assertTrue(translations.containsSource("Source3"));
+		assertEquals(1, translations.getAvailableLanguages("Source3").size());
+		assertEquals(3, translations.getLocations("Source3").size());
 		languageSet = translations.get("Source3");
-		Assert.assertNotNull(languageSet);
-		Assert.assertEquals(1, languageSet.getAvailableLanguages().size());
+		assertNotNull(languageSet);
+		assertEquals(1, languageSet.getAvailableLanguages().size());
 		locations = languageSet.getLocations();
-		Assert.assertNotNull(locations);
-		Assert.assertEquals(3, locations.size());
+		assertNotNull(locations);
+		assertEquals(3, locations.size());
 
 		translations.removeLocations();
-		Assert.assertEquals(0, translations.getLocations("Source1").size());
-		Assert.assertEquals(0, translations.getLocations("Source2").size());
-		Assert.assertEquals(0, translations.getLocations("Source3").size());
+		assertEquals(0, translations.getLocations("Source1").size());
+		assertEquals(0, translations.getLocations("Source2").size());
+		assertEquals(0, translations.getLocations("Source3").size());
 
 		Hashtable<String, LanguageSet> translation = new Hashtable<String, LanguageSet>();
 		translation.put("Test", new LanguageSet());
 		translation.get("Test").set("de", "Test");
 		translations.setTranslations(translation);
-		Assert.assertNotSame(translation, translations.getTranslations());
-		Assert.assertEquals(translation, translations.getTranslations());
+		assertNotSame(translation, translations.getTranslations());
+		assertEquals(translation, translations.getTranslations());
 	}
 
 	@Test
 	public void testEquals() {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
-		Assert.assertTrue(translations.equals(translations));
-		Assert.assertFalse(translations.equals(null));
+		assertTrue(translations.equals(translations));
+		assertFalse(translations.equals(null));
 	}
 
 	@Test
@@ -136,20 +132,20 @@ public class MultiLanguageTranslationsTest extends TestCase {
 				"Source1", "File.java", 123);
 		MultiLanguageTranslations cloned = (MultiLanguageTranslations) origin
 				.clone();
-		Assert.assertNotSame(origin, cloned);
-		Assert.assertEquals(origin, cloned);
+		assertNotSame(origin, cloned);
+		assertEquals(origin, cloned);
 	}
 
 	@Test
 	public void testSetAndGetTranslation() {
 		MultiLanguageTranslations hash = new MultiLanguageTranslations();
-		Assert.assertEquals("English", hash.get("English", "de"));
+		assertEquals("English", hash.get("English", "de"));
 
 		hash.set("English", "de", "Deutsch");
 		hash.set("English", "vi", "Tieng Viet");
 
-		Assert.assertEquals("English", hash.get("English", ""));
-		Assert.assertEquals("Deutsch", hash.get("English", "de"));
-		Assert.assertEquals("Tieng Viet", hash.get("English", "vi"));
+		assertEquals("English", hash.get("English", ""));
+		assertEquals("Deutsch", hash.get("English", "de"));
+		assertEquals("Tieng Viet", hash.get("English", "vi"));
 	}
 }

@@ -18,6 +18,8 @@ package javax.i18n4java.utils;
  *
  ***************************************************************************/
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -26,9 +28,7 @@ import javax.i18n4java.utils.FileSearch;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class FileSearchTest extends TestCase {
+public class FileSearchTest {
 
 	@Test
 	public void testOSSpecificSeparator() {

@@ -18,6 +18,8 @@
 
 package javax.i18n4java.data;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.util.Locale;
 
@@ -26,23 +28,19 @@ import javax.i18n4java.data.TRFile;
 
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class I18NFileTest extends TestCase {
+public class I18NFileTest {
 
 	@Test
 	public void testGetI18NFile() {
-		Assert.assertEquals("/javax/i18n4java/TestClass.de.tr", TRFile
-				.getResource("javax.i18n4java.TestClass",
-						new Locale("de", "DE")));
+		assertEquals("/javax/i18n4java/TestClass.de.tr", TRFile.getResource(
+				"javax.i18n4java.TestClass", new Locale("de", "DE")));
 
-		Assert.assertEquals("/javax/i18n4java/TestClass.de.tr",
+		assertEquals("/javax/i18n4java/TestClass.de.tr",
 				TRFile.getResource("javax.i18n4java.TestClass", "de"));
 
 		File file = new File("src/main/java/javax/i18n4java/data/I18NFile.java");
-		Assert.assertTrue(file.exists());
-		Assert.assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"),
+		assertTrue(file.exists());
+		assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"),
 				I18NFile.getResource(file));
 	}
 }

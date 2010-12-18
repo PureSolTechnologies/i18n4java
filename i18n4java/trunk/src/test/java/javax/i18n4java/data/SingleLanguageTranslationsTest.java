@@ -18,19 +18,18 @@
 
 package javax.i18n4java.data;
 
+import static org.junit.Assert.*;
+
 import javax.i18n4java.data.SingleLanguageTranslations;
 
 import org.junit.Test;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-public class SingleLanguageTranslationsTest extends TestCase {
+public class SingleLanguageTranslationsTest {
 
 	@Test
 	public void testDefaultConstructor() {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
-		Assert.assertEquals("Nothing in", translations.get("Nothing in"));
+		assertEquals("Nothing in", translations.get("Nothing in"));
 	}
 
 	@Test
@@ -38,8 +37,8 @@ public class SingleLanguageTranslationsTest extends TestCase {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
 		translations.add("Source", "Quelle");
 		translations.add("Translation", "Uebersetzung");
-		Assert.assertEquals("Quelle", translations.get("Source"));
-		Assert.assertEquals("Uebersetzung", translations.get("Translation"));
+		assertEquals("Quelle", translations.get("Source"));
+		assertEquals("Uebersetzung", translations.get("Translation"));
 	}
 
 	@Test
@@ -48,33 +47,32 @@ public class SingleLanguageTranslationsTest extends TestCase {
 		translations.add("Source", "Quelle");
 		translations.add("Translation", "Uebersetzung");
 		System.out.println(translations.toString());
-		Assert.assertEquals(
-				"Translation --> Uebersetzung\nSource --> Quelle\n",
+		assertEquals("Translation --> Uebersetzung\nSource --> Quelle\n",
 				translations.toString());
 	}
 
 	@Test
 	public void testHashCode() {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
-		Assert.assertTrue(translations.hashCode() > 0);
+		assertTrue(translations.hashCode() > 0);
 	}
 
 	@Test
 	public void testEquals() {
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
-		Assert.assertTrue(translations.equals(translations));
-		Assert.assertFalse(translations.equals(null));
+		assertTrue(translations.equals(translations));
+		assertFalse(translations.equals(null));
 		SingleLanguageTranslations translations2 = new SingleLanguageTranslations();
-		Assert.assertTrue(translations.equals(translations2));
-		Assert.assertTrue(translations2.equals(translations));
+		assertTrue(translations.equals(translations2));
+		assertTrue(translations2.equals(translations));
 
 		translations.add("Source", "Quelle");
-		Assert.assertFalse(translations.equals(translations2));
-		Assert.assertFalse(translations2.equals(translations));
+		assertFalse(translations.equals(translations2));
+		assertFalse(translations2.equals(translations));
 
 		translations2.add("Source", "Quelle");
-		Assert.assertTrue(translations.equals(translations2));
-		Assert.assertTrue(translations2.equals(translations));
+		assertTrue(translations.equals(translations2));
+		assertTrue(translations2.equals(translations));
 	}
 
 	@Test
@@ -83,11 +81,11 @@ public class SingleLanguageTranslationsTest extends TestCase {
 		origin.add("Source", "Quelle");
 		SingleLanguageTranslations cloned = (SingleLanguageTranslations) origin
 				.clone();
-		Assert.assertNotSame(origin, cloned);
-		Assert.assertEquals(origin, cloned);
+		assertNotSame(origin, cloned);
+		assertEquals(origin, cloned);
 		cloned.set("Source", "Quelle");
-		Assert.assertEquals(origin, cloned);
+		assertEquals(origin, cloned);
 		cloned.set("Source2", "Quelle2");
-		Assert.assertFalse(origin.equals(cloned));
+		assertFalse(origin.equals(cloned));
 	}
 }

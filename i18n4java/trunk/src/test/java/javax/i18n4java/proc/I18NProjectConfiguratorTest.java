@@ -1,5 +1,7 @@
 package javax.i18n4java.proc;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,9 +10,7 @@ import javax.i18n4java.proc.I18NProjectConfiguration;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class I18NProjectConfiguratorTest extends TestCase {
+public class I18NProjectConfiguratorTest {
 
 	@Test
 	public void testReadI18NProperties() {
@@ -20,7 +20,8 @@ public class I18NProjectConfiguratorTest extends TestCase {
 			assertEquals("src", config.getRelativeProjectTopDirectory());
 			assertEquals("main/java", config.getRelativeSourceDirectory());
 			assertEquals("i18n", config.getRelativeI18nDirectory());
-			assertEquals("main/resources", config.getRelativeDestinationDirectory());
+			assertEquals("main/resources",
+					config.getRelativeDestinationDirectory());
 			assertTrue(config.getProjectDirectory().exists());
 			assertTrue(config.getSourceDirectory().exists());
 			assertTrue(config.getI18nDirectory().exists());
