@@ -1,6 +1,0 @@
-<Project filename="&lt;&lt;unnamed project&gt;&gt;" projectName="I18N4Java">
-  <Jar>bin</Jar>
-  <AuxClasspathEntry>lib/junit.jar</AuxClasspathEntry>
-  <SrcDir>src</SrcDir>
-  <SrcDir>test</SrcDir>
-</Project>
