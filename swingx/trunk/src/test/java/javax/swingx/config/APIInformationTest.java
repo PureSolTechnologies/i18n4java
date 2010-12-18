@@ -36,65 +36,61 @@ public class APIInformationTest {
 
 	@Test
 	public void testGetPackageVersion() {
-		String string = APIInformation.getPackageVersion(this.getClass());
+		String string = APIInformation.getPackageVersion();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(
-				ConfigFile.readEntry("res/config/about", "GENERAL", "version"),
-				string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "version"), string);
 	}
 
 	@Test
 	public void testGetPackageYears() {
-		String string = APIInformation.getPackageYears(this.getClass());
+		String string = APIInformation.getPackageYears();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(
-				ConfigFile.readEntry("src/main/config/config/about", "GENERAL", "years"),
-				string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "years"), string);
 	}
 
 	@Test
 	public void testGetPackageAuthor() {
-		String string = APIInformation.getPackageAuthor(this.getClass());
+		String string = APIInformation.getPackageAuthor();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(
-				ConfigFile.readEntry("src/main/config/config/about", "GENERAL", "author"),
-				string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "author"), string);
 	}
 
 	@Test
 	public void testGetPackageBugReport() {
-		String string = APIInformation.getPackageBugReport(this.getClass());
+		String string = APIInformation.getPackageBugReport();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about", "GENERAL",
-				"bugreport"), string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "bugreport"), string);
 	}
 
 	@Test
 	public void testGetPackageCopyRight() {
-		String string = APIInformation.getPackageCopyright(this.getClass());
+		String string = APIInformation.getPackageCopyright();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("res/config/about", "GENERAL",
-				"copyright"), string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "copyright"), string);
 	}
 
 	@Test
 	public void testGetPackageOwner() {
-		String string = APIInformation.getPackageOwner(this.getClass());
+		String string = APIInformation.getPackageOwner();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(
-				ConfigFile.readEntry("res/config/about", "GENERAL", "owner"),
-				string);
+		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+				"GENERAL", "owner"), string);
 	}
 
 	@Test
 	public void testGetCopyrightMessage() {
-		String string = APIInformation.getCopyrightMessage(this.getClass());
+		String string = APIInformation.getCopyrightMessage();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("<html><body>\n"
@@ -104,7 +100,7 @@ public class APIInformationTest {
 
 	@Test
 	public void testGetVendorInformation() {
-		String string = APIInformation.getVendorInformation(this.getClass());
+		String string = APIInformation.getVendorInformation();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("<html><body>\n" + "<h1>PureSol Technologies</h1>\n"
@@ -113,7 +109,7 @@ public class APIInformationTest {
 
 	@Test
 	public void testGetContactInformation() {
-		String string = APIInformation.getContactInformation(this.getClass());
+		String string = APIInformation.getContactInformation();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("<html><body>\n" + "<u>Bug reports</u><br/>\n"

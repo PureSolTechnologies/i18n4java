@@ -30,7 +30,8 @@ public class ProgressWindowTest {
 	}
 
 	public static void main(String args[]) {
-		TestProgressObservable tp = new TestProgressObservable(true);
+		TestProgressObservable tp = new TestProgressObservable();
+		tp.setStartSubProcess(true);
 		ProgressWindow pw = new ProgressWindow(tp);
 		pw.run();
 	}

@@ -7,8 +7,13 @@ import org.junit.Test;
 public class CustomerInformationTest {
 
 	@Test
+	public void testResource() {
+		assertNotNull(getClass().getResource("/config/about"));
+	}
+
+	@Test
 	public void testGetLongName() {
-		String string = CustomerInformation.getLongName(this.getClass());
+		String string = CustomerInformation.getLongName();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("nobody", string);
@@ -16,7 +21,7 @@ public class CustomerInformationTest {
 
 	@Test
 	public void testGetShortName() {
-		String string = CustomerInformation.getShortName(this.getClass());
+		String string = CustomerInformation.getShortName();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("nbdy", string);
@@ -24,8 +29,7 @@ public class CustomerInformationTest {
 
 	@Test
 	public void testGetCustomerInformation() {
-		String string = CustomerInformation.getCustomerInformation(this
-				.getClass());
+		String string = CustomerInformation.getCustomerInformation();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
 		assertEquals("<html><body>\n" + "<h1>nobody</h1>\n"

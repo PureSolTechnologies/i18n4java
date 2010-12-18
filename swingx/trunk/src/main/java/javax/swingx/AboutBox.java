@@ -84,8 +84,7 @@ public class AboutBox extends Dialog {
 		Panel panel = new Panel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		HTMLTextPane html = new HTMLTextPane();
-		html.setText(APIInformation.getCopyrightMessage(Application.getInstance()
-				.getClass()));
+		html.setText(APIInformation.getCopyrightMessage());
 		panel.add(html);
 		return panel;
 	}
@@ -99,8 +98,7 @@ public class AboutBox extends Dialog {
 		Panel panel = new Panel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		HTMLTextPane html = new HTMLTextPane();
-		html.setText(APIInformation.getVendorInformation(Application.getInstance()
-				.getClass()));
+		html.setText(APIInformation.getVendorInformation());
 		panel.add(html);
 		return panel;
 	}
@@ -114,8 +112,7 @@ public class AboutBox extends Dialog {
 		Panel panel = new Panel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		HTMLTextPane html = new HTMLTextPane();
-		html.setText(CustomerInformation.getCustomerInformation(Application
-				.getInstance().getClass()));
+		html.setText(CustomerInformation.getCustomerInformation());
 		panel.add(html);
 		return panel;
 	}
@@ -129,8 +126,7 @@ public class AboutBox extends Dialog {
 		Panel panel = new Panel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		HTMLTextPane html = new HTMLTextPane();
-		html.setText(APIInformation.getContactInformation(Application.getInstance()
-				.getClass()));
+		html.setText(APIInformation.getContactInformation());
 		panel.add(html);
 		return panel;
 	}

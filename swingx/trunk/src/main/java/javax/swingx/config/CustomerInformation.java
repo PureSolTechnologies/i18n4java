@@ -33,7 +33,8 @@ import org.apache.log4j.Logger;
  */
 public class CustomerInformation {
 
-	private static final Logger logger = Logger.getLogger(CustomerInformation.class);
+	private static final Logger logger = Logger
+			.getLogger(CustomerInformation.class);
 
 	private static final String CUSTOMER_CONFIG_FILE = "/config/customer";
 
@@ -42,8 +43,8 @@ public class CustomerInformation {
 	 * 
 	 * @return A String containing the customers short name is returned.
 	 */
-	public static String getShortName(Class<?> clazz) {
-		return Configurator.getEntry(clazz, CUSTOMER_CONFIG_FILE, "GENERAL",
+	public static String getShortName() {
+		return Configurator.getEntry(CUSTOMER_CONFIG_FILE, "GENERAL",
 				"shortname", true);
 	}
 
@@ -52,14 +53,14 @@ public class CustomerInformation {
 	 * 
 	 * @return A String containing the customers long name is returned.
 	 */
-	public static String getLongName(Class<?> clazz) {
-		return Configurator.getEntry(clazz, CUSTOMER_CONFIG_FILE, "GENERAL",
-				"name", true);
+	public static String getLongName() {
+		return Configurator.getEntry(CUSTOMER_CONFIG_FILE, "GENERAL", "name",
+				true);
 	}
 
-	static public String getCustomerInformation(Class<?> clazz) {
+	static public String getCustomerInformation() {
 		try {
-			InputStream inStream = clazz
+			InputStream inStream = CustomerInformation.class
 					.getResourceAsStream(CUSTOMER_CONFIG_FILE);
 			if (inStream == null) {
 				return ConfigFile.readSection(CUSTOMER_CONFIG_FILE, "ABOUT");

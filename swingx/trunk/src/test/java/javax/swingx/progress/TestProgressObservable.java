@@ -18,6 +18,10 @@
 
 package javax.swingx.progress;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 public class TestProgressObservable implements ProgressObservable {
 
 	private ProgressObserver observer;
@@ -27,7 +31,7 @@ public class TestProgressObservable implements ProgressObservable {
 
 	}
 
-	public TestProgressObservable(boolean startSubProcess) {
+	public void setStartSubProcess(boolean startSubProcess) {
 		this.startSubProcess = startSubProcess;
 	}
 
@@ -56,5 +60,10 @@ public class TestProgressObservable implements ProgressObservable {
 			}
 		}
 		observer.finish();
+	}
+
+	@Test
+	public void testSuitability() {
+		assertEquals(1, getClass().getConstructors().length);
 	}
 }

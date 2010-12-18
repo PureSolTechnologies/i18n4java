@@ -48,13 +48,13 @@ public class ClassRegistry {
 		register.put(interfce.getName(), element);
 	}
 
-	static public void register(Class<?> clazz, Class<?> interfce) {
+	static public void register(Class<?> interfce) {
 		try {
 			logger.info("Register interface '" + interfce.getName() + "'");
-			String className = Configurator.getEntry(clazz, REGISTRY_FILE,
+			String className = Configurator.getEntry( REGISTRY_FILE,
 					interfce.getName(), "class", true);
 			logger.debug("class: '" + className + "'");
-			String typeName = Configurator.getEntry(clazz, REGISTRY_FILE,
+			String typeName = Configurator.getEntry( REGISTRY_FILE,
 					interfce.getName(), "type", true);
 			logger.debug("type: '" + typeName + "'");
 			ClassRegistryElementType type = ClassRegistryElementType
@@ -73,10 +73,10 @@ public class ClassRegistry {
 		register.remove(interfce.getName());
 	}
 
-	static public <T> T create(Class<?> clazz, Class<T> interfce) {
+	static public <T> T create(Class<T> interfce) {
 		logger.debug("create for interface '" + interfce.getName() + "'");
 		if (!isRegistered(interfce)) {
-			register(clazz, interfce);
+			register( interfce);
 			if (!isRegistered(interfce)) {
 				return null;
 			}
