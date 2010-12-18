@@ -1,3 +1,5 @@
+package javax.i18n4java.utils;
+
 /***************************************************************************
  *
  * Copyright 2009-2010 PureSol Technologies
@@ -15,8 +17,6 @@
  * limitations under the License.
  *
  ***************************************************************************/
-
-package javax.i18n4java.utils;
 
 import java.io.File;
 import java.util.List;
@@ -66,17 +66,19 @@ public class FileSearchTest extends TestCase {
 
 	@Test
 	public void testRecursiveFileSearch() {
-		List<File> files = FileSearch.find(new File("."), "*.j??*");
+		List<File> files = FileSearch.find(new File("."), "*.java");
 		assertNotNull(files);
 		assertTrue(files.size() > 0);
 		boolean foundSelf = false;
 		boolean foundClass = false;
 		for (File file : files) {
-			// System.out.println(file);
-			if (file.equals(new File("/test/javax/i18n4java/utils/FileSearchTest.java"))) {
+			System.out.println(file);
+			if (file.equals(new File(
+					"/src/test/java/javax/i18n4java/utils/FileSearchTest.java"))) {
 				foundSelf = true;
 			}
-			if (file.equals(new File("/src/javax/i18n4java/utils/FileSearch.java"))) {
+			if (file.equals(new File(
+					"/src/main/java/javax/i18n4java/utils/FileSearch.java"))) {
 				foundClass = true;
 			}
 		}

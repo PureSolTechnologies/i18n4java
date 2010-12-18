@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  */
 public class FileSearch {
 
-	static String wildcardsToRegExp(String pattern) {
+	public static String wildcardsToRegExp(String pattern) {
 		pattern = pattern.replaceAll("\\.", "\\\\.");
 		if (File.separator.equals("\\")) {
 			pattern = pattern.replaceAll("\\*", "[^\\\\\\\\]*");

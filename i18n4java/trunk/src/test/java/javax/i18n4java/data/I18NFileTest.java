@@ -34,14 +34,15 @@ public class I18NFileTest extends TestCase {
 	@Test
 	public void testGetI18NFile() {
 		Assert.assertEquals("/javax/i18n4java/TestClass.de.tr", TRFile
-				.getResource("javax.i18n4java.TestClass", new Locale("de", "DE")));
+				.getResource("javax.i18n4java.TestClass",
+						new Locale("de", "DE")));
 
-		Assert.assertEquals("/javax/i18n4java/TestClass.de.tr", TRFile
-				.getResource("javax.i18n4java.TestClass", "de"));
+		Assert.assertEquals("/javax/i18n4java/TestClass.de.tr",
+				TRFile.getResource("javax.i18n4java.TestClass", "de"));
 
-		File file = new File("src/javax/i18n4java/data/I18NFile.java");
+		File file = new File("src/main/java/javax/i18n4java/data/I18NFile.java");
 		Assert.assertTrue(file.exists());
-		Assert.assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"), I18NFile
-				.getResource(file));
+		Assert.assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"),
+				I18NFile.getResource(file));
 	}
 }

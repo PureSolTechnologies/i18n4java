@@ -76,7 +76,7 @@ public class I18NJavaParserTest extends TestCase {
 		try {
 			MultiLanguageTranslations translations = I18NJavaParser
 					.parseFile(new File(
-							"test/javax/i18n4java/proc/I18NJavaParserTest.java"));
+							"src/test/java/javax/i18n4java/proc/I18NJavaParserTest.java"));
 			Assert.assertNotNull(translations);
 			translations.print();
 			Assert.assertNotNull(translations.get("tr(String)"));
