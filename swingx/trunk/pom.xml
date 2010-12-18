@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>swingx</groupId>
+  <artifactId>swingx</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>SwingX</name>
+  <description>Extensions for Java's Swing</description>
+  <url>http://i18n4java/sourceforge.net</url>
+  <scm>
+  	<url>https://i18n4java.svn.sourceforge.net/svnroot/i18n4java/swingx</url>
+  </scm>
+  <organization>
+  	<name>PureSol Technologies</name>
+  	<url>http://puresol-technologies.com</url>
+  </organization>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+    <dependency>
+    	<groupId>poi</groupId>
+    	<artifactId>poi</artifactId>
+    	<version>3.1-FINAL</version>
+    </dependency>
+    <dependency>
+    	<groupId>javax</groupId>
+    	<artifactId>i18n4java</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <dependencyManagement>
+  	<dependencies>
+  	</dependencies>
+  </dependencyManagement>
+</project>
