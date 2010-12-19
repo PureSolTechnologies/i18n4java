@@ -73,6 +73,9 @@ public class TRFile {
 	static public boolean write(File file,
 			SingleLanguageTranslations translations) {
 		try {
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
 			translations = (SingleLanguageTranslations) translations.clone();
 			translations.removeLineBreaks();
 			JAXBContext context = JAXBContext.newInstance(translations

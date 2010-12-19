@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<internationalization>
+    <translations>
+        <entry>
+            <key>This application converts all i18n files in the\nthe specified directory and converts them into\ntr files for usage in internationalized applications.</key>
+            <value>
+                <source>This application converts all i18n files in the\nthe specified directory and converts them into\ntr files for usage in internationalized applications.</source>
+                <translated/>
+                <locations>
+                    <file>apps.I18NReleaseApp.java</file>
+                    <line>48</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>usage:  I18NRelease &lt;directory&gt;</key>
+            <value>
+                <source>usage:  I18NRelease &lt;directory&gt;</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Benutzung:  I18NRelease &lt;directory&gt;</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NReleaseApp.java</file>
+                    <line>44</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+    </translations>
+</internationalization>

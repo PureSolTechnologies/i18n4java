@@ -85,6 +85,9 @@ public class I18NFile {
 	static public boolean write(File file,
 			MultiLanguageTranslations translations) {
 		try {
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
 			translations = (MultiLanguageTranslations) translations.clone();
 			translations.removeLineBreaks();
 			JAXBContext context = JAXBContext.newInstance(translations
