@@ -216,7 +216,7 @@ public class I18NLinguist extends Application {
 
 	static public void main(String[] args) {
 		splash = new SplashWindow(
-				I18NLinguist.class.getResource("/splashtest.jpg"), 400, 300);
+				I18NLinguist.class.getResource("/splash.jpeg"), 640, 300);
 		splash.run();
 		Locale.setDefault(new Locale("de", "DE"));
 		Translator.setDefault(Locale.getDefault());
