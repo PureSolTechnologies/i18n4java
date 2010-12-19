@@ -33,7 +33,7 @@
     <dependency>
     	<groupId>javax</groupId>
     	<artifactId>i18n4java</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+    	<version>1.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
