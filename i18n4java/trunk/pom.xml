@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>javax</groupId>
   <artifactId>i18n4java</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>I18n4Java</name>
   <description>Internationalization (I18n) Framework for Java	</description>
   <url>http://i18n4java.sourceforge.net</url>
