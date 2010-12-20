@@ -39,7 +39,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageVersion();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "version"), string);
 	}
 
@@ -48,7 +48,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageYears();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "years"), string);
 	}
 
@@ -57,7 +57,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageAuthor();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "author"), string);
 	}
 
@@ -66,7 +66,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageBugReport();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "bugreport"), string);
 	}
 
@@ -75,7 +75,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageCopyright();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "copyright"), string);
 	}
 
@@ -84,7 +84,7 @@ public class APIInformationTest {
 		String string = APIInformation.getPackageOwner();
 		assertNotNull(string);
 		assertFalse(string.isEmpty());
-		assertEquals(ConfigFile.readEntry("src/main/config/config/about",
+		assertEquals(ConfigFile.readEntry("src/main/resources/config/about",
 				"GENERAL", "owner"), string);
 	}
 
