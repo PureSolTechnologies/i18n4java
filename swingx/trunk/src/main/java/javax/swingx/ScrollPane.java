@@ -45,6 +45,14 @@ public class ScrollPane extends JScrollPane implements ConnectionHandler {
 		super(component);
 	}
 
+	public ScrollPane(Component view, int vsbPolicy, int hsbPolicy) {
+		super(view, vsbPolicy, hsbPolicy);
+	}
+
+	public ScrollPane(int vsbPolicy, int hsbPolicy) {
+		super(vsbPolicy, hsbPolicy);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
