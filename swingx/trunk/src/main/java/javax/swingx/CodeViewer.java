@@ -2,8 +2,6 @@ package javax.swingx;
 
 import java.awt.Font;
 
-import javax.swingx.TextArea;
-
 public class CodeViewer extends TextArea {
 
 	private static final long serialVersionUID = -6881015535418668742L;

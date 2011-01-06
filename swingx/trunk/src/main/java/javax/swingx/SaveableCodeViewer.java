@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.filechooser.FileFilter;
-import javax.swingx.Saveable;
 import javax.swingx.filefilter.TXTFilter;
 
 public class SaveableCodeViewer extends CodeViewer implements Saveable {
