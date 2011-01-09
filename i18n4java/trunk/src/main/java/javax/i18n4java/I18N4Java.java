@@ -9,18 +9,14 @@ public class I18N4Java {
 
 	public static List<String> getISOLanguages() {
 		List<String> isoLanguages = new ArrayList<String>();
-		for (String isoLanguage : Locale.getISOLanguages()) {
-			isoLanguages.add(isoLanguage);
-		}
+		Collections.addAll(isoLanguages, Locale.getISOLanguages());
 		Collections.sort(isoLanguages);
 		return isoLanguages;
 	}
 
 	public static List<Locale> getAvailableLocales() {
 		List<Locale> locales = new ArrayList<Locale>();
-		for (Locale locale : Locale.getAvailableLocales()) {
-			locales.add(locale);
-		}
+		Collections.addAll(locales, Locale.getAvailableLocales());
 		return locales;
 	}
 
