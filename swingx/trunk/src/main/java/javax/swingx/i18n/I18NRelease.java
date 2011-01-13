@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.i18n4java.proc.ProgressListener;
-import javax.swingx.progress.ProgressObservable;
+import javax.swingx.progress.RunnableProgressObservable;
 import javax.swingx.progress.ProgressObserver;
 
 /**
@@ -33,7 +33,7 @@ import javax.swingx.progress.ProgressObserver;
  * @author Rick-Rainer Ludwig
  */
 public class I18NRelease extends javax.i18n4java.proc.I18NRelease implements
-		ProgressObservable, ProgressListener {
+		RunnableProgressObservable, ProgressListener {
 
 	private ProgressObserver observer = null;
 

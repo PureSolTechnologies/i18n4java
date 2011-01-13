@@ -43,11 +43,11 @@ public class ProgressWindow extends Frame {
 			.getTranslator(ProgressWindow.class);
 
 	private ProgressPanel progressPanel;
-	private final ProgressObservable observable;
+	private final RunnableProgressObservable observable;
 
-	public ProgressWindow(ProgressObservable thread) {
+	public ProgressWindow(RunnableProgressObservable observable) {
 		super(translator.i18n("Progress..."));
-		this.observable = thread;
+		this.observable = observable;
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		initUI();
 	}
@@ -91,7 +91,7 @@ public class ProgressWindow extends Frame {
 	}
 
 	@Signal
-	public void finished(ProgressObservable observable) {
+	public void finished(RunnableProgressObservable observable) {
 		emitSignal("finished", observable);
 	}
 }

@@ -21,6 +21,8 @@ package javax.swingx.progress;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
@@ -51,15 +53,15 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	private JProgressBar progressBar;
 	private Button cancel;
 	private boolean ownThreadFinished = false;
-	private final Thread thread;
-	private final ProgressObservable observable;
+	private final ExecutorService thread;
+	private final RunnableProgressObservable observable;
 	private final List<ProgressPanel> subProgressPanels = new ArrayList<ProgressPanel>();
 
-	public ProgressPanel(ProgressObservable observable) {
+	public ProgressPanel(RunnableProgressObservable observable) {
 		super();
 		this.observable = observable;
 		observable.setMonitor(this);
-		this.thread = new Thread(observable);
+		this.thread = Executors.newSingleThreadExecutor();
 		initUI();
 	}
 
@@ -94,12 +96,12 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 
 	public void run() {
 		setVisible(true);
-		thread.start();
+		thread.submit(observable);
 	}
 
 	@Slot
 	public void cancel() {
-		thread.interrupt();
+		thread.shutdownNow();
 		ownThreadFinished = true;
 		finish();
 	}
@@ -129,7 +131,7 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	}
 
 	@Signal
-	public void finished(ProgressObservable progressObservable) {
+	public void finished(RunnableProgressObservable progressObservable) {
 		connectionManager.emitSignal("finished", progressObservable);
 	}
 
@@ -157,7 +159,7 @@ public class ProgressPanel extends Panel implements ProgressObserver {
 	}
 
 	@Override
-	public ProgressObserver startSubProgress(ProgressObservable thread) {
+	public ProgressObserver startSubProgress(RunnableProgressObservable thread) {
 		ProgressPanel subProgressPanel = new ProgressPanel(thread);
 		synchronized (subProgressPanels) {
 			subProgressPanels.add(subProgressPanel);

@@ -24,7 +24,7 @@ package javax.swingx.progress;
  * @author Rick-Rainer Ludwig
  * 
  */
-public interface ProgressObservable extends Runnable {
+public interface RunnableProgressObservable extends Runnable {
 
 	/**
 	 * The monitor (observer) is set here and the class itself has to take care

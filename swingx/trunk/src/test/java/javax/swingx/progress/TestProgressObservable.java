@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class TestProgressObservable implements ProgressObservable {
+public class TestProgressObservable implements RunnableProgressObservable {
 
 	private ProgressObserver observer;
 	private boolean startSubProcess = false;
