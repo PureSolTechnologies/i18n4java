@@ -55,7 +55,7 @@ public class LocaleChooser extends JComboBox {
 
 	public void setSelectedLocale(Locale locale) {
 		for (int index = 0; index < availableLocaleNames.size(); index++) {
-			if (new Locale(availableLocaleNames.get(index)).equals(locale)) {
+			if (availableLocaleNames.get(index).equals(locale.toString())) {
 				setSelectedIndex(index);
 				break;
 			}

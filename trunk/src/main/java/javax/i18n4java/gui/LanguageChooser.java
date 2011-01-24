@@ -35,8 +35,8 @@ public class LanguageChooser extends JComboBox {
 
 	private static final long serialVersionUID = -2438620845333994142L;
 
-	private final List<String> availableISOLanguages = I18N4Java
-			.getISOLanguages();
+	private final List<String> availableLocaleNames = I18N4Java
+			.getAvailableLocaleNames();
 
 	public LanguageChooser() {
 		super();
@@ -44,7 +44,7 @@ public class LanguageChooser extends JComboBox {
 	}
 
 	private void insertLocales() {
-		for (String languageCode : availableISOLanguages) {
+		for (String languageCode : availableLocaleNames) {
 			addItem(languageCode + " / "
 					+ new Locale(languageCode).getDisplayName());
 		}
@@ -52,12 +52,12 @@ public class LanguageChooser extends JComboBox {
 	}
 
 	public Locale getSelectedLocale() {
-		return new Locale(availableISOLanguages.get(getSelectedIndex()));
+		return new Locale(availableLocaleNames.get(getSelectedIndex()));
 	}
 
 	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < availableISOLanguages.size(); index++) {
-			if (availableISOLanguages.get(index).equals(locale.getLanguage())) {
+		for (int index = 0; index < availableLocaleNames.size(); index++) {
+			if (availableLocaleNames.get(index).equals(locale.toString())) {
 				setSelectedIndex(index);
 				break;
 			}

@@ -33,6 +33,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.i18n4java.data.SingleLanguageTranslations;
 import javax.i18n4java.data.TRFile;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
@@ -42,11 +44,11 @@ import org.apache.log4j.Logger;
  * because the String object is final and a tt() function could not be
  * implemented in that way.
  * 
- * This class is the central translator for all translations. It's instanciated
- * at best as
+ * This class is the central translator for all translations. It's instantiated
+ * as best as
  * 
  * <tt>private static final Translator translator = 
- * Translator.getTranslator(Class)</tt>
+ * Translator.getTranslator(Class)</tt>.
  * 
  * <b>This class is thread safe.</b>
  * 
@@ -127,6 +129,9 @@ public class Translator implements Serializable {
 	public static synchronized void setDefault(Locale locale) {
 		logger.info("Set default locale to '" + locale.toString() + "'");
 		defaultLocale = locale;
+		Locale.setDefault(locale);
+		JFileChooser.setDefaultLocale(locale);
+		JOptionPane.setDefaultLocale(locale);
 		resetAllInstances();
 	}
 
@@ -252,27 +257,28 @@ public class Translator implements Serializable {
 	 * This method reads all context translations for all set locales.
 	 */
 	private void readContextTranslation() {
-		readContextTranslation(getDefaultLanguage());
+		readContextTranslation(getDefault());
 		for (Locale addLocale : getAdditionalLocales()) {
-			readContextTranslation(addLocale.getLanguage());
+			readContextTranslation(addLocale);
 		}
 	}
 
 	/**
 	 * This method reads the context translation for the language.
 	 * 
-	 * @param language
+	 * @param locale
 	 *            is the language to be read.
 	 */
-	private void readContextTranslation(String language) {
+	private void readContextTranslation(Locale locale) {
 		logger.debug("read context translation for context '" + context
-				+ "' and language '" + language + "'");
-		if (language.equals("en")) {
-			translations.putIfAbsent("en", new SingleLanguageTranslations());
+				+ "' and language '" + locale + "'");
+		if (locale.getLanguage().equals("en")) {
+			translations.putIfAbsent(locale.toString(),
+					new SingleLanguageTranslations());
 			return;
 		}
-		String resource = TRFile.getResource(context, language);
-		readContextTranslationFromResource(language, resource);
+		String resource = TRFile.getResource(context, locale);
+		readContextTranslationFromResource(locale.toString(), resource);
 	}
 
 	/**
@@ -349,9 +355,9 @@ public class Translator implements Serializable {
 	 * @return The translated and localized string is returned.
 	 */
 	public String i18n(String text, Object... params) {
-		StringBuffer translation = new StringBuffer(new MessageFormat(
-				translate(text, getDefaultLanguage()), getDefault())
-				.format(params));
+		StringBuffer translation = new StringBuffer(
+				new MessageFormat(translate(text, getDefaultLanguage()),
+						getDefault()).format(params));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
@@ -362,9 +368,11 @@ public class Translator implements Serializable {
 			} else {
 				translation.append(" ");
 			}
-			translation.append("(").append(
-					new MessageFormat(translate(text, locale.getLanguage()),
-							locale).format(params)).append(")");
+			translation
+					.append("(")
+					.append(new MessageFormat(translate(text,
+							locale.getLanguage()), locale).format(params))
+					.append(")");
 		}
 		return translation.toString();
 	}

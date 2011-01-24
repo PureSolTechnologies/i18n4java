@@ -51,7 +51,7 @@ public class TRFile {
 	 *         JARs are to be specified with normal '/' slash separators.
 	 */
 	static public String getResource(String context, Locale locale) {
-		return getResource(context, locale.getLanguage());
+		return getResource(context, locale.toString());
 	}
 
 	/**

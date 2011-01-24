@@ -21,9 +21,9 @@ package javax.i18n4java.data;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -44,31 +44,26 @@ public class I18NFile {
 	private static Logger logger = Logger.getLogger(I18NFile.class);
 
 	static public File getResource(File file) {
-		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file)));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.contains("package")) {
-					line = line.replaceAll("^.*package\\s*", "");
-					line = line.replaceAll("\\s*;\\s*$", "");
-					line = line.replaceAll("\\.", "/");
-					line += "/" + file.getName();
-					line = line.replaceAll("\\.[^\\.]*$", ".i18n");
-					reader.close();
-					return new File(line);
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			try {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					if (line.contains("package")) {
+						line = line.replaceAll("^.*package\\s*", "");
+						line = line.replaceAll("\\s*;\\s*$", "");
+						line = line.replaceAll("\\.", "/");
+						line += "/" + file.getName();
+						line = line.replaceAll("\\.[^\\.]*$", ".i18n");
+						return new File(line);
+					}
 				}
+				return new File(file.getName());
+			} finally {
+				reader.close();
 			}
-			reader.close();
-			return new File(file.getName());
 		} catch (IOException e) {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e1) {
-				}
-			}
+			logger.warn(e.getMessage());
 			return null;
 		}
 	}
@@ -82,7 +77,7 @@ public class I18NFile {
 		return false;
 	}
 
-	static public boolean write(File file,
+	public static boolean write(File file,
 			MultiLanguageTranslations translations) {
 		try {
 			if (!file.getParentFile().exists()) {

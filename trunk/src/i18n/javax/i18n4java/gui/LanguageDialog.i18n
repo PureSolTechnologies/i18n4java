@@ -33,6 +33,11 @@
                     <line>33</line>
                     <lineCount>1</lineCount>
                 </locations>
+                <locations>
+                    <file>javax.i18n4java.gui.LanguageDialog.java</file>
+                    <line>80</line>
+                    <lineCount>1</lineCount>
+                </locations>
             </value>
         </entry>
         <entry>
@@ -53,11 +58,6 @@
                 <locations>
                     <file>javax.i18n4java.gui.LanguageDialog.java</file>
                     <line>79</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>80</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
