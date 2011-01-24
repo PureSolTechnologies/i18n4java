@@ -2,13 +2,23 @@
 <internationalization>
     <translations>
         <entry>
-            <key>About...</key>
+            <key>Save</key>
             <value>
-                <source>About...</source>
-                <translated/>
+                <source>Save</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Speichern</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>57</line>
+                    <line>73</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>342</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -17,190 +27,15 @@
             <key>I18NFile could not be saved!</key>
             <value>
                 <source>I18NFile could not be saved!</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>I18N-Datei konnte nicht gespeichert werden!</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>215</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>About</key>
-            <value>
-                <source>About</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>223</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>About message...</key>
-            <value>
-                <source>About message...</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>223</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Clear</key>
-            <value>
-                <source>Clear</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>53</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>64</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Release...</key>
-            <value>
-                <source>Release...</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>52</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>63</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>File was not found.</key>
-            <value>
-                <source>File was not found.</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>156</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>183</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Tools</key>
-            <value>
-                <source>Tools</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>93</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Update...</key>
-            <value>
-                <source>Update...</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>50</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>61</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>IO error in file reading.</key>
-            <value>
-                <source>IO error in file reading.</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>160</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>187</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Error</key>
-            <value>
-                <source>Error</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>148</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>156</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>160</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>175</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>183</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>187</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>205</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>215</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>File</key>
-            <value>
-                <source>File</source>
-                <translated/>
-                <locations>
-                    <file>apps.I18NLinguist.java</file>
-                    <line>92</line>
+                    <line>260</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -209,39 +44,264 @@
             <key>Quit</key>
             <value>
                 <source>Quit</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Beenden</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>56</line>
+                    <line>74</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>343</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>Help</key>
+            <key>Tools</key>
             <value>
-                <source>Help</source>
-                <translated/>
+                <source>Tools</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Werkzeuge</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>94</line>
+                    <line>63</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>335</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
         </entry>
         <entry>
-            <key>Open...</key>
+            <key>File</key>
             <value>
-                <source>Open...</source>
-                <translated/>
+                <source>File</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Datei</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>54</line>
+                    <line>62</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>59</line>
+                    <line>334</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>IO error in file reading.</key>
+            <value>
+                <source>IO error in file reading.</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>IO Fehler beim Lesen der Datei.</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>205</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>232</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>About...</key>
+            <value>
+                <source>About...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Über...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>77</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>344</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>About</key>
+            <value>
+                <source>About</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Über</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>276</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Release...</key>
+            <value>
+                <source>Release...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Freigabe...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>70</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>84</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>339</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>348</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>ctrl S</key>
+            <value>
+                <source>ctrl S</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>ctrl S</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>129</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>ctrl Q</key>
+            <value>
+                <source>ctrl Q</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>ctrl Q</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>136</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>ctrl O</key>
+            <value>
+                <source>ctrl O</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>ctrl O</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>124</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Options</key>
+            <value>
+                <source>Options</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Optionen</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>64</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>File was not found.</key>
+            <value>
+                <source>File was not found.</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Datei wurde nicht gefunden.</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>201</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>228</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>About message...</key>
+            <value>
+                <source>About message...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Über...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>276</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -250,15 +310,182 @@
             <key>Error while choosing file.</key>
             <value>
                 <source>Error while choosing file.</source>
-                <translated/>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Fehler bei Dateiauswahl.</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>148</line>
+                    <line>193</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>175</line>
+                    <line>220</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>250</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Clear</key>
+            <value>
+                <source>Clear</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Säubern</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>71</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>85</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>340</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>349</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Language...</key>
+            <value>
+                <source>Language...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Sprache...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>76</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Update...</key>
+            <value>
+                <source>Update...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Aktualisierung...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>68</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>82</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>338</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>347</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Open...</key>
+            <value>
+                <source>Open...</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Öffnen...</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>72</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>80</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>341</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>346</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Help</key>
+            <value>
+                <source>Help</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Hilfe</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>65</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>336</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Error</key>
+            <value>
+                <source>Error</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Fehler</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>193</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>201</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
@@ -266,16 +493,29 @@
                     <line>205</line>
                     <lineCount>1</lineCount>
                 </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Save</key>
-            <value>
-                <source>Save</source>
-                <translated/>
                 <locations>
                     <file>apps.I18NLinguist.java</file>
-                    <line>55</line>
+                    <line>220</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>228</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>232</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>250</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>apps.I18NLinguist.java</file>
+                    <line>260</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

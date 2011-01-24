@@ -115,7 +115,7 @@ public class I18NUpdate extends I18NProgress {
 			hash.removeLocations();
 			return hash;
 		} catch (IOException e) {
-			logger.warn(e.getMessage(), e);
+			logger.warn(e.getMessage());
 			return new MultiLanguageTranslations();
 		}
 	}

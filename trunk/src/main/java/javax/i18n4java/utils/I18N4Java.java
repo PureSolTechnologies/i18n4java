@@ -1,10 +1,17 @@
-package javax.i18n4java;
+package javax.i18n4java.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This class provides some easy and efficient ways to perform standard
+ * operations related to Java's I18n framework.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
 public class I18N4Java {
 
 	public static List<String> getISOLanguages() {

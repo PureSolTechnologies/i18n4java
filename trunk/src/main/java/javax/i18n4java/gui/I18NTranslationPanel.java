@@ -64,6 +64,7 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 	private static final Translator translator = Translator
 			.getTranslator(I18NTranslationPanel.class);
 
+	// GUI elements...
 	private final LanguageChooser localeChooser = new LanguageChooser();
 	private final JList classes = new JList();
 	private final JList reservoir = new JList();
@@ -75,6 +76,7 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 	private final Map<String, File> fileData = new HashMap<String, File>();
 	private final Map<String, String> reservoirData = new HashMap<String, String>();
 
+	// fields...
 	private File i18nFile = null;
 	private MultiLanguageTranslations translationsHash = null;
 	private Locale currentLocale = Locale.getDefault();

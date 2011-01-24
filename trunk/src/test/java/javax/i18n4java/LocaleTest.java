@@ -46,5 +46,4 @@ public class LocaleTest {
 		assertTrue(localeShortCuts.contains("vi_VN"));
 		assertTrue(localeShortCuts.contains("zh_TW"));
 	}
-
 }

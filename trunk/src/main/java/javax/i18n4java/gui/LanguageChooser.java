@@ -21,7 +21,8 @@ package javax.i18n4java.gui;
 import java.util.List;
 import java.util.Locale;
 
-import javax.i18n4java.I18N4Java;
+import javax.i18n4java.Translator;
+import javax.i18n4java.utils.I18N4Java;
 import javax.swing.JComboBox;
 
 /**
@@ -47,6 +48,7 @@ public class LanguageChooser extends JComboBox {
 			addItem(languageCode + " / "
 					+ new Locale(languageCode).getDisplayName());
 		}
+		setSelectedLocale(Translator.getDefault());
 	}
 
 	public Locale getSelectedLocale() {

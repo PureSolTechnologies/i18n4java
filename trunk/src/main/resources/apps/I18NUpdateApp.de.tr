@@ -2,6 +2,10 @@
 <translations>
     <translations>
         <entry>
+            <key>This application reads a source directory (&lt;project directory&gt;/src)\nand looks for all Java files (&lt;source directory&gt;/**/*.java).\nThese files are scanned for i18n strings and the i18n files are\nstored classwise in a i18n directory  (&lt;project directory&gt;/res).\n</key>
+            <value>Diese Application liest ein Quellverzeichnis (&lt;project directory/src)\nund sucht nach allen Java dateien (&lt;source directory&gt;/**/*.java).\nDiese Dateien werden gescannt fuer I18N-Dateien und diese werden \nin das i18n Verzeichnis gespeichert (&lt;project directory&gt;/res).\n</value>
+        </entry>
+        <entry>
             <key>   or  I18NUpdate &lt;source directory&gt; &lt;i18n directory&gt;</key>
             <value>   oder  I18NUpdate &lt;source directory&gt; &lt;i18n directory&gt;</value>
         </entry>

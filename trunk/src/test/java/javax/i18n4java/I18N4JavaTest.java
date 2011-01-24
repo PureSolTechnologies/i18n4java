@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Locale;
 
+import javax.i18n4java.utils.I18N4Java;
+
 import org.junit.Test;
 
 public class I18N4JavaTest {
