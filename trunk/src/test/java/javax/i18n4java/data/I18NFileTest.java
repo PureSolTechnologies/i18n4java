@@ -31,13 +31,22 @@ import org.junit.Test;
 public class I18NFileTest {
 
 	@Test
-	public void testGetI18NFile() {
-		assertEquals("/javax/i18n4java/TestClass.de.tr", TRFile.getResource(
+	public void testGetResourceLocale() {
+		assertEquals("/javax/i18n4java/TestClass.de_DE.tr", TRFile.getResource(
 				"javax.i18n4java.TestClass", new Locale("de", "DE")));
 
 		assertEquals("/javax/i18n4java/TestClass.de.tr",
 				TRFile.getResource("javax.i18n4java.TestClass", "de"));
+	}
 
+	@Test
+	public void testGetResourceString() {
+		assertEquals("/javax/i18n4java/TestClass.de.tr",
+				TRFile.getResource("javax.i18n4java.TestClass", "de"));
+	}
+
+	@Test
+	public void testGetResourceFile() {
 		File file = new File("src/main/java/javax/i18n4java/data/I18NFile.java");
 		assertTrue(file.exists());
 		assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"),

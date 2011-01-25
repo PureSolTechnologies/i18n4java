@@ -30,12 +30,12 @@
             <value>Quelle</value>
         </entry>
         <entry>
-            <key>Changes were made.\nDo you want to save?</key>
-            <value>Es wurden Änderungen durchgeführt.\nWollen Sie diese speichern?</value>
+            <key>Location(s):</key>
+            <value>Quelle(n):</value>
         </entry>
         <entry>
-            <key>Location(s)</key>
-            <value>Quelle(n)</value>
+            <key>Changes were made.\nDo you want to save?</key>
+            <value>Es wurden Änderungen durchgeführt.\nWollen Sie diese speichern?</value>
         </entry>
         <entry>
             <key>Translation:</key>

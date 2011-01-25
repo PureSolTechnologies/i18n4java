@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
 import javax.i18n4java.data.I18NFile;
 import javax.i18n4java.data.LanguageSet;
@@ -47,6 +48,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
@@ -64,8 +66,13 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 	private static final Translator translator = Translator
 			.getTranslator(I18NTranslationPanel.class);
 
+	private final TranslationUpdater translationUpdater = new TranslationUpdater();
+
+	private final TitledBorder languageBorder = BorderFactory
+			.createTitledBorder("");
+
 	// GUI elements...
-	private final LanguageChooser localeChooser = new LanguageChooser();
+	private final LocaleChooser localeChooser = new LocaleChooser();
 	private final JList classes = new JList();
 	private final JList reservoir = new JList();
 	private final JTextArea source = new JTextArea();
@@ -102,12 +109,12 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		classes.addListSelectionListener(this);
 
 		localeChooser.setSelectedLocale(currentLocale);
-		localeChooser.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Language")));
+		localeChooser.setBorder(translationUpdater.i18n("Language", translator,
+				localeChooser, languageBorder));
 		add(new JScrollPane(localeChooser), BorderLayout.NORTH);
 
-		classes.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Classes")));
+		classes.setBorder(translationUpdater.i18n("Classes", translator,
+				classes, BorderFactory.createTitledBorder("")));
 		add(new JScrollPane(classes), BorderLayout.WEST);
 
 		JPanel centerPanel = new JPanel();
@@ -115,24 +122,24 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 
 		reservoir.addListSelectionListener(this);
 
-		reservoir.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Reservoir")));
+		reservoir.setBorder(translationUpdater.i18n("Reservoir", translator,
+				reservoir, BorderFactory.createTitledBorder("")));
 		centerPanel.add(new JScrollPane(reservoir));
 
 		source.setEditable(false);
-		source.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Source")));
+		source.setBorder(translationUpdater.i18n("Source", translator, source,
+				BorderFactory.createTitledBorder("")));
 		centerPanel.add(new JScrollPane(source));
 
-		translation.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Translation:")));
+		translation.setBorder(translationUpdater.i18n("Translation:",
+				translator, translation, BorderFactory.createTitledBorder("")));
 		centerPanel.add(new JScrollPane(translation));
 		translation.addCaretListener(this);
 		add(centerPanel, BorderLayout.CENTER);
 
 		location.setEditable(false);
-		location.setBorder(BorderFactory.createTitledBorder(translator
-				.i18n("Location(s)")));
+		location.setBorder(translationUpdater.i18n("Location(s):", translator,
+				location, BorderFactory.createTitledBorder("")));
 		centerPanel.add(new JScrollPane(location));
 
 		add(new JLabel("Some I18NFile statistics"), BorderLayout.SOUTH);

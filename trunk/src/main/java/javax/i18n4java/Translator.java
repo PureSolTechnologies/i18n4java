@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -33,8 +34,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.i18n4java.data.SingleLanguageTranslations;
 import javax.i18n4java.data.TRFile;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.i18n4java.utils.I18N4Java;
+import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
@@ -130,8 +131,7 @@ public class Translator implements Serializable {
 		logger.info("Set default locale to '" + locale.toString() + "'");
 		defaultLocale = locale;
 		Locale.setDefault(locale);
-		JFileChooser.setDefaultLocale(locale);
-		JOptionPane.setDefaultLocale(locale);
+		JComponent.setDefaultLocale(locale);
 		resetAllInstances();
 	}
 
@@ -272,7 +272,7 @@ public class Translator implements Serializable {
 	private void readContextTranslation(Locale locale) {
 		logger.debug("read context translation for context '" + context
 				+ "' and language '" + locale + "'");
-		if (locale.getLanguage().equals("en")) {
+		if (locale.equals(I18N4Java.getImplementationLocale())) {
 			translations.putIfAbsent(locale.toString(),
 					new SingleLanguageTranslations());
 			return;
@@ -378,17 +378,15 @@ public class Translator implements Serializable {
 	}
 
 	public void addLanguageChangeListener(LanguageChangeListener listener) {
-		List<WeakReference<LanguageChangeListener>> toBeRemoved = new ArrayList<WeakReference<LanguageChangeListener>>();
 		boolean found = false;
-		for (WeakReference<LanguageChangeListener> ref : listeners) {
+		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
+				.iterator(); iterator.hasNext();) {
+			WeakReference<LanguageChangeListener> ref = iterator.next();
 			if (ref.get() == null) {
-				toBeRemoved.add(ref);
+				iterator.remove();
 			} else if (ref.get().equals(listener)) {
 				found = true;
 			}
-		}
-		for (WeakReference<LanguageChangeListener> ref : toBeRemoved) {
-			listeners.remove(ref);
 		}
 		if (!found) {
 			listeners.add(new WeakReference<LanguageChangeListener>(listener));
@@ -396,30 +394,45 @@ public class Translator implements Serializable {
 	}
 
 	public void removeLanguageChangeListener(LanguageChangeListener listener) {
-		List<WeakReference<LanguageChangeListener>> toBeRemoved = new ArrayList<WeakReference<LanguageChangeListener>>();
-		for (WeakReference<LanguageChangeListener> ref : listeners) {
+		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
+				.iterator(); iterator.hasNext();) {
+			WeakReference<LanguageChangeListener> ref = iterator.next();
 			if (ref.get() == null) {
-				toBeRemoved.add(ref);
+				iterator.remove();
 			} else if (ref.get().equals(listener)) {
-				toBeRemoved.add(ref);
+				iterator.remove();
 			}
-		}
-		for (WeakReference<LanguageChangeListener> ref : toBeRemoved) {
-			listeners.remove(ref);
 		}
 	}
 
 	private void translationChanged() {
+		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
+				.iterator(); iterator.hasNext();) {
+			WeakReference<LanguageChangeListener> ref = iterator.next();
+			if (ref.get() == null) {
+				iterator.remove();
+			} else {
+				ref.get().translationChanged(this);
+			}
+		}
+	}
+
+	/**
+	 * This mehtod is used for testing purposes only.
+	 * 
+	 * @return
+	 */
+	List<WeakReference<LanguageChangeListener>> getLanguageChangeListeners() {
 		List<WeakReference<LanguageChangeListener>> toBeRemoved = new ArrayList<WeakReference<LanguageChangeListener>>();
 		for (WeakReference<LanguageChangeListener> ref : listeners) {
 			if (ref.get() == null) {
 				toBeRemoved.add(ref);
-			} else {
-				ref.get().translationChanged(this);
 			}
 		}
 		for (WeakReference<LanguageChangeListener> ref : toBeRemoved) {
 			listeners.remove(ref);
 		}
+		return listeners;
 	}
+
 }

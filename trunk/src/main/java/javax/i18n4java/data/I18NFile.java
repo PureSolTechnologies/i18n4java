@@ -43,7 +43,7 @@ public class I18NFile {
 
 	private static Logger logger = Logger.getLogger(I18NFile.class);
 
-	static public File getResource(File file) {
+	public static File getResource(File file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			try {
@@ -98,11 +98,11 @@ public class I18NFile {
 		}
 	}
 
-	static public MultiLanguageTranslations read(File file) throws IOException {
+	public static MultiLanguageTranslations read(File file) throws IOException {
 		return read(new FileInputStream(file));
 	}
 
-	static public MultiLanguageTranslations read(InputStream inputStream)
+	public static MultiLanguageTranslations read(InputStream inputStream)
 			throws IOException {
 		try {
 			if (inputStream == null) {

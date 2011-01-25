@@ -50,7 +50,7 @@ public class TRFile {
 	 *         is used and not(!) File to due the issue that resources within
 	 *         JARs are to be specified with normal '/' slash separators.
 	 */
-	static public String getResource(String context, Locale locale) {
+	public static String getResource(String context, Locale locale) {
 		return getResource(context, locale.toString());
 	}
 
@@ -66,11 +66,11 @@ public class TRFile {
 	 *         is used and not(!) File to due the issue that resources within
 	 *         JARs are to be specified with normal '/' slash separators.
 	 */
-	static public String getResource(String context, String language) {
+	public static String getResource(String context, String language) {
 		return "/" + context.replaceAll("\\.", "/") + "." + language + ".tr";
 	}
 
-	static public boolean write(File file,
+	public static boolean write(File file,
 			SingleLanguageTranslations translations) {
 		try {
 			if (!file.getParentFile().exists()) {
@@ -91,7 +91,7 @@ public class TRFile {
 		}
 	}
 
-	static public SingleLanguageTranslations read(File file)
+	public static SingleLanguageTranslations read(File file)
 			throws FileNotFoundException {
 		try {
 			if (!file.exists()) {
@@ -111,7 +111,7 @@ public class TRFile {
 		}
 	}
 
-	static public SingleLanguageTranslations read(InputStream inputStream)
+	public static SingleLanguageTranslations read(InputStream inputStream)
 			throws IOException {
 		try {
 			if (inputStream == null) {

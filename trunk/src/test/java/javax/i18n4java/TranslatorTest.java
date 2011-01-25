@@ -41,6 +41,26 @@ public class TranslatorTest {
 	}
 
 	@Test
+	public void testListeners() {
+		LanguageChangeListener listener = new LanguageChangeListener() {
+			@Override
+			public void translationChanged(Translator translator) {
+				System.out.println("translation has changed.");
+			}
+		};
+		assertEquals(0, translator.getLanguageChangeListeners().size());
+		translator.addLanguageChangeListener(listener);
+		assertEquals(1, translator.getLanguageChangeListeners().size());
+		translator.removeLanguageChangeListener(listener);
+		assertEquals(0, translator.getLanguageChangeListeners().size());
+		translator.addLanguageChangeListener(listener);
+		assertEquals(1, translator.getLanguageChangeListeners().size());
+		listener = null;
+		System.gc();
+		assertEquals(0, translator.getLanguageChangeListeners().size());
+	}
+
+	@Test
 	public void testUnknownTranslation() {
 		assertNotNull(translator);
 		String origin = "This text was never translated!";

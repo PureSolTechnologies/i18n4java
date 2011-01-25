@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.i18n4java.KeyStrokeUpdater;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
 import javax.i18n4java.gui.I18NTranslationPanel;
@@ -41,7 +42,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 
 /**
  * I18NLinguist is the base application for the whole I18N framework. All non
@@ -59,6 +59,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 			.getTranslator(I18NLinguist.class);
 
 	private final TranslationUpdater translationUpdater = new TranslationUpdater();
+	private final KeyStrokeUpdater keyStrokeUpdater = new KeyStrokeUpdater();
 	// menus...
 	private final JMenu fileMenu = new JMenu();
 	private final JMenu toolsMenu = new JMenu();
@@ -66,24 +67,20 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	private final JMenu helpMenu = new JMenu();
 
 	// menu items...
-	private final JMenuItem update = new JMenuItem(translator.i18n("Update..."));
-	private final JMenuItem release = new JMenuItem(translator
-			.i18n("Release..."));
-	private final JMenuItem clear = new JMenuItem(translator.i18n("Clear"));
+	private final JMenuItem update = new JMenuItem();
+	private final JMenuItem release = new JMenuItem();
+	private final JMenuItem clear = new JMenuItem();
 	private final JMenuItem open = new JMenuItem();
 	private final JMenuItem save = new JMenuItem();
 	private final JMenuItem quit = new JMenuItem();
-	private final JMenuItem language = new JMenuItem(translator
-			.i18n("Language..."));
-	private final JMenuItem about = new JMenuItem(translator.i18n("About..."));
+	private final JMenuItem language = new JMenuItem();
+	private final JMenuItem about = new JMenuItem();
 
 	// buttons...
-	private final JButton openButton = new JButton(translator.i18n("Open..."));
-	private final JButton updateButton = new JButton(translator
-			.i18n("Update..."));
-	private final JButton releaseButton = new JButton(translator
-			.i18n("Release..."));
-	private final JButton clearButton = new JButton(translator.i18n("Clear"));
+	private final JButton openButton = new JButton();
+	private final JButton updateButton = new JButton();
+	private final JButton releaseButton = new JButton();
+	private final JButton clearButton = new JButton();
 
 	// other GUI elements...
 	private final I18NTranslationPanel translationPanel = new I18NTranslationPanel();
@@ -121,40 +118,39 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 		fileMenu.add(open);
 		translationUpdater.i18n("Open...", translator, open);
-		open.setAccelerator(KeyStroke.getKeyStroke(translator.i18n("ctrl O")));
+		keyStrokeUpdater.i18n("ctrl O", translator, open);
 		open.addActionListener(this);
 
 		fileMenu.add(save);
 		translationUpdater.i18n("Save...", translator, save);
-		save.setAccelerator(KeyStroke.getKeyStroke(translator.i18n("ctrl S")));
+		keyStrokeUpdater.i18n("ctrl S", translator, save);
 		save.addActionListener(this);
 
 		fileMenu.addSeparator();
 
 		fileMenu.add(quit);
 		translationUpdater.i18n("Quit", translator, quit);
-		quit.setMnemonic('q');
-		quit.setAccelerator(KeyStroke.getKeyStroke(translator.i18n("ctrl Q")));
+		keyStrokeUpdater.i18n("ctrl Q", translator, quit);
 		quit.addActionListener(this);
 
 		toolsMenu.add(update);
-		update.setMnemonic('u');
+		translationUpdater.i18n("Update...", translator, update);
 		update.addActionListener(this);
 
 		toolsMenu.add(release);
-		release.setMnemonic('r');
+		translationUpdater.i18n("Release...", translator, release);
 		release.addActionListener(this);
 
 		toolsMenu.add(clear);
-		clear.setMnemonic('c');
+		translationUpdater.i18n("Clear", translator, clear);
 		clear.addActionListener(this);
 
 		optionsMenu.add(language);
-		language.setMnemonic('l');
+		translationUpdater.i18n("Language...", translator, language);
 		language.addActionListener(this);
 
 		helpMenu.add(about);
-		about.setMnemonic('a');
+		translationUpdater.i18n("About...", translator, about);
 		about.addActionListener(this);
 	}
 
@@ -166,20 +162,23 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	private void initializeToolBar() {
 		JToolBar tools = new JToolBar();
 		tools.add(openButton);
-		tools.add(updateButton);
-		tools.add(releaseButton);
-		tools.add(clearButton);
-		add(tools, BorderLayout.NORTH);
-
+		translationUpdater.i18n("Open...", translator, openButton);
 		openButton.addActionListener(this);
+
+		tools.add(updateButton);
+		translationUpdater.i18n("Update...", translator, updateButton);
 		updateButton.addActionListener(this);
+
+		tools.add(releaseButton);
+		translationUpdater.i18n("Release...", translator, releaseButton);
 		releaseButton.addActionListener(this);
+
+		tools.add(clearButton);
+		translationUpdater.i18n("Clear", translator, clearButton);
 		clearButton.addActionListener(this);
 
-		openButton.setMnemonic('o');
-		updateButton.setMnemonic('u');
-		releaseButton.setMnemonic('r');
-		clearButton.setMnemonic('c');
+		add(tools, BorderLayout.NORTH);
+
 	}
 
 	private void update() {
@@ -258,9 +257,9 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private void save() {
 		if (!translationPanel.saveFile()) {
-			JOptionPane.showConfirmDialog(this, translator
-					.i18n("I18NFile could not be saved!"), translator
-					.i18n("Error"), JOptionPane.DEFAULT_OPTION,
+			JOptionPane.showConfirmDialog(this,
+					translator.i18n("I18NFile could not be saved!"),
+					translator.i18n("Error"), JOptionPane.DEFAULT_OPTION,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -331,7 +330,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	}
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("de", "DE"));
+		Locale.setDefault(new Locale("de"));
 		Translator.setDefault(Locale.getDefault());
 		I18NLinguist app = new I18NLinguist();
 		app.setVisible(true);

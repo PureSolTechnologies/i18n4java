@@ -1,11 +1,9 @@
-package javax.i18n4java;
+package javax.i18n4java.utils;
 
 import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Locale;
-
-import javax.i18n4java.utils.I18N4Java;
 
 import org.junit.Test;
 
@@ -37,5 +35,10 @@ public class I18N4JavaTest {
 		List<Locale> languageLocales = I18N4Java.getLanguageLocales();
 		assertNotNull(languageLocales);
 		assertTrue(languageLocales.size() > 0);
+	}
+	
+	@Test
+	public void testGetImplementationLocale() {
+		assertEquals(Locale.US, I18N4Java.getImplementationLocale());
 	}
 }

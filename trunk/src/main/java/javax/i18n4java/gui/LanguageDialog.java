@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Locale;
 
-import javax.i18n4java.LanguageChangeListener;
+import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,23 +19,37 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-public class LanguageDialog extends JDialog implements
-		LanguageChangeListener, ActionListener {
+/**
+ * This is an interactive language dialog. As soon as the language is changed.
+ * The whole translation environment is reset and repainted with new
+ * translations to see the effect. The dialog is non-modal and therefore, the
+ * language can be changed on the fly during the normal work process.
+ * 
+ * To make the application able to react accordingly, all elements which need to
+ * be updated on the fly need to be added to the updating process by object of
+ * the classes TranslationUpdater and KeyStrokeUpdater.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
+public class LanguageDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -5526911970098174813L;
 
 	private static final Translator translator = Translator
 			.getTranslator(LanguageDialog.class);
 
-	private final JLabel label = new JLabel(translator.i18n("Language:"));
-	private final LanguageChooser languages = new LanguageChooser();
-	private final JButton ok = new JButton(translator.i18n("OK"));
-	private final JButton cancel = new JButton(translator.i18n("Cancel"));
+	private final TranslationUpdater translationUpdater = new TranslationUpdater();
+
+	private final JLabel label = new JLabel();
+	private final LocaleChooser languages = new LocaleChooser();
+	private final JButton ok = new JButton();
+	private final JButton cancel = new JButton();
 	private final Locale startLocale;
 
 	public LanguageDialog(JFrame frame) {
-		super(frame, translator.i18n("Translation"), false);
-		translator.addLanguageChangeListener(this);
+		super(frame, "Translation", false);
+		translationUpdater.i18n("Translation", translator, this);
 		startLocale = Translator.getDefault();
 		initUI();
 	}
@@ -53,31 +67,27 @@ public class LanguageDialog extends JDialog implements
 				BoxLayout.PAGE_AXIS));
 
 		languagePanel.add(label);
+		translationUpdater.i18n("Language:", translator, label);
+
 		languagePanel.add(languages);
 		languages.addActionListener(this);
+		languages.setSelectedLocale(startLocale);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		buttonPanel.add(ok);
+		translationUpdater.i18n("OK", translator, ok);
 		ok.addActionListener(this);
-		ok.setMnemonic('o');
 		getRootPane().setDefaultButton(ok);
 
 		buttonPanel.add(cancel);
+		translationUpdater.i18n("Cancel", translator, cancel);
 		cancel.addActionListener(this);
-		cancel.setMnemonic('c');
 
 		panel.add(languagePanel, BorderLayout.CENTER);
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		pack();
-	}
-
-	@Override
-	public void translationChanged(Translator translator) {
-		label.setText(translator.i18n("Language:"));
-		ok.setText(translator.i18n("OK"));
-		cancel.setText(translator.i18n("Cancel"));
 	}
 
 	@Override
