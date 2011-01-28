@@ -99,7 +99,12 @@ public class I18NFile {
 	}
 
 	public static MultiLanguageTranslations read(File file) throws IOException {
-		return read(new FileInputStream(file));
+		FileInputStream inputStream = new FileInputStream(file);
+		try {
+			return read(inputStream);
+		} finally {
+			inputStream.close();
+		}
 	}
 
 	public static MultiLanguageTranslations read(InputStream inputStream)

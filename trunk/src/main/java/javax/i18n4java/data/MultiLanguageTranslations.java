@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -77,7 +78,11 @@ public class MultiLanguageTranslations implements Cloneable {
 	}
 
 	public LanguageSet getTranslations(String source) {
-		return (LanguageSet) translations.get(source).clone();
+		LanguageSet languageSet = translations.get(source);
+		if (languageSet == null) {
+			return null;
+		}
+		return (LanguageSet) languageSet.clone();
 	}
 
 	public LanguageSet get(String source) {
@@ -87,15 +92,15 @@ public class MultiLanguageTranslations implements Cloneable {
 		return translations.get(source);
 	}
 
-	public String get(String source, String language) {
+	public String get(String source, Locale locale) {
 		LanguageSet set = get(source);
 		if (set == null) {
 			return source;
 		}
-		if (!set.containsLanguage(language)) {
+		if (!set.containsLanguage(locale)) {
 			return source;
 		}
-		return translations.get(source).get(language);
+		return translations.get(source).get(locale);
 	}
 
 	public void set(String source) {
@@ -104,9 +109,9 @@ public class MultiLanguageTranslations implements Cloneable {
 		}
 	}
 
-	public void set(String source, String language, String translation) {
+	public void set(String source, Locale locale, String translation) {
 		set(source);
-		translations.get(source).set(language, translation);
+		translations.get(source).set(locale, translation);
 	}
 
 	public void set(String source, LanguageSet translation) {
@@ -140,13 +145,13 @@ public class MultiLanguageTranslations implements Cloneable {
 		translations.get(source).addLocation(location);
 	}
 
-	public void addLocations(String source, Vector<SourceLocation> locations) {
+	public void addLocations(String source, List<SourceLocation> locations) {
 		for (int index = 0; index < locations.size(); index++) {
 			addLocation(source, locations.get(index));
 		}
 	}
 
-	public Vector<SourceLocation> getLocations(String source) {
+	public List<SourceLocation> getLocations(String source) {
 		return translations.get(source).getLocations();
 	}
 
@@ -164,12 +169,11 @@ public class MultiLanguageTranslations implements Cloneable {
 		return translations.keySet();
 	}
 
-	public Set<String> getAvailableLanguages() {
-		Set<String> availableLanguages = new HashSet<String>();
+	public Set<Locale> getAvailableLanguages() {
+		Set<Locale> availableLanguages = new HashSet<Locale>();
 		Set<String> sources = translations.keySet();
 		for (String source : sources) {
-			Set<String> languages = getAvailableLanguages(source);
-			for (String language : languages) {
+			for (Locale language : getAvailableLanguages(source)) {
 				if (!availableLanguages.contains(language)) {
 					availableLanguages.add(language);
 				}
@@ -178,7 +182,7 @@ public class MultiLanguageTranslations implements Cloneable {
 		return availableLanguages;
 	}
 
-	public Set<String> getAvailableLanguages(String source) {
+	public Set<Locale> getAvailableLanguages(String source) {
 		return translations.get(source).getAvailableLanguages();
 	}
 
@@ -210,7 +214,7 @@ public class MultiLanguageTranslations implements Cloneable {
 
 	protected void printLocations(String source) {
 		System.out.println("\tlocations:");
-		Vector<SourceLocation> locations = translations.get(source)
+		List<SourceLocation> locations = translations.get(source)
 				.getLocations();
 		if (locations == null) {
 			return;
@@ -225,8 +229,7 @@ public class MultiLanguageTranslations implements Cloneable {
 	}
 
 	protected void printTranslations(String source) {
-		Set<String> languages = getAvailableLanguages(source);
-		for (String language : languages) {
+		for (Locale language : getAvailableLanguages(source)) {
 			System.out.println("\t" + language + "="
 					+ translations.get(source).get(language));
 		}
@@ -279,7 +282,7 @@ public class MultiLanguageTranslations implements Cloneable {
 			source = source.replaceAll("\\n", "\\\\n");
 			translations.put(source, languageSet);
 			languageSet.setSource(source);
-			for (String language : languageSet.getAvailableLanguages()) {
+			for (Locale language : languageSet.getAvailableLanguages()) {
 				String translation = languageSet.get(language);
 				translation = translation.replaceAll("\\n", "\\\\n");
 				languageSet.set(language, translation);
@@ -297,7 +300,7 @@ public class MultiLanguageTranslations implements Cloneable {
 			source = source.replaceAll("\\\\n", "\n");
 			translations.put(source, languageSet);
 			languageSet.setSource(source);
-			for (String language : languageSet.getAvailableLanguages()) {
+			for (Locale language : languageSet.getAvailableLanguages()) {
 				String translation = languageSet.get(language);
 				translation = translation.replaceAll("\\\\n", "\n");
 				languageSet.set(language, translation);
@@ -306,11 +309,11 @@ public class MultiLanguageTranslations implements Cloneable {
 	}
 
 	public boolean isTranslationFinished() {
-		Set<String> languages = getAvailableLanguages();
+		Set<Locale> languages = getAvailableLanguages();
 		if (languages.size() == 0) {
 			return false;
 		}
-		for (String language : languages) {
+		for (Locale language : languages) {
 			Set<String> sources = getSources();
 			for (String source : sources) {
 				LanguageSet languageSet = getTranslations(source);

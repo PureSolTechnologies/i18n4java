@@ -30,7 +30,7 @@ import java.util.Locale;
 import javax.i18n4java.KeyStrokeUpdater;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
-import javax.i18n4java.gui.I18NTranslationPanel;
+import javax.i18n4java.gui.I18NProjectTranslationPanel;
 import javax.i18n4java.gui.LanguageDialog;
 import javax.i18n4java.proc.I18NRelease;
 import javax.i18n4java.proc.I18NUpdate;
@@ -83,7 +83,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	private final JButton clearButton = new JButton();
 
 	// other GUI elements...
-	private final I18NTranslationPanel translationPanel = new I18NTranslationPanel();
+	private final I18NProjectTranslationPanel translationPanel = new I18NProjectTranslationPanel();
 
 	public I18NLinguist() {
 		super("I18NLinguist v0.1.1");

@@ -56,15 +56,15 @@ import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 
-public class I18NTranslationPanel extends JPanel implements ActionListener,
-		ListSelectionListener, CaretListener {
+public class I18NProjectTranslationPanel extends JPanel implements
+		ActionListener, ListSelectionListener, CaretListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger(I18NTranslationPanel.class);
+			.getLogger(I18NProjectTranslationPanel.class);
 	private static final Translator translator = Translator
-			.getTranslator(I18NTranslationPanel.class);
+			.getTranslator(I18NProjectTranslationPanel.class);
 
 	private final TranslationUpdater translationUpdater = new TranslationUpdater();
 
@@ -86,15 +86,14 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 	// fields...
 	private File i18nFile = null;
 	private MultiLanguageTranslations translationsHash = null;
-	private Locale currentLocale = Locale.getDefault();
 
 	private boolean changed = false;
 	private String oldSource = "";
 	private String oldTranslation = "";
-	private String oldLanguage = currentLocale.getLanguage();
+	private Locale oldLanguage = Locale.getDefault();
 	private boolean translationChanged = false;
 
-	public I18NTranslationPanel() {
+	public I18NProjectTranslationPanel() {
 		super();
 		initializeDesktop();
 	}
@@ -108,10 +107,10 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		localeChooser.addActionListener(this);
 		classes.addListSelectionListener(this);
 
-		localeChooser.setSelectedLocale(currentLocale);
+		localeChooser.setSelectedLocale(Locale.getDefault());
 		localeChooser.setBorder(translationUpdater.i18n("Language", translator,
 				localeChooser, languageBorder));
-		add(new JScrollPane(localeChooser), BorderLayout.NORTH);
+		add(localeChooser, BorderLayout.NORTH);
 
 		classes.setBorder(translationUpdater.i18n("Classes", translator,
 				classes, BorderFactory.createTitledBorder("")));
@@ -251,19 +250,11 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		this.translationsHash = translationsHash;
 	}
 
-	public void setLocale(Object o) {
-		currentLocale = localeChooser.getSelectedLocale();
-		updateTranslation();
-	}
-
 	public void changeTranslation(String text) {
 		translationChanged = true;
 	}
 
 	private void updateReservoir() {
-		if (currentLocale == null) {
-			return;
-		}
 		if (translationsHash == null) {
 			return;
 		}
@@ -275,7 +266,7 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		boolean color = false;
 		for (String source : sources) {
 			boolean translated = translationsHash.getAvailableLanguages(source)
-					.contains(currentLocale.getLanguage());
+					.contains(localeChooser.getSelectedLocale());
 			String html = "<html><body><br/>";
 			if (translated) {
 				html += "<font color=\"green\">";
@@ -292,21 +283,13 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		reservoir.setListData(listData);
 	}
 
-	public void changeSource(Object source) {
-		if (source != null) {
-			this.source.setText(source.toString());
-		} else {
-			this.source.setText("");
-		}
+	public void changeSource(String source) {
+		this.source.setText(source != null ? source.toString() : "");
 		updateTranslation();
 		updateLocation();
 	}
 
 	private void updateTranslation() {
-		if (currentLocale == null) {
-			translation.setText("");
-			return;
-		}
 		if (translationsHash == null) {
 			translation.setText("");
 			return;
@@ -317,17 +300,13 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 		}
 		updateHash();
 		oldSource = source.getText();
-		oldLanguage = currentLocale.getLanguage();
+		oldLanguage = localeChooser.getSelectedLocale();
 		oldTranslation = translationsHash.get(oldSource, oldLanguage);
 		translation.setText(oldTranslation);
 		translationChanged = false;
 	}
 
 	private void updateLocation() {
-		if (currentLocale == null) {
-			location.setText("");
-			return;
-		}
 		if (translationsHash == null) {
 			location.setText("");
 			return;
@@ -350,7 +329,7 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 
 	private void updateHash() {
 		if ((!translation.getText().isEmpty()) && (translationChanged)) {
-			if ((!oldSource.isEmpty()) && (!oldLanguage.isEmpty())) {
+			if (!oldSource.isEmpty()) {
 				translationsHash.set(oldSource, oldLanguage,
 						translation.getText());
 				changed = true;
@@ -368,7 +347,7 @@ public class I18NTranslationPanel extends JPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent o) {
 		if (o.getSource() == localeChooser) {
-			setLocale(localeChooser.getLocale());
+			updateTranslation();
 		}
 	}
 

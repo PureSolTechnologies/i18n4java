@@ -159,10 +159,10 @@ public class I18NJavaParser {
 		String[] i18ns = line.split("i18n\\s*\\(\\s*\"");
 		for (int index = 1; index < i18ns.length; index++) {
 			String source = extractStringFromStartToEnd("\"" + i18ns[index]);
-			if (source != null) {
-				translations.add(MultiLanguageTranslations.from(source
-						.replaceAll("\\\\n", "\n"), packageName + "."
-						+ file.getName(), startLine));
+			if ((source != null) && (!source.isEmpty())) {
+				translations.add(MultiLanguageTranslations.from(
+						source.replaceAll("\\\\n", "\n"), packageName + "."
+								+ file.getName(), startLine));
 			}
 		}
 		return translations;

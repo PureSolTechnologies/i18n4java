@@ -277,7 +277,7 @@ public class Translator implements Serializable {
 					new SingleLanguageTranslations());
 			return;
 		}
-		String resource = TRFile.getResource(context, locale);
+		String resource = TRFile.getResourceName(context, locale);
 		readContextTranslationFromResource(locale.toString(), resource);
 	}
 

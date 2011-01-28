@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>37</line>
+                    <line>52</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,12 +30,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>33</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>80</line>
+                    <line>85</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -52,12 +47,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>32</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>79</line>
+                    <line>80</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -74,12 +64,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>30</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.gui.LanguageDialog.java</file>
-                    <line>78</line>
+                    <line>70</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

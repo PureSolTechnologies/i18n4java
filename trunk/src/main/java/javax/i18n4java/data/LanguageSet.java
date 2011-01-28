@@ -18,7 +18,12 @@
 
 package javax.i18n4java.data;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -41,8 +46,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LanguageSet implements Cloneable {
 
 	private String source = "";
-	private Hashtable<String, String> translated = new Hashtable<String, String>();
-	private Vector<SourceLocation> locations = new Vector<SourceLocation>();
+	private Map<String, String> translated = new Hashtable<String, String>();
+	private List<SourceLocation> locations = new ArrayList<SourceLocation>();
 
 	public LanguageSet() {
 	}
@@ -60,15 +65,15 @@ public class LanguageSet implements Cloneable {
 		this.source = source;
 	}
 
-	public void set(String language, String translation) {
-		translated.put(language, translation);
+	public void set(Locale locale, String translation) {
+		translated.put(locale2String(locale), translation);
 	}
 
-	public String get(String language) {
-		return translated.get(language);
+	public String get(Locale locale) {
+		return translated.get(locale2String(locale));
 	}
 
-	public void addLocations(Vector<SourceLocation> locations) {
+	public void addLocations(List<SourceLocation> locations) {
 		this.locations.addAll(locations);
 	}
 
@@ -78,7 +83,7 @@ public class LanguageSet implements Cloneable {
 		}
 	}
 
-	public Vector<SourceLocation> getLocations() {
+	public List<SourceLocation> getLocations() {
 		return locations;
 	}
 
@@ -92,19 +97,22 @@ public class LanguageSet implements Cloneable {
 					+ translated.getSource() + " can not be set to "
 					+ getSource() + "!");
 		}
-		Set<String> languages = translated.getAvailableLanguages();
-		for (String language : languages) {
-			set(language, translated.get(language));
+		for (Locale locale : translated.getAvailableLanguages()) {
+			set(locale, translated.get(locale));
 		}
 		addLocations(translated.getLocations());
 	}
 
-	public boolean containsLanguage(String language) {
-		return translated.containsKey(language);
+	public boolean containsLanguage(Locale locale) {
+		return translated.containsKey(locale2String(locale));
 	}
 
-	public Set<String> getAvailableLanguages() {
-		return translated.keySet();
+	public Set<Locale> getAvailableLanguages() {
+		Set<Locale> locales = new HashSet<Locale>();
+		for (String lang : translated.keySet()) {
+			locales.add(string2Locale(lang));
+		}
+		return locales;
 	}
 
 	public Object clone() {
@@ -158,5 +166,33 @@ public class LanguageSet implements Cloneable {
 		} else if (!translated.equals(other.translated))
 			return false;
 		return true;
+	}
+
+	String locale2String(Locale locale) {
+		String language = locale.getLanguage();
+		String country = locale.getCountry();
+		String variant = locale.getVariant();
+		String result = language;
+		if (!country.isEmpty()) {
+			result += "_" + country;
+		}
+		if (!variant.isEmpty()) {
+			result += "_" + variant;
+		}
+		return result;
+	}
+
+	Locale string2Locale(String language) {
+		String splits[] = language.split("_");
+		if (splits.length == 1) {
+			return new Locale(splits[0]);
+		} else if (splits.length == 2) {
+			return new Locale(splits[0], splits[1]);
+		} else if (splits.length == 3) {
+			return new Locale(splits[0], splits[1], splits[2]);
+		} else {
+			throw new RuntimeException(
+					"Illegal form of locale string found in '" + language + "'");
+		}
 	}
 }

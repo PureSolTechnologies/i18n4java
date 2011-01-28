@@ -50,8 +50,19 @@ public class TRFile {
 	 *         is used and not(!) File to due the issue that resources within
 	 *         JARs are to be specified with normal '/' slash separators.
 	 */
-	public static String getResource(String context, Locale locale) {
-		return getResource(context, locale.toString());
+	public static String getResourceName(String context, Locale locale) {
+		if ((locale.getLanguage() != null) && (!locale.getLanguage().isEmpty())) {
+			if ((locale.getCountry() != null)
+					&& (!locale.getCountry().isEmpty())) {
+				return getResourceName(context,
+						locale.getLanguage() + "_" + locale.getCountry());
+			} else {
+				return getResourceName(context, locale.getLanguage());
+			}
+		} else {
+			throw new RuntimeException("Locale '" + locale.toString()
+					+ "' is not valid!");
+		}
 	}
 
 	/**
@@ -66,7 +77,7 @@ public class TRFile {
 	 *         is used and not(!) File to due the issue that resources within
 	 *         JARs are to be specified with normal '/' slash separators.
 	 */
-	public static String getResource(String context, String language) {
+	private static String getResourceName(String context, String language) {
 		return "/" + context.replaceAll("\\.", "/") + "." + language + ".tr";
 	}
 

@@ -20,6 +20,8 @@ package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
 
@@ -29,6 +31,41 @@ import javax.i18n4java.data.SourceLocation;
 import org.junit.Test;
 
 public class LanguageSetTest {
+
+	@Test
+	public void testAssumptions() {
+		Locale locale = new Locale("de");
+		assertEquals("de", locale.getLanguage());
+		assertEquals("", locale.getCountry());
+		assertEquals("", locale.getVariant());
+	}
+
+	@Test
+	public void testLocale2String() {
+		LanguageSet set = new LanguageSet();
+		assertEquals("de", set.locale2String(new Locale("de")));
+		assertEquals("en", set.locale2String(new Locale("en")));
+		assertEquals("en_GB", set.locale2String(new Locale("en", "GB")));
+		assertEquals("en_US", set.locale2String(new Locale("en", "US")));
+		assertEquals("en_US_TT",
+				set.locale2String(new Locale("en", "US", "TT")));
+	}
+
+	@Test
+	public void testString2Locale() {
+		LanguageSet set = new LanguageSet();
+		assertEquals(new Locale("en"), set.string2Locale("en"));
+		assertEquals(new Locale("en", "US"), set.string2Locale("en_US"));
+		assertEquals(new Locale("en", "GB"), set.string2Locale("en_GB"));
+		assertEquals(new Locale("en", "GB", "TT"),
+				set.string2Locale("en_GB_TT"));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testIllegalString2Locale() {
+		LanguageSet set = new LanguageSet();
+		assertEquals(new Locale("en"), set.string2Locale("11_22_33_44"));
+	}
 
 	@Test
 	public void testDefaultConstructor() {
@@ -53,11 +90,11 @@ public class LanguageSetTest {
 		LanguageSet set = new LanguageSet();
 		// settings...
 		set.setSource("Source String");
-		set.set("de", "Quellzeichenkette");
+		set.set(new Locale("de"), "Quellzeichenkette");
 
 		LanguageSet translated = new LanguageSet("Source String");
-		translated.set("xx", "XXX");
-		translated.set("yy", "YYY");
+		translated.set(new Locale("xx"), "XXX");
+		translated.set(new Locale("yy"), "YYY");
 		translated.addLocation(new SourceLocation("translated.java", 1, 1));
 		set.add(translated);
 
@@ -65,21 +102,21 @@ public class LanguageSetTest {
 		// no double entry(!):
 		set.addLocation(new SourceLocation("TestFile.java", 1, 2));
 
-		Vector<SourceLocation> locations = new Vector<SourceLocation>();
+		List<SourceLocation> locations = new Vector<SourceLocation>();
 		locations.add(new SourceLocation("TestFile2.java", 2, 3));
 		locations.add(new SourceLocation("TestFile3.java", 3, 4));
 		set.addLocations(locations);
 
 		// check for correct settings...
 		assertEquals("Source String", set.getSource());
-		Set<String> langs = set.getAvailableLanguages();
+		Set<Locale> langs = set.getAvailableLanguages();
 		assertEquals(3, langs.size());
-		assertTrue(langs.contains("de"));
-		assertTrue(langs.contains("xx"));
-		assertTrue(langs.contains("yy"));
-		assertEquals("Quellzeichenkette", set.get("de"));
-		assertEquals("XXX", set.get("xx"));
-		assertEquals("YYY", set.get("yy"));
+		assertTrue(langs.contains(new Locale("de")));
+		assertTrue(langs.contains(new Locale("xx")));
+		assertTrue(langs.contains(new Locale("yy")));
+		assertEquals("Quellzeichenkette", set.get(new Locale("de")));
+		assertEquals("XXX", set.get(new Locale("xx")));
+		assertEquals("YYY", set.get(new Locale("yy")));
 		locations = set.getLocations();
 		assertEquals(4, locations.size());
 		assertTrue(locations.contains(new SourceLocation("translated.java", 1,
@@ -144,9 +181,9 @@ public class LanguageSetTest {
 	}
 
 	@Test
-	public void testClose() {
+	public void testClone() {
 		LanguageSet origin = new LanguageSet("Source String");
-		origin.set("de", "Quellzeichenkette");
+		origin.set(new Locale("de"), "Quellzeichenkette");
 		origin.addLocation(new SourceLocation("File.java", 1, 2));
 		LanguageSet cloned = (LanguageSet) origin.clone();
 		assertNotNull(cloned);
@@ -155,9 +192,9 @@ public class LanguageSetTest {
 		assertFalse(origin.equals(cloned));
 		cloned.setSource("Source String");
 		assertTrue(origin.equals(cloned));
-		cloned.set("de", "Neue Quellzeichenkette");
+		cloned.set(new Locale("de"), "Neue Quellzeichenkette");
 		assertFalse(origin.equals(cloned));
-		cloned.set("de", "Quellzeichenkette");
+		cloned.set(new Locale("de"), "Quellzeichenkette");
 		assertTrue(origin.equals(cloned));
 		cloned.addLocation(new SourceLocation("File.java", 10, 3));
 		assertFalse(origin.equals(cloned));

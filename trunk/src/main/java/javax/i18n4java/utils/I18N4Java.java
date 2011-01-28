@@ -22,31 +22,36 @@ public class I18N4Java {
 		try {
 			InputStream inputStream = I18N4Java.class
 					.getResourceAsStream("/config/i18n4java.properties");
-			try {
-				Properties properties = new Properties();
-				properties.load(inputStream);
-				String language = (String) properties
-						.get("i18n4java.implementation.language");
-				String country = (String) properties
-						.get("i18n4java.implementation.country");
-				String variant = (String) properties
-						.get("i18n4java.implementation.variant");
-				if ((language != null) && (!language.isEmpty())) {
-					if ((country != null) && (!country.isEmpty())) {
-						if ((variant != null) && (!variant.isEmpty())) {
-							implementationLocale = new Locale(language,
-									country, variant);
+			if (inputStream != null) {
+				try {
+					Properties properties = new Properties();
+					properties.load(inputStream);
+					String language = (String) properties
+							.get("i18n4java.implementation.language");
+					String country = (String) properties
+							.get("i18n4java.implementation.country");
+					String variant = (String) properties
+							.get("i18n4java.implementation.variant");
+					if ((language != null) && (!language.isEmpty())) {
+						if ((country != null) && (!country.isEmpty())) {
+							if ((variant != null) && (!variant.isEmpty())) {
+								implementationLocale = new Locale(language,
+										country, variant);
+							} else {
+								implementationLocale = new Locale(language,
+										country);
+							}
 						} else {
-							implementationLocale = new Locale(language, country);
+							implementationLocale = new Locale(language);
 						}
 					} else {
-						implementationLocale = new Locale(language);
+						implementationLocale = Locale.US;
 					}
-				} else {
-					implementationLocale = Locale.US;
+				} finally {
+					inputStream.close();
 				}
-			} finally {
-				inputStream.close();
+			} else {
+				implementationLocale = Locale.US;
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

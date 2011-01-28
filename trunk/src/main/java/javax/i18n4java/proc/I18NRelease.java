@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.i18n4java.data.I18NFile;
@@ -78,8 +79,7 @@ public class I18NRelease extends I18NProgress {
 					file.getPath());
 			MultiLanguageTranslations mlTranslations = I18NFile
 					.read(sourceFile);
-			Set<String> languages = mlTranslations.getAvailableLanguages();
-			for (String language : languages) {
+			for (Locale language : mlTranslations.getAvailableLanguages()) {
 				File destinationFile = new File(
 						configuration.getDestinationDirectory(), file.getPath()
 								.replaceAll("\\.i18n", "." + language + ".tr"));
@@ -91,7 +91,7 @@ public class I18NRelease extends I18NProgress {
 	}
 
 	private void release(MultiLanguageTranslations mlTranslations,
-			String language, File file) {
+			Locale language, File file) {
 		logger.info("Release language " + language + "  to file "
 				+ file.getPath());
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();

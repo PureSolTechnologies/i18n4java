@@ -18,17 +18,5 @@
                 </locations>
             </value>
         </entry>
-        <entry>
-            <key></key>
-            <value>
-                <source></source>
-                <translated/>
-                <locations>
-                    <file>\\s*&quot;, &quot;&quot;).I18NJavaParser.java</file>
-                    <line>157</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
     </translations>
 </internationalization>

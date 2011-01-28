@@ -21,29 +21,12 @@ package javax.i18n4java.data;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Locale;
 
 import javax.i18n4java.data.I18NFile;
-import javax.i18n4java.data.TRFile;
 
 import org.junit.Test;
 
 public class I18NFileTest {
-
-	@Test
-	public void testGetResourceLocale() {
-		assertEquals("/javax/i18n4java/TestClass.de_DE.tr", TRFile.getResource(
-				"javax.i18n4java.TestClass", new Locale("de", "DE")));
-
-		assertEquals("/javax/i18n4java/TestClass.de.tr",
-				TRFile.getResource("javax.i18n4java.TestClass", "de"));
-	}
-
-	@Test
-	public void testGetResourceString() {
-		assertEquals("/javax/i18n4java/TestClass.de.tr",
-				TRFile.getResource("javax.i18n4java.TestClass", "de"));
-	}
 
 	@Test
 	public void testGetResourceFile() {

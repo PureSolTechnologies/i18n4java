@@ -12,8 +12,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>115</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>111</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -29,8 +29,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>134</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>129</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -46,8 +46,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>201</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>220</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -59,12 +59,12 @@
                 <translated>
                     <entry>
                         <key>de</key>
-                        <value>IO-Fehler während des Lesens der Datei.</value>
+                        <value>IO error in file reading.</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>206</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>225</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -80,8 +80,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>144</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>140</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -97,13 +97,13 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>201</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>220</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>206</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>225</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -119,8 +119,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>138</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>133</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -136,8 +136,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>129</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>124</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -153,8 +153,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>224</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>243</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -170,25 +170,8 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>165</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Save</key>
-            <value>
-                <source>Save</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Speichern</value>
-                    </entry>
-                </translated>
-                <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>165</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>158</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -204,8 +187,25 @@
                     </entry>
                 </translated>
                 <locations>
-                    <file>javax.i18n4java.gui.I18NTranslationPanel.java</file>
-                    <line>119</line>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>115</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Save</key>
+            <value>
+                <source>Save</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Speichern</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4java.gui.I18NProjectTranslationPanel.java</file>
+                    <line>158</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

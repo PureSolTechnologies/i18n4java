@@ -4,14 +4,14 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/i18n4java/jar/i18n4java.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" manifestLocation="/i18n4java/res/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+    <manifest generateManifest="false" manifestLocation="/i18n4java/src/main/resources/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=i18n4java/src"/>
-        <javaElement handleIdentifier="=i18n4java/res"/>
+        <javaElement handleIdentifier="=i18n4java/src\/main\/java"/>
+        <javaElement handleIdentifier="=i18n4java/src\/main\/resources"/>
     </selectedElements>
 </jardesc>

@@ -11,7 +11,7 @@
         </entry>
         <entry>
             <key>I18NFile could not be saved!</key>
-            <value>I18N-Datei konnte nicht gespeichert werden!</value>
+            <value>I18NFile konnte nicht gespeichert werden!</value>
         </entry>
         <entry>
             <key>Error</key>
@@ -35,11 +35,15 @@
         </entry>
         <entry>
             <key>Update...</key>
-            <value>Aktualisierung...</value>
+            <value>Aktualisieren...</value>
         </entry>
         <entry>
             <key>IO error in file reading.</key>
-            <value>IO Fehler beim Lesen der Datei.</value>
+            <value>IO-Fehler beim Lesen der Datei.</value>
+        </entry>
+        <entry>
+            <key>Save...</key>
+            <value>Speichern...</value>
         </entry>
         <entry>
             <key>File was not found.</key>
@@ -59,7 +63,7 @@
         </entry>
         <entry>
             <key>About message...</key>
-            <value>Über...</value>
+            <value>Ǜber...</value>
         </entry>
         <entry>
             <key>About</key>
@@ -76,10 +80,6 @@
         <entry>
             <key>Open...</key>
             <value>Öffnen...</value>
-        </entry>
-        <entry>
-            <key>Save</key>
-            <value>Speichern</value>
         </entry>
         <entry>
             <key>Help</key>
