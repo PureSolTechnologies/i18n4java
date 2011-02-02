@@ -1,6 +1,16 @@
-/***************************************************************************
+/****************************************************************************
  *
- * Copyright 2009-2010 PureSol Technologies
+ *   FileSearch.java
+ *   -------------------
+ *   copyright            : (c) 2009-2011 by PureSol-Technologies
+ *   author               : Rick-Rainer Ludwig
+ *   email                : ludwig@puresol-technologies.com
+ *
+ ****************************************************************************/
+
+/****************************************************************************
+ *
+ * Copyright 2009-2011 PureSol-Technologies
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +24,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- ***************************************************************************/
-
+ ****************************************************************************/
+ 
 package javax.i18n4java.utils;
 
 import java.io.File;
