@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
@@ -77,44 +77,40 @@ public class SourceLocationTest {
 		assertEquals(0, cloned.compareTo(origin));
 	}
 
-	@Test
-	public void testExceptions() {
-		try {
-			new SourceLocation(null, 1, 2);
-			fail("An IllegalArguementException was expected due to a null file!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
-		try {
-			new SourceLocation("", 1, 2);
-			fail("An IllegalArguementException was expected due to an empty file!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
-		try {
-			new SourceLocation("File.java", 0, 2);
-			fail("An IllegalArguementException was expected due to 0 line number!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
-		try {
-			new SourceLocation("File.java", -2, 2);
-			fail("An IllegalArguementException was expected due to negative line number!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
-		try {
-			new SourceLocation("File.java", 1, 0);
-			fail("An IllegalArguementException was expected due to 0 line count!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
-		try {
-			new SourceLocation("File.java", 1, -3);
-			fail("An IllegalArguementException was expected due to negative line count!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected!
-		}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions() throws Exception {
+		new SourceLocation(null, 1, 2);
+		fail("An IllegalArguementException was expected due to a null file!");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions2() throws Exception {
+		new SourceLocation("", 1, 2);
+		fail("An IllegalArguementException was expected due to an empty file!");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions3() throws Exception {
+		new SourceLocation("File.java", 0, 2);
+		fail("An IllegalArguementException was expected due to 0 line number!");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions4() throws Exception {
+		new SourceLocation("File.java", -2, 2);
+		fail("An IllegalArguementException was expected due to negative line number!");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions5() throws Exception {
+		new SourceLocation("File.java", 1, 0);
+		fail("An IllegalArguementException was expected due to 0 line count!");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptions6() throws Exception {
+		new SourceLocation("File.java", 1, -3);
+		fail("An IllegalArguementException was expected due to negative line count!");
 	}
 
 	@Test

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package apps;
 
 import java.awt.BorderLayout;
@@ -40,7 +40,8 @@ import java.util.Locale;
 import javax.i18n4java.KeyStrokeUpdater;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
-import javax.i18n4java.gui.I18NProjectTranslationPanel;
+import javax.i18n4java.gui.AboutBox;
+import javax.i18n4java.gui.ProjectTranslationPanel;
 import javax.i18n4java.gui.LanguageDialog;
 import javax.i18n4java.proc.I18NRelease;
 import javax.i18n4java.proc.I18NUpdate;
@@ -52,6 +53,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+
+import org.apache.log4j.Logger;
 
 /**
  * I18NLinguist is the base application for the whole I18N framework. All non
@@ -65,6 +68,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger logger = Logger.getLogger(I18NLinguist.class);
 	private static final Translator translator = Translator
 			.getTranslator(I18NLinguist.class);
 
@@ -93,7 +97,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	private final JButton clearButton = new JButton();
 
 	// other GUI elements...
-	private final I18NProjectTranslationPanel translationPanel = new I18NProjectTranslationPanel();
+	private final ProjectTranslationPanel translationPanel = new ProjectTranslationPanel();
 
 	public I18NLinguist() {
 		super("I18NLinguist v0.1.1");
@@ -246,7 +250,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	}
 
 	private void clear() {
-		translationPanel.removeWithoutLocation();
+		translationPanel.removeObsoletePhrases();
 	}
 
 	private void open() {
@@ -266,7 +270,10 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	}
 
 	private void save() {
-		if (!translationPanel.saveFile()) {
+		try {
+			translationPanel.saveFile();
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
 			JOptionPane.showConfirmDialog(this,
 					translator.i18n("I18NFile could not be saved!"),
 					translator.i18n("Error"), JOptionPane.DEFAULT_OPTION,
@@ -276,16 +283,10 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private void setLanguage() {
 		new LanguageDialog(this).setVisible(true);
-		// JOptionPane.showMessageDialog(this,
-		// translator.i18n("This function is not implemented yet!"),
-		// translator.i18n("Not Implemented"),
-		// JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void about() {
-		JOptionPane.showMessageDialog(this,
-				translator.i18n("About message..."), translator.i18n("About"),
-				JOptionPane.INFORMATION_MESSAGE);
+		new AboutBox(this).setVisible(true);
 	}
 
 	@Override

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
@@ -144,16 +144,12 @@ public class LanguageSetTest {
 		assertEquals(0, set.getLocations().size());
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testException() {
 		LanguageSet set = new LanguageSet("Source String1");
 		LanguageSet translated = new LanguageSet("Source String 2");
-		try {
-			set.add(translated);
-			fail("Illegal ArgumentException was expected due to two different source strings!");
-		} catch (IllegalArgumentException e) {
-			// nothing to catch, exception was expected...
-		}
+		set.add(translated);
+		fail("Illegal ArgumentException was expected due to two different source strings!");
 	}
 
 	@Test

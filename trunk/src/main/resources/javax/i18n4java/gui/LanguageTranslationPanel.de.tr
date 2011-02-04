@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<translations>
+    <translations>
+        <entry>
+            <key>Classes</key>
+            <value>Klassen</value>
+        </entry>
+        <entry>
+            <key>Error</key>
+            <value>Fehler</value>
+        </entry>
+        <entry>
+            <key>IO error in file reading.</key>
+            <value>EA-Fehler beim Lesen der Datei.</value>
+        </entry>
+    </translations>
+</translations>

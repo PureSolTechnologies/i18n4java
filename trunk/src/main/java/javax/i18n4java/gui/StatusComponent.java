@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.gui;
 
 import java.awt.BorderLayout;
@@ -53,7 +53,7 @@ public class StatusComponent extends JPanel {
 		label.setVerticalAlignment(JLabel.VERTICAL);
 
 		if (focus) {
-			label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
 		if (finished) {
 			label.setForeground(new Color(0, 127, 0));

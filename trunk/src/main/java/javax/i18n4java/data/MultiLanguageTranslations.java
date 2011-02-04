@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import java.util.ArrayList;
@@ -277,8 +277,7 @@ public class MultiLanguageTranslations implements Cloneable {
 					.clone();
 			return cloned;
 		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -294,8 +293,10 @@ public class MultiLanguageTranslations implements Cloneable {
 			languageSet.setSource(source);
 			for (Locale language : languageSet.getAvailableLanguages()) {
 				String translation = languageSet.get(language);
-				translation = translation.replaceAll("\\n", "\\\\n");
-				languageSet.set(language, translation);
+				if (translation != null) {
+					translation = translation.replaceAll("\\n", "\\\\n");
+					languageSet.set(language, translation);
+				}
 			}
 		}
 	}
@@ -312,8 +313,10 @@ public class MultiLanguageTranslations implements Cloneable {
 			languageSet.setSource(source);
 			for (Locale language : languageSet.getAvailableLanguages()) {
 				String translation = languageSet.get(language);
-				translation = translation.replaceAll("\\\\n", "\n");
-				languageSet.set(language, translation);
+				if (translation != null) {
+					translation = translation.replaceAll("\\\\n", "\n");
+					languageSet.set(language, translation);
+				}
 			}
 		}
 	}
@@ -324,12 +327,19 @@ public class MultiLanguageTranslations implements Cloneable {
 			return false;
 		}
 		for (Locale language : languages) {
-			Set<String> sources = getSources();
-			for (String source : sources) {
-				LanguageSet languageSet = getTranslations(source);
-				if (!languageSet.containsLanguage(language)) {
-					return false;
-				}
+			if (!isTranslationFinished(language)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isTranslationFinished(Locale language) {
+		Set<String> sources = getSources();
+		for (String source : sources) {
+			LanguageSet languageSet = getTranslations(source);
+			if (!languageSet.containsLanguage(language)) {
+				return false;
 			}
 		}
 		return true;

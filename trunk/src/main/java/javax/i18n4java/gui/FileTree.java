@@ -25,9 +25,10 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.gui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,6 +63,16 @@ public class FileTree implements Comparable<FileTree> {
 
 	public String getName() {
 		return name;
+	}
+
+	public File getFile() {
+		FileTree node = this;
+		File path = new File("");
+		do {
+			path = new File(node.getName(), path.getPath());
+			node = node.getParent();
+		} while (node != null);
+		return path;
 	}
 
 	public Object getChild(int id) {

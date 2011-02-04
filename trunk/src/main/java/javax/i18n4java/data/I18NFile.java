@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import java.io.BufferedReader;
@@ -34,13 +34,12 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class is for reading and writing a simple XML based translations file
@@ -51,44 +50,37 @@ import org.apache.log4j.Logger;
  */
 public class I18NFile {
 
-	private static Logger logger = Logger.getLogger(I18NFile.class);
-
-	public static File getResource(File file) {
+	public static File getResource(File file) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			try {
-				String line;
-				while ((line = reader.readLine()) != null) {
-					if (line.contains("package")) {
-						line = line.replaceAll("^.*package\\s*", "");
-						line = line.replaceAll("\\s*;\\s*$", "");
-						line = line.replaceAll("\\.", "/");
-						line += "/" + file.getName();
-						line = line.replaceAll("\\.[^\\.]*$", ".i18n");
-						return new File(line);
-					}
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.contains("package")) {
+					line = line.replaceAll("^.*package\\s*", "");
+					line = line.replaceAll("\\s*;\\s*$", "");
+					line = line.replaceAll("\\.", "/");
+					line += "/" + file.getName();
+					line = line.replaceAll("\\.[^\\.]*$", ".i18n");
+					return new File(line);
 				}
-				return new File(file.getName());
-			} finally {
-				reader.close();
 			}
-		} catch (IOException e) {
-			logger.warn(e.getMessage());
-			return null;
+			return new File(file.getName());
+		} finally {
+			reader.close();
 		}
 	}
 
-	public static boolean isFinished(File file) {
-		try {
-			return read(file).isTranslationFinished();
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		return false;
+	public static boolean isFinished(File file) throws IOException {
+		return read(file).isTranslationFinished();
 	}
 
-	public static boolean write(File file,
-			MultiLanguageTranslations translations) {
+	public static boolean isFinished(File file, Locale locale)
+			throws IOException {
+		return read(file).isTranslationFinished(locale);
+	}
+
+	public static void write(File file, MultiLanguageTranslations translations)
+			throws IOException {
 		try {
 			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
@@ -101,10 +93,8 @@ public class I18NFile {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					Boolean.TRUE);
 			marshaller.marshal(translations, file);
-			return true;
 		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return false;
+			throw new IOException(e);
 		}
 	}
 
@@ -131,8 +121,7 @@ public class I18NFile {
 			translations.addLineBreaks();
 			return translations;
 		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
+			throw new IOException(e);
 		}
 	}
 }

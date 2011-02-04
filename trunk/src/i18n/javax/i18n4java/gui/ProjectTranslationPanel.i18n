@@ -2,22 +2,18 @@
 <internationalization>
     <translations>
         <entry>
-            <key>.*</key>
+            <key>Language</key>
             <value>
-                <source>.*</source>
+                <source>Language</source>
                 <translated>
                     <entry>
-                        <key>vi</key>
-                        <value>.*</value>
-                    </entry>
-                    <entry>
                         <key>de</key>
-                        <value>.*</value>
+                        <value>Sprache</value>
                     </entry>
                 </translated>
                 <locations>
-                    <file>Name = &quot;&quot;.I18NJavaParser.java</file>
-                    <line>71</line>
+                    <file>javax.i18n4java.gui.ProjectTranslationPanel.java</file>
+                    <line>103</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

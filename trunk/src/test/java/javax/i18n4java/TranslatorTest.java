@@ -25,12 +25,11 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java;
 
 import static org.junit.Assert.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -127,17 +126,12 @@ public class TranslatorTest {
 	}
 
 	@Test
-	public void testDateLocalizationInTranslation() {
+	public void testDateLocalizationInTranslation() throws Exception {
 		Translator.setDefault(new Locale("de", "DE"));
 		assertNotNull(translator);
 
-		Date date = null;
-		try {
-			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-					.parse("2009-07-07 12:00:00");
-		} catch (ParseException e) {
-			fail();
-		}
+		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+				.parse("2009-07-07 12:00:00");
 
 		String origin = "This test was create on {0,date}.";
 		String translation = "Dieser Test wurde am {0,date} erstellt.";
@@ -177,14 +171,9 @@ public class TranslatorTest {
 	}
 
 	@Test
-	public void testMultipleTranslationWithArgument() {
-		Date date = null;
-		try {
-			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-					.parse("2009-07-07 12:00:00");
-		} catch (ParseException e) {
-			fail();
-		}
+	public void testMultipleTranslationWithArgument() throws Exception {
+		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+				.parse("2009-07-07 12:00:00");
 		Translator.setDefault(new Locale("de", "DE"));
 		Translator.addAdditionalLocale(new Locale("vi", "VN"));
 		Translator.addAdditionalLocale(new Locale("en", "US"));

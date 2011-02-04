@@ -25,26 +25,48 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.gui;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 
 import javax.i18n4java.data.I18NFile;
 import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
 
+import org.apache.log4j.Logger;
+
 public class FileTreeCellRenderer implements TreeCellRenderer {
 
+	private static final Logger logger = Logger
+			.getLogger(FileTreeCellRenderer.class);
+
 	private I18NProjectConfiguration configuration = null;
+	private Locale selectedLocale = Locale.getDefault();
 
 	public FileTreeCellRenderer() {
+		super();
+	}
+
+	public FileTreeCellRenderer(Locale locale) {
+		super();
+		this.selectedLocale = locale;
 	}
 
 	public FileTreeCellRenderer(I18NProjectConfiguration configuration) {
+		super();
 		this.configuration = configuration;
+	}
+
+	public FileTreeCellRenderer(I18NProjectConfiguration configuration,
+			Locale locale) {
+		super();
+		this.configuration = configuration;
+		this.selectedLocale = locale;
 	}
 
 	/**
@@ -60,6 +82,21 @@ public class FileTreeCellRenderer implements TreeCellRenderer {
 	 */
 	public void setConfiguration(I18NProjectConfiguration configuration) {
 		this.configuration = configuration;
+	}
+
+	/**
+	 * @return the selectedLocale
+	 */
+	public Locale getSelectedLocale() {
+		return selectedLocale;
+	}
+
+	/**
+	 * @param selectedLocale
+	 *            the selectedLocale to set
+	 */
+	public void setSelectedLocale(Locale selectedLocale) {
+		this.selectedLocale = selectedLocale;
 	}
 
 	@Override
@@ -85,25 +122,13 @@ public class FileTreeCellRenderer implements TreeCellRenderer {
 	}
 
 	private File getFile(FileTree fileTree) {
-		FileTree node = fileTree;
-		String path = "";
-		do {
-			path = node.getName() + File.separator + path;
-			node = node.getParent();
-		} while (node != null);
-		return new File(configuration.getI18nDirectory(), path);
-	}
-
-	private boolean isFinished(File file) {
-		if (file.exists() && file.isFile()) {
-			return I18NFile.isFinished(file);
-		}
-		return false;
+		return new File(configuration.getI18nDirectory(), fileTree.getFile()
+				.getPath());
 	}
 
 	private boolean isFinished(FileTree fileTree) {
 		if (!fileTree.hashChildren()) {
-			return I18NFile.isFinished(getFile(fileTree));
+			return isFinished(getFile(fileTree));
 		}
 		for (int id = 0; id < fileTree.getChildCount(); id++) {
 			FileTree child = (FileTree) fileTree.getChild(id);
@@ -112,6 +137,22 @@ public class FileTreeCellRenderer implements TreeCellRenderer {
 			}
 		}
 		return true;
+	}
+
+	private boolean isFinished(File file) {
+		try {
+			if (file.exists() && file.isFile()) {
+				if (!I18NFile.read(file).getAvailableLanguages()
+						.contains(selectedLocale)) {
+					return false;
+				}
+				return I18NFile.isFinished(file, selectedLocale);
+			}
+			return false;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
 	}
 
 }

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import java.io.File;
@@ -39,11 +39,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.log4j.Logger;
-
 public class TRFile {
-
-	private static final Logger logger = Logger.getLogger(TRFile.class);
 
 	/**
 	 * This method calculates the resource path to a context translation file.
@@ -64,8 +60,8 @@ public class TRFile {
 		if ((locale.getLanguage() != null) && (!locale.getLanguage().isEmpty())) {
 			if ((locale.getCountry() != null)
 					&& (!locale.getCountry().isEmpty())) {
-				return getResourceName(context,
-						locale.getLanguage() + "_" + locale.getCountry());
+				return getResourceName(context, locale.getLanguage() + "_"
+						+ locale.getCountry());
 			} else {
 				return getResourceName(context, locale.getLanguage());
 			}
@@ -91,8 +87,8 @@ public class TRFile {
 		return "/" + context.replaceAll("\\.", "/") + "." + language + ".tr";
 	}
 
-	public static boolean write(File file,
-			SingleLanguageTranslations translations) {
+	public static void write(File file, SingleLanguageTranslations translations)
+			throws IOException {
 		try {
 			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
@@ -105,15 +101,12 @@ public class TRFile {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					Boolean.TRUE);
 			marshaller.marshal(translations, file);
-			return true;
 		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return false;
+			throw new IOException(e);
 		}
 	}
 
-	public static SingleLanguageTranslations read(File file)
-			throws FileNotFoundException {
+	public static SingleLanguageTranslations read(File file) throws IOException {
 		try {
 			if (!file.exists()) {
 				throw new FileNotFoundException("File " + file.getPath()
@@ -127,8 +120,7 @@ public class TRFile {
 			translations.addLineBreaks();
 			return translations;
 		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
+			throw new IOException(e);
 		}
 	}
 
@@ -146,8 +138,7 @@ public class TRFile {
 			translations.addLineBreaks();
 			return translations;
 		} catch (JAXBException e) {
-			logger.error(e.getMessage(), e);
-			return null;
+			throw new IOException(e);
 		}
 	}
 }

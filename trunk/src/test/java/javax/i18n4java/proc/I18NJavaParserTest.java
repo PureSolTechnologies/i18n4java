@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import static org.junit.Assert.*;
@@ -81,35 +81,24 @@ public class I18NJavaParserTest {
 	}
 
 	@Test
-	public void testParser() {
-		try {
-			MultiLanguageTranslations translations = I18NJavaParser
-					.parseFile(new File(
-							"src/test/java/javax/i18n4java/proc/I18NJavaParserTest.java"));
-			assertNotNull(translations);
-			translations.print();
-			assertNotNull(translations.get("tr(String)"));
-			assertNotNull(translations.get("tr(String)"));
-			assertNotNull(translations.get("tr(String, Objects)"));
-			assertNotNull(translations.get("tr(Context,String)"));
-			assertNotNull(translations.get("tr(Context,String, Objects)"));
-			assertNotNull(translations
-					.get("This test for processing multi line"
-							+ "texts in tr()!"));
-			assertNotNull(translations.get("This exception was not expected:"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			fail(translator.i18n("This exception was not expected:"));
-		}
+	public void testParser() throws Exception {
+		MultiLanguageTranslations translations = I18NJavaParser
+				.parseFile(new File(
+						"src/test/java/javax/i18n4java/proc/I18NJavaParserTest.java"));
+		assertNotNull(translations);
+		translations.print();
+		assertNotNull(translations.get("tr(String)"));
+		assertNotNull(translations.get("tr(String)"));
+		assertNotNull(translations.get("tr(String, Objects)"));
+		assertNotNull(translations.get("tr(Context,String)"));
+		assertNotNull(translations.get("tr(Context,String, Objects)"));
+		assertNotNull(translations.get("This test for processing multi line"
+				+ "texts in tr()!"));
 	}
 
-	@Test
-	public void testFileNotFound() {
-		try {
-			I18NJavaParser.parseFile(new File("this/file/is/not/existent"));
-			fail("FileNotFoundException was expected!");
-		} catch (FileNotFoundException e) {
-			// nothing to catch, this exception was expected!
-		}
+	@Test(expected = FileNotFoundException.class)
+	public void testFileNotFound() throws Exception {
+		I18NJavaParser.parseFile(new File("this/file/is/not/existent"));
+		fail("FileNotFoundException was expected!");
 	}
 }

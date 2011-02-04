@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.gui;
 
 import java.awt.BorderLayout;
@@ -116,6 +116,7 @@ public class LanguageDialog extends JDialog implements ActionListener {
 		panel.add(languagePanel, BorderLayout.CENTER);
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		pack();
+		setLocationRelativeTo(getParent());
 	}
 
 	@Override

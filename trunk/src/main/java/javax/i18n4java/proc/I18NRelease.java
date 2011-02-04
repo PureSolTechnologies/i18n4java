@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
@@ -101,7 +101,7 @@ public class I18NRelease extends I18NProgress {
 	}
 
 	private void release(MultiLanguageTranslations mlTranslations,
-			Locale language, File file) {
+			Locale language, File file) throws IOException {
 		logger.info("Release language " + language + "  to file "
 				+ file.getPath());
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();

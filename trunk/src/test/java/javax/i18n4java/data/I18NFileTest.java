@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
@@ -39,7 +39,7 @@ import org.junit.Test;
 public class I18NFileTest {
 
 	@Test
-	public void testGetResourceFile() {
+	public void testGetResourceFile() throws Exception {
 		File file = new File("src/main/java/javax/i18n4java/data/I18NFile.java");
 		assertTrue(file.exists());
 		assertEquals(new File("javax/i18n4java/data/I18NFile.i18n"),

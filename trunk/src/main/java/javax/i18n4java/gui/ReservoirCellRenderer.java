@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.gui;
 
 import java.awt.Component;
@@ -39,7 +39,7 @@ import javax.swing.ListCellRenderer;
 public class ReservoirCellRenderer implements ListCellRenderer {
 
 	private MultiLanguageTranslations translationsHash;
-	private Locale language = Locale.getDefault();
+	private Locale selectedLocale = Locale.getDefault();
 
 	public ReservoirCellRenderer() {
 		super();
@@ -68,12 +68,12 @@ public class ReservoirCellRenderer implements ListCellRenderer {
 	/**
 	 * @return the locale
 	 */
-	public Locale getLocale() {
-		return language;
+	public Locale getSelectedLocale() {
+		return selectedLocale;
 	}
 
-	public void setLocale(Locale locale) {
-		this.language = locale;
+	public void setSelectedLocale(Locale locale) {
+		this.selectedLocale = locale;
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class ReservoirCellRenderer implements ListCellRenderer {
 		if (languageSet == null) {
 			return new StatusComponent(source, isSelected, cellHasFocus, false);
 		}
-		String translation = languageSet.get(language);
+		String translation = languageSet.get(selectedLocale);
 		if ((translation != null) && (!translation.isEmpty())) {
 			finished = true;
 		}

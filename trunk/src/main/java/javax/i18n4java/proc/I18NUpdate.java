@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
@@ -90,7 +90,7 @@ public class I18NUpdate extends I18NProgress {
 						I18NFile.getResource(sourceFile).getPath());
 				addNewSourcesToExistingFile(i18nFile, i18nSources);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
@@ -104,7 +104,7 @@ public class I18NUpdate extends I18NProgress {
 	}
 
 	private void addNewSourcesToExistingFile(File file,
-			MultiLanguageTranslations i18nSources) {
+			MultiLanguageTranslations i18nSources) throws IOException {
 		MultiLanguageTranslations translations = readTranslations(file);
 		translations.add(i18nSources);
 		File directory = new File(file.getPath().replaceAll(file.getName(), ""));
@@ -131,7 +131,7 @@ public class I18NUpdate extends I18NProgress {
 	}
 
 	private void writeTranslations(File file,
-			MultiLanguageTranslations translations) {
+			MultiLanguageTranslations translations) throws IOException {
 		logger.info("Write translations to " + file.getPath());
 		I18NFile.write(file, translations);
 	}

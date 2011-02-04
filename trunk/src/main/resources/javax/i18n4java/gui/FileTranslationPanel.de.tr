@@ -2,28 +2,8 @@
 <translations>
     <translations>
         <entry>
-            <key>Classes</key>
-            <value>Klassen</value>
-        </entry>
-        <entry>
             <key>Reservoir</key>
             <value>Reservoir</value>
-        </entry>
-        <entry>
-            <key>Error</key>
-            <value>Fehler</value>
-        </entry>
-        <entry>
-            <key>IO error in file reading.</key>
-            <value>IO-Fehler während des Lesens der Datei.</value>
-        </entry>
-        <entry>
-            <key>Language</key>
-            <value>Sprache</value>
-        </entry>
-        <entry>
-            <key>File was not found.</key>
-            <value>Datei wurde nicht gefunden.</value>
         </entry>
         <entry>
             <key>Source</key>

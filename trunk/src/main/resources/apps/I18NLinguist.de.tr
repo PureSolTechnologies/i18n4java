@@ -22,12 +22,12 @@
             <value>Über...</value>
         </entry>
         <entry>
-            <key>Clear</key>
-            <value>Säubern</value>
-        </entry>
-        <entry>
             <key>Error while choosing file.</key>
             <value>Fehler bei Dateiauswahl.</value>
+        </entry>
+        <entry>
+            <key>Clear</key>
+            <value>Säubern</value>
         </entry>
         <entry>
             <key>ctrl Q</key>
