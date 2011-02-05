@@ -140,6 +140,7 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 		if (i18nFile != null) {
 			I18NFile.write(i18nFile,
 					this.fileTranslationPanel.getTranslations());
+			fileTreeModel.changedFile(i18nFile);
 		}
 	}
 
@@ -183,8 +184,7 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 	@Override
 	public void valueChanged(TreeSelectionEvent o) {
 		if (o.getSource() == fileTree) {
-			FileTree fileTree = (FileTree) o.getPath()
-					.getLastPathComponent();
+			FileTree fileTree = (FileTree) o.getPath().getLastPathComponent();
 			if (!fileTree.hashChildren()) {
 				openFile(fileTree.getFile());
 			}

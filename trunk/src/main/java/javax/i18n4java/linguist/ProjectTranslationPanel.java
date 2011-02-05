@@ -66,7 +66,7 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 
 	// GUI elements...
 	private final LocaleChooser localeChooser = new LocaleChooser();
-	private final FilesTranslationPanel languageTranslationPanel = new FilesTranslationPanel();
+	private final FilesTranslationPanel translationPanel = new FilesTranslationPanel();
 
 	/**
 	 * This is the default constructor. The panel is empty and a project
@@ -106,7 +106,7 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 		localeChooser.addActionListener(this);
 
 		add(localeChooser, BorderLayout.NORTH);
-		add(languageTranslationPanel, BorderLayout.CENTER);
+		add(translationPanel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -115,7 +115,7 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 	 * @return True is returned if there are some changes to save.
 	 */
 	public boolean hasChanged() {
-		return languageTranslationPanel.hasChanged();
+		return translationPanel.hasChanged();
 	}
 
 	/**
@@ -125,23 +125,23 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 	 * @throws IOException
 	 */
 	public void saveFile() throws IOException {
-		languageTranslationPanel.saveFile();
+		translationPanel.saveFile();
 	}
 
 	public void openDirectory(File directory) {
-		languageTranslationPanel.openDirectory(directory);
+		translationPanel.openDirectory(directory);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent o) {
 		if (o.getSource() == localeChooser) {
-			languageTranslationPanel.setSelectedLocale(localeChooser
+			translationPanel.setSelectedLocale(localeChooser
 					.getSelectedLocale());
 		}
 	}
 
 	public void removeObsoletePhrases() {
-		languageTranslationPanel.removeObsoletePhrases();
+		translationPanel.removeObsoletePhrases();
 	}
 
 }

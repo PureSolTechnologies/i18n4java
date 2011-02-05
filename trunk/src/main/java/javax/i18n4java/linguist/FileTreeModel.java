@@ -45,8 +45,7 @@ import org.apache.log4j.Logger;
 
 class FileTreeModel implements TreeModel {
 
-	private static final Logger logger = Logger
-			.getLogger(FileTreeModel.class);
+	private static final Logger logger = Logger.getLogger(FileTreeModel.class);
 
 	/**
 	 * This method is static to express the functional character of the method
@@ -216,7 +215,8 @@ class FileTreeModel implements TreeModel {
 		boolean finished = isFinished(file, selectedLocale);
 		FileTree fileTreeElement = fileTree.getFileTreeElement(file);
 		fileTreeElement.setFinished(finished);
-
+		setFinishedFlags();
+		fireStructureChanged();
 	}
 
 	@Override
