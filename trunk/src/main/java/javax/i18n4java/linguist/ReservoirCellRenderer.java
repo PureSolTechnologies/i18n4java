@@ -26,7 +26,7 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.awt.Component;
 import java.util.Locale;
@@ -36,7 +36,7 @@ import javax.i18n4java.data.MultiLanguageTranslations;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-public class ReservoirCellRenderer implements ListCellRenderer {
+class ReservoirCellRenderer implements ListCellRenderer {
 
 	private MultiLanguageTranslations translationsHash;
 	private Locale selectedLocale = Locale.getDefault();

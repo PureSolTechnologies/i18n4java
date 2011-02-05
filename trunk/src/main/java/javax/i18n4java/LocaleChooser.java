@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   StatusComponent.java
+ *   LocaleChooser.java
  *   -------------------
  *   copyright            : (c) 2009-2011 by PureSol-Technologies
  *   author               : Rick-Rainer Ludwig
@@ -25,50 +25,50 @@
  * limitations under the License.
  *
  ****************************************************************************/
+ 
+package javax.i18n4java;
 
-package javax.i18n4java.gui;
+import java.util.List;
+import java.util.Locale;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import javax.i18n4java.utils.I18N4Java;
+import javax.swing.JComboBox;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+/**
+ * This class provides a combobox with all available locales for choosing.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
+public class LocaleChooser extends JComboBox {
 
-public class StatusComponent extends JPanel {
+	private static final long serialVersionUID = -5751261750747502182L;
 
-	private static final long serialVersionUID = 9057595345044306838L;
+	private final List<String> availableLocaleNames = I18N4Java
+			.getAvailableLocaleNames();
 
-	public StatusComponent(String text, boolean selected, boolean focus,
-			boolean finished) {
+	public LocaleChooser() {
 		super();
-
-		setOpaque(false);
-		BoxLayout layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
-		setLayout(layout);
-
-		JLabel label = new JLabel(text);
-		label.setHorizontalAlignment(JLabel.LEFT);
-		label.setVerticalAlignment(JLabel.VERTICAL);
-
-		if (focus) {
-			setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}
-		if (finished) {
-			label.setForeground(new Color(0, 127, 0));
-			if (selected) {
-				setOpaque(true);
-				setBackground(new Color(192, 255, 192));
-			}
-		} else {
-			label.setForeground(new Color(127, 0, 0));
-			if (selected) {
-				setOpaque(true);
-				setBackground(new Color(255, 192, 192));
-			}
-		}
-		add(label, BorderLayout.CENTER);
+		insertLocales();
 	}
 
+	private void insertLocales() {
+		for (String localeName : availableLocaleNames) {
+			addItem(localeName + " / "
+					+ new Locale(localeName).getDisplayName());
+		}
+	}
+
+	public Locale getSelectedLocale() {
+		return new Locale(availableLocaleNames.get(getSelectedIndex()));
+	}
+
+	public void setSelectedLocale(Locale locale) {
+		for (int index = 0; index < availableLocaleNames.size(); index++) {
+			if (availableLocaleNames.get(index).equals(locale.toString())) {
+				setSelectedIndex(index);
+				break;
+			}
+		}
+	}
 }

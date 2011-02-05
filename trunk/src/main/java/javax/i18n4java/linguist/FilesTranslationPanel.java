@@ -26,7 +26,7 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -36,6 +36,7 @@ import java.util.Locale;
 
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
+import javax.i18n4java.data.I18NFile;
 import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.i18n4java.utils.FileSearch;
 import javax.swing.BorderFactory;
@@ -50,27 +51,27 @@ import javax.swing.event.TreeSelectionListener;
 
 import org.apache.log4j.Logger;
 
-public class LanguageTranslationPanel extends JPanel implements
-		TreeSelectionListener {
+class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger(LanguageTranslationPanel.class);
+			.getLogger(FilesTranslationPanel.class);
 	private static final Translator translator = Translator
-			.getTranslator(LanguageTranslationPanel.class);
+			.getTranslator(FilesTranslationPanel.class);
 
 	private final TranslationUpdater translationUpdater = new TranslationUpdater();
 
 	// GUI elements...
-	private final JTree fileTree = new JTree(new FileTreeModel());
+	private final FileTreeModel fileTreeModel = new FileTreeModel();
+	private final JTree fileTree = new JTree(fileTreeModel);
 	private final FileTreeCellRenderer fileTreeCellRenderer = new FileTreeCellRenderer();
-
-	private final FileTranslationPanel fileTranslationPanel = new FileTranslationPanel();
+	private final TranslationPanel fileTranslationPanel = new TranslationPanel();
 
 	private I18NProjectConfiguration configuration = null;
+	private File i18nFile = null;
 
-	public LanguageTranslationPanel() {
+	public FilesTranslationPanel() {
 		super();
 		initializeDesktop();
 	}
@@ -98,7 +99,7 @@ public class LanguageTranslationPanel extends JPanel implements
 	 */
 	public void setSelectedLocale(Locale selectedLocale) {
 		fileTranslationPanel.setSelectedLocale(selectedLocale);
-		fileTreeCellRenderer.setSelectedLocale(selectedLocale);
+		fileTreeModel.setSelectedLocale(selectedLocale);
 		fileTree.repaint();
 	}
 
@@ -118,11 +119,28 @@ public class LanguageTranslationPanel extends JPanel implements
 	 * @throws IOException
 	 */
 	public boolean saveIfChanged() throws IOException {
-		return fileTranslationPanel.saveIfChanged();
+		if (!hasChanged()) {
+			return true;
+		}
+		int result = JOptionPane.showConfirmDialog(this,
+				translator.i18n("Changes were made.\nDo you want to save?"),
+				translator.i18n("Save"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+		if (result == JOptionPane.CANCEL_OPTION) {
+			return false;
+		}
+		if (result == JOptionPane.NO_OPTION) {
+			return true;
+		}
+		saveFile();
+		return true;
 	}
 
 	public void saveFile() throws IOException {
-		fileTranslationPanel.saveFile();
+		if (i18nFile != null) {
+			I18NFile.write(i18nFile,
+					this.fileTranslationPanel.getTranslations());
+		}
 	}
 
 	public void openDirectory(File directory) {
@@ -131,11 +149,10 @@ public class LanguageTranslationPanel extends JPanel implements
 				return;
 			}
 			configuration = new I18NProjectConfiguration(directory);
-			fileTreeCellRenderer.setConfiguration(configuration);
 
 			List<File> files = FileSearch.find(
 					configuration.getI18nDirectory(), "*.i18n");
-			fileTree.setModel(new FileTreeModel(files));
+			fileTreeModel.setFiles(files, configuration);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
@@ -145,7 +162,18 @@ public class LanguageTranslationPanel extends JPanel implements
 	}
 
 	public void openFile(File file) {
-		fileTranslationPanel.openFile(file);
+		try {
+			if (!saveIfChanged()) {
+				return;
+			}
+			i18nFile = file;
+			fileTranslationPanel.setTranslations(I18NFile.read(i18nFile));
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, translator.i18n(
+					"The file {0} could not be read!", i18nFile), translator
+					.i18n("File not found"), JOptionPane.ERROR_MESSAGE);
+			i18nFile = null;
+		}
 	}
 
 	public void removeObsoletePhrases() {
@@ -155,10 +183,10 @@ public class LanguageTranslationPanel extends JPanel implements
 	@Override
 	public void valueChanged(TreeSelectionEvent o) {
 		if (o.getSource() == fileTree) {
-			FileTree fileTree = (FileTree) o.getPath().getLastPathComponent();
+			FileTree fileTree = (FileTree) o.getPath()
+					.getLastPathComponent();
 			if (!fileTree.hashChildren()) {
-				openFile(new File(configuration.getI18nDirectory(), fileTree
-						.getFile().getPath()));
+				openFile(fileTree.getFile());
 			}
 		}
 	}

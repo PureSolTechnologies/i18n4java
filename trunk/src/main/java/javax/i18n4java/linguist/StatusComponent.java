@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   ProgressListener.java
+ *   StatusComponent.java
  *   -------------------
  *   copyright            : (c) 2009-2011 by PureSol-Technologies
  *   author               : Rick-Rainer Ludwig
@@ -25,26 +25,50 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
-package javax.i18n4java.proc;
 
-/**
- * This interface is used for classes which want to be able to listen to
- * I18NRelease and I18NUpdate progresses.
- * 
- * @author Rick-Rainer Ludwig
- * 
- */
-public interface ProgressListener {
+package javax.i18n4java.linguist;
 
-	/**
-	 * This method is called in case of a new status.
-	 * 
-	 * @param min
-	 * @param max
-	 * @param current
-	 * @param string
-	 */
-	public void progress(int min, int max, int current, String string);
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+class StatusComponent extends JPanel {
+
+	private static final long serialVersionUID = 9057595345044306838L;
+
+	public StatusComponent(String text, boolean selected, boolean focus,
+			boolean finished) {
+		super();
+
+		setOpaque(false);
+		BoxLayout layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
+		setLayout(layout);
+
+		JLabel label = new JLabel(text);
+		label.setHorizontalAlignment(JLabel.LEFT);
+		label.setVerticalAlignment(JLabel.VERTICAL);
+
+		if (focus) {
+			setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		}
+		if (finished) {
+			label.setForeground(new Color(0, 127, 0));
+			if (selected) {
+				setOpaque(true);
+				setBackground(new Color(192, 255, 192));
+			}
+		} else {
+			label.setForeground(new Color(127, 0, 0));
+			if (selected) {
+				setOpaque(true);
+				setBackground(new Color(255, 192, 192));
+			}
+		}
+		add(label, BorderLayout.CENTER);
+	}
 
 }

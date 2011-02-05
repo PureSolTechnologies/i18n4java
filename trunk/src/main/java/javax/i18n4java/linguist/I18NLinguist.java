@@ -26,7 +26,7 @@
  *
  ****************************************************************************/
 
-package apps;
+package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -38,11 +38,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.i18n4java.KeyStrokeUpdater;
+import javax.i18n4java.LanguageDialog;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
-import javax.i18n4java.gui.AboutBox;
-import javax.i18n4java.gui.ProjectTranslationPanel;
-import javax.i18n4java.gui.LanguageDialog;
 import javax.i18n4java.proc.I18NRelease;
 import javax.i18n4java.proc.I18NUpdate;
 import javax.swing.JButton;

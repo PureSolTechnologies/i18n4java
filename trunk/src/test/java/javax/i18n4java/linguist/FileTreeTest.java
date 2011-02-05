@@ -26,9 +26,11 @@
  *
  ****************************************************************************/
  
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import static org.junit.Assert.*;
+
+import javax.i18n4java.linguist.FileTree;
 
 import org.junit.Test;
 

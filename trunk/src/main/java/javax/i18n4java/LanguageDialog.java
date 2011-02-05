@@ -26,7 +26,7 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -36,8 +36,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Locale;
 
-import javax.i18n4java.TranslationUpdater;
-import javax.i18n4java.Translator;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;

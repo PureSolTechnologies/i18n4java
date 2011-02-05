@@ -26,7 +26,7 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.i18n4java.LocaleChooser;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
 import javax.swing.BorderFactory;
@@ -46,12 +47,12 @@ import javax.swing.border.TitledBorder;
  * project. The language can be chosen to be edited and everything else is
  * delegate to the LanguageTranslationPanel.
  * 
- * @see LanguageTranslationPanel
+ * @see FilesTranslationPanel
  * 
  * @author Rick-Rainer Ludwig
  * 
  */
-public class ProjectTranslationPanel extends JPanel implements ActionListener {
+class ProjectTranslationPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -65,7 +66,7 @@ public class ProjectTranslationPanel extends JPanel implements ActionListener {
 
 	// GUI elements...
 	private final LocaleChooser localeChooser = new LocaleChooser();
-	private final LanguageTranslationPanel languageTranslationPanel = new LanguageTranslationPanel();
+	private final FilesTranslationPanel languageTranslationPanel = new FilesTranslationPanel();
 
 	/**
 	 * This is the default constructor. The panel is empty and a project

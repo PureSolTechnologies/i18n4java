@@ -52,7 +52,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Rick-Rainer Ludwig
  */
-public class I18NRelease extends I18NProgress {
+public class I18NRelease {
 
 	private static final Logger logger = Logger.getLogger(I18NRelease.class);
 
@@ -75,9 +75,7 @@ public class I18NRelease extends I18NProgress {
 	}
 
 	private void processFiles() {
-		for (int i = 0; i < inputFiles.size(); i++) {
-			File file = inputFiles.get(i);
-			progressUpdate(0, inputFiles.size(), i, file.getPath());
+		for (File file : inputFiles) {
 			processFile(file);
 		}
 	}

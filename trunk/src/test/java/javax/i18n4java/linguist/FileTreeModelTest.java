@@ -25,8 +25,8 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
-package javax.i18n4java.gui;
+
+package javax.i18n4java.linguist;
 
 import static org.junit.Assert.*;
 
@@ -34,6 +34,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.i18n4java.linguist.FileTreeModel;
+import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.swing.JDialog;
 import javax.swing.JTree;
 
@@ -80,21 +82,25 @@ public class FileTreeModelTest {
 	}
 
 	@Test
-	public void testInstance() {
+	public void testInstance() throws Exception {
 		assertNotNull(new FileTreeModel());
-		assertNotNull(new FileTreeModel(FILES));
+		assertNotNull(new FileTreeModel(FILES,
+				new I18NProjectConfiguration(new File("."))));
 	}
 
 	@Test
-	public void testGetChildCount() {
-		FileTreeModel model = new FileTreeModel(FILES);
+	public void testGetChildCount() throws Exception {
+		FileTreeModel model = new FileTreeModel(FILES,
+				new I18NProjectConfiguration(new File(".")));
 		assertEquals(3, model.getChildCount(model.getFileTree()));
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		JDialog dlg = new JDialog();
 		dlg.setTitle("Test FileTreeModel");
-		dlg.getContentPane().add(new JTree(new FileTreeModel(FILES)));
+		dlg.getContentPane().add(
+				new JTree(new FileTreeModel(FILES,
+						new I18NProjectConfiguration(new File(".")))));
 		dlg.pack();
 		dlg.setVisible(true);
 	}

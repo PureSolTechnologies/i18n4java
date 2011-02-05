@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
@@ -35,9 +35,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * This class is for improving flexibility of the I18N framework. With special
+ * This class is used to handle the configuration of project's i18n framework.
+ * This class takes the project directory as constructor parameter and reads the
+ * file i18n4java.properties in the top directory which holds all information
+ * about the directories where all files can be found.
  * 
- * @author rludwig
+ * Getter methods provide an easy access to information about the configuration.
+ * 
+ * @author Rick-Rainer Ludwig
  * 
  */
 public class I18NProjectConfiguration {
@@ -61,18 +66,21 @@ public class I18NProjectConfiguration {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public I18NProjectConfiguration(File fileOrDirectory)
-			throws FileNotFoundException, IOException {
+	public I18NProjectConfiguration(File fileOrDirectory) throws IOException {
 		super();
 		if (!fileOrDirectory.exists()) {
 			throw new FileNotFoundException("File or directory '"
-					+ fileOrDirectory + "' is not found!");
+					+ fileOrDirectory + "' was not found!");
 		}
 		File fileLocation;
 		Properties props = new Properties();
 		if (fileOrDirectory.isDirectory()) {
-			props.load(new FileInputStream(new File(fileOrDirectory,
-					CONFIGURATION_FILENAME)));
+			File file = new File(fileOrDirectory, CONFIGURATION_FILENAME);
+			if (!file.exists()) {
+				throw new FileNotFoundException("File '" + file
+						+ "' was not found!");
+			}
+			props.load(new FileInputStream(file));
 			fileLocation = fileOrDirectory;
 		} else {
 			props.load(new FileInputStream(fileOrDirectory));

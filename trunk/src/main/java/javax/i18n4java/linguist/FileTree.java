@@ -26,18 +26,47 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FileTree implements Comparable<FileTree> {
+class FileTree implements Comparable<FileTree> {
+
+	/**
+	 * This method is static to express the functional character of the method
+	 * and to avoid accidental usage of non static fields.
+	 * 
+	 * @param currentNode
+	 * @param file
+	 * @return
+	 */
+	private static FileTree getFileTreeElement(FileTree currentNode,
+			File file) {
+		if (currentNode.getFile().equals(file)) {
+			return currentNode;
+		}
+		for (int index = 0; index < currentNode.getChildCount(); index++) {
+			FileTree child = currentNode.getChild(index);
+			if (file.getPath().startsWith(child.getFile().getPath())) {
+				return getFileTreeElement(child, file);
+			}
+		}
+		return null;
+	}
+
+	/*
+	 * **********************************************************************
+	 * Non static part...
+	 * **********************************************************************
+	 */
 
 	private final List<FileTree> children = new ArrayList<FileTree>();
 	private final FileTree parent;
 	private final String name;
+	private boolean finished = false;
 
 	public FileTree(String file) {
 		super();
@@ -75,7 +104,7 @@ public class FileTree implements Comparable<FileTree> {
 		return path;
 	}
 
-	public Object getChild(int id) {
+	public FileTree getChild(int id) {
 		return children.get(id);
 	}
 
@@ -89,6 +118,14 @@ public class FileTree implements Comparable<FileTree> {
 
 	public boolean hashChildren() {
 		return children.size() > 0;
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 
 	@Override
@@ -114,6 +151,10 @@ public class FileTree implements Comparable<FileTree> {
 		return null;
 	}
 
+	public FileTree getFileTreeElement(File file) {
+		return getFileTreeElement(this, file);
+	}
+
 	@Override
 	public int compareTo(FileTree other) {
 		if ((!this.hashChildren()) && (other.hashChildren())) {
@@ -124,4 +165,5 @@ public class FileTree implements Comparable<FileTree> {
 		}
 		return this.name.compareTo(other.name);
 	}
+
 }

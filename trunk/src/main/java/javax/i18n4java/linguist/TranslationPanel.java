@@ -26,20 +26,15 @@
  *
  ****************************************************************************/
 
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Vector;
 
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
-import javax.i18n4java.data.I18NFile;
 import javax.i18n4java.data.LanguageSet;
 import javax.i18n4java.data.MultiLanguageTranslations;
 import javax.i18n4java.data.SourceLocation;
@@ -47,7 +42,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -57,13 +51,20 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class FileTranslationPanel extends JPanel implements ActionListener,
-		ListSelectionListener, CaretListener {
+/**
+ * This panel provides all GUI elements and functionality to edit a single I18n
+ * file.
+ * 
+ * @author Rick-Rainer Ludwig
+ * 
+ */
+class TranslationPanel extends JPanel implements ListSelectionListener,
+		CaretListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Translator translator = Translator
-			.getTranslator(FileTranslationPanel.class);
+			.getTranslator(TranslationPanel.class);
 
 	private final TranslationUpdater translationUpdater = new TranslationUpdater();
 
@@ -75,8 +76,7 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	private final JTextArea location = new JTextArea();
 
 	// fields...
-	private File i18nFile = null;
-	private MultiLanguageTranslations translationsHash = null;
+	private MultiLanguageTranslations translations = null;
 
 	private boolean changed = false;
 	private String oldSource = "";
@@ -85,7 +85,7 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	private boolean translationChanged = false;
 	private Locale selectedLocale = Locale.getDefault();
 
-	public FileTranslationPanel() {
+	public TranslationPanel() {
 		super();
 		initializeDesktop();
 	}
@@ -147,65 +147,18 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	}
 
 	public boolean hasChanged() {
+		updateHash();
 		return changed;
 	}
 
-	/**
-	 * This method checks whether the content of the file was changed or not. If
-	 * a change was performed, the user is asked for saving the file or not. If
-	 * the used chooses cancel the file is not saved and this method returns
-	 * false to signal to abort the current process.
-	 * 
-	 * @return True is returned if the process was satisfied and the calling
-	 *         method can proceed normally. False is returned in case the used
-	 *         chose cancel to abort the current process.
-	 * @throws IOException
-	 */
-	public boolean saveIfChanged() throws IOException {
-		updateHash();
-		if (!hasChanged()) {
-			return true;
-		}
-		int result = JOptionPane.showConfirmDialog(this,
-				translator.i18n("Changes were made.\nDo you want to save?"),
-				translator.i18n("Save"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
-		if (result == JOptionPane.CANCEL_OPTION) {
-			return false;
-		}
-		if (result == JOptionPane.NO_OPTION) {
-			return true;
-		}
-		saveFile();
-		return true;
+	public void setTranslations(MultiLanguageTranslations translations) {
+		this.translations = translations;
+		updateReservoir();
+		changed = false;
 	}
 
-	public void saveFile() throws IOException {
-		if ((i18nFile != null) && (translationsHash != null)) {
-			I18NFile.write(i18nFile, translationsHash);
-		}
-	}
-
-	public void openFile(File file) {
-		try {
-			if (!saveIfChanged()) {
-				return;
-			}
-			i18nFile = file;
-			setTranslationsHash(I18NFile.read(i18nFile));
-			updateReservoir();
-			changed = false;
-		} catch (IOException e) {
-			JOptionPane.showConfirmDialog(this, translator.i18n(
-					"The file {0} could not be read!", i18nFile), translator
-					.i18n("File not found"), JOptionPane.OK_OPTION,
-					JOptionPane.ERROR_MESSAGE);
-			i18nFile = null;
-		}
-	}
-
-	public void setTranslationsHash(MultiLanguageTranslations translationsHash) {
-		this.translationsHash = translationsHash;
+	public MultiLanguageTranslations getTranslations() {
+		return translations;
 	}
 
 	public void changeTranslation(String text) {
@@ -213,54 +166,48 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	}
 
 	private void updateReservoir() {
-		if (translationsHash == null) {
+		if (translations == null) {
+			reservoir.removeAll();
 			return;
+		} else {
+			Vector<String> listData = new Vector<String>(
+					translations.getSources());
+			Collections.sort(listData);
+			reservoirCellRenderer.setTranslationsHash(translations);
+			reservoir.setListData(listData);
 		}
-		Vector<String> listData = new Vector<String>(
-				translationsHash.getSources());
-		Collections.sort(listData);
-		reservoirCellRenderer.setTranslationsHash(translationsHash);
-		reservoir.setListData(listData);
+		setSource(null);
 	}
 
 	public void setSource(String source) {
-		this.source.setText(source != null ? source.toString() : "");
+		this.source.setText(source != null ? source : "");
 		updateTranslation();
 		updateLocation();
 	}
 
 	private void updateTranslation() {
-		if (translationsHash == null) {
-			translation.setText("");
-			return;
-		}
-		if (source.getText().isEmpty()) {
+		if ((translations == null) || (source.getText().isEmpty())) {
 			translation.setText("");
 			return;
 		}
 		updateHash();
 		oldSource = source.getText();
-		oldLanguage = selectedLocale;
-		oldTranslation = translationsHash.get(oldSource, oldLanguage);
+		oldTranslation = translations.get(oldSource, selectedLocale);
 		translation.setText(oldTranslation);
 		translationChanged = false;
 	}
 
 	private void updateLocation() {
-		if (translationsHash == null) {
+		if ((translations == null) || (source.getText().isEmpty())) {
 			location.setText("");
 			return;
 		}
-		if (source.getText().isEmpty()) {
-			location.setText("");
-			return;
-		}
-		StringBuffer locations = new StringBuffer();
-		LanguageSet languageSet = translationsHash.get(source.getText());
+		LanguageSet languageSet = translations.get(source.getText());
 		if (languageSet == null) {
 			location.setText("");
 			return;
 		}
+		StringBuilder locations = new StringBuilder();
 		for (SourceLocation location : languageSet.getLocations()) {
 			locations.append(location.toString()).append("\n");
 		}
@@ -270,8 +217,7 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	private void updateHash() {
 		if ((!translation.getText().isEmpty()) && (translationChanged)) {
 			if (!oldSource.isEmpty()) {
-				translationsHash.set(oldSource, oldLanguage,
-						translation.getText());
+				translations.set(oldSource, oldLanguage, translation.getText());
 				changed = true;
 				translationChanged = false;
 			}
@@ -279,16 +225,8 @@ public class FileTranslationPanel extends JPanel implements ActionListener,
 	}
 
 	public void removeObsoletePhrases() {
-		setSource("");
-		translationsHash.removeWithoutLocation();
+		translations.removeWithoutLocation();
 		updateReservoir();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent o) {
-		if (o.getSource() == selectedLocale) {
-			updateTranslation();
-		}
 	}
 
 	@Override

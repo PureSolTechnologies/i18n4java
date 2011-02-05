@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   LocaleChooser.java
+ *   FileTreeCellRenderer.java
  *   -------------------
  *   copyright            : (c) 2009-2011 by PureSol-Technologies
  *   author               : Rick-Rainer Ludwig
@@ -25,50 +25,26 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
-package javax.i18n4java.gui;
 
-import java.util.List;
-import java.util.Locale;
+package javax.i18n4java.linguist;
 
-import javax.i18n4java.utils.I18N4Java;
-import javax.swing.JComboBox;
+import java.awt.Component;
 
-/**
- * This class provides a combobox with all available locales for choosing.
- * 
- * @author Rick-Rainer Ludwig
- * 
- */
-public class LocaleChooser extends JComboBox {
+import javax.swing.JTree;
+import javax.swing.tree.TreeCellRenderer;
 
-	private static final long serialVersionUID = -5751261750747502182L;
+class FileTreeCellRenderer implements TreeCellRenderer {
 
-	private final List<String> availableLocaleNames = I18N4Java
-			.getAvailableLocaleNames();
-
-	public LocaleChooser() {
+	public FileTreeCellRenderer() {
 		super();
-		insertLocales();
 	}
 
-	private void insertLocales() {
-		for (String localeName : availableLocaleNames) {
-			addItem(localeName + " / "
-					+ new Locale(localeName).getDisplayName());
-		}
-	}
-
-	public Locale getSelectedLocale() {
-		return new Locale(availableLocaleNames.get(getSelectedIndex()));
-	}
-
-	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < availableLocaleNames.size(); index++) {
-			if (availableLocaleNames.get(index).equals(locale.toString())) {
-				setSelectedIndex(index);
-				break;
-			}
-		}
+	@Override
+	public Component getTreeCellRendererComponent(JTree tree, Object value,
+			boolean selected, boolean expanded, boolean leaf, int row,
+			boolean hasFocus) {
+		FileTree fileTree = (FileTree) value;
+		return new StatusComponent(fileTree.getName(), selected, hasFocus,
+				fileTree.isFinished());
 	}
 }

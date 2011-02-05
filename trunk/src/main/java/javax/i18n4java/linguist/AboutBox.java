@@ -1,4 +1,4 @@
-package javax.i18n4java.gui;
+package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -31,7 +31,7 @@ import javax.swing.JTextArea;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class AboutBox extends JDialog implements ActionListener, WindowListener {
+class AboutBox extends JDialog implements ActionListener, WindowListener {
 
 	private static final long serialVersionUID = 2224920916064371369L;
 
