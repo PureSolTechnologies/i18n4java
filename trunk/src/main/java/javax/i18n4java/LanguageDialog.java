@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
-
+ 
 package javax.i18n4java;
 
 import java.awt.BorderLayout;

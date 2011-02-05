@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   I18NProjectTranslationPanel.java
+ *   FilesTranslationPanel.java
  *   -------------------
  *   copyright            : (c) 2009-2011 by PureSol-Technologies
  *   author               : Rick-Rainer Ludwig
@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
-
+ 
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;

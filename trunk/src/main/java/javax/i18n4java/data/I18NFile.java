@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
-
+ 
 package javax.i18n4java.data;
 
 import java.io.BufferedReader;
