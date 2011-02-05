@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.io.File;
@@ -41,11 +41,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
-
 class FileTreeModel implements TreeModel {
-
-	private static final Logger logger = Logger.getLogger(FileTreeModel.class);
 
 	/**
 	 * This method is static to express the functional character of the method
@@ -54,8 +50,10 @@ class FileTreeModel implements TreeModel {
 	 * @param fileTree
 	 * @param locale
 	 * @return
+	 * @throws IOException
 	 */
-	private static boolean isFinished(FileTree fileTree, Locale locale) {
+	private static boolean isFinished(FileTree fileTree, Locale locale)
+			throws IOException {
 		if (!fileTree.hashChildren()) {
 			return isFinished(fileTree.getFile(), locale);
 		}
@@ -75,21 +73,17 @@ class FileTreeModel implements TreeModel {
 	 * @param file
 	 * @param locale
 	 * @return
+	 * @throws IOException
 	 */
-	private static boolean isFinished(File file, Locale locale) {
-		try {
-			if (file.exists() && file.isFile()) {
-				if (!I18NFile.read(file).getAvailableLanguages()
-						.contains(locale)) {
-					return false;
-				}
-				return I18NFile.isFinished(file, locale);
+	private static boolean isFinished(File file, Locale locale)
+			throws IOException {
+		if (file.exists() && file.isFile()) {
+			if (!I18NFile.read(file).getAvailableLanguages().contains(locale)) {
+				return false;
 			}
-			return false;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			return false;
+			return I18NFile.isFinished(file, locale);
 		}
+		return false;
 	}
 
 	/**
@@ -119,9 +113,10 @@ class FileTreeModel implements TreeModel {
 	 * 
 	 * @param currentNode
 	 * @param locale
+	 * @throws IOException
 	 */
 	private static void setFinishedFlagsForFiles(FileTree currentNode,
-			Locale locale) {
+			Locale locale) throws IOException {
 		if (!currentNode.hashChildren()) {
 			currentNode.setFinished(isFinished(currentNode, locale));
 			return;
@@ -147,7 +142,7 @@ class FileTreeModel implements TreeModel {
 	}
 
 	public FileTreeModel(List<File> files,
-			I18NProjectConfiguration configuration) {
+			I18NProjectConfiguration configuration) throws IOException {
 		super();
 		this.configuration = configuration;
 		setFiles(files, configuration);
@@ -157,7 +152,7 @@ class FileTreeModel implements TreeModel {
 		return selectedLocale;
 	}
 
-	public void setSelectedLocale(Locale selectedLocale) {
+	public void setSelectedLocale(Locale selectedLocale) throws IOException {
 		this.selectedLocale = selectedLocale;
 		setFinishedFlags();
 		fireStructureChanged();
@@ -168,7 +163,7 @@ class FileTreeModel implements TreeModel {
 	}
 
 	public void setFiles(List<File> files,
-			I18NProjectConfiguration configuration) {
+			I18NProjectConfiguration configuration) throws IOException {
 		this.configuration = configuration;
 		setFileTree(files);
 		setFinishedFlags();
@@ -199,7 +194,7 @@ class FileTreeModel implements TreeModel {
 		}
 	}
 
-	private void setFinishedFlags() {
+	private void setFinishedFlags() throws IOException {
 		setFinishedFlagsForFiles(fileTree, selectedLocale);
 		setFinishedFlagsForDirectories(fileTree);
 	}
@@ -211,7 +206,7 @@ class FileTreeModel implements TreeModel {
 		}
 	}
 
-	public void changedFile(File file) {
+	public void changedFile(File file) throws IOException {
 		boolean finished = isFinished(file, selectedLocale);
 		FileTree fileTreeElement = fileTree.getFileTreeElement(file);
 		fileTreeElement.setFinished(finished);

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -33,9 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.i18n4java.KeyStrokeUpdater;
 import javax.i18n4java.LanguageDialog;
@@ -52,8 +50,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
-
 /**
  * I18NLinguist is the base application for the whole I18N framework. All non
  * programming related activities can be controlled and performed here.
@@ -66,7 +62,6 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger(I18NLinguist.class);
 	private static final Translator translator = Translator
 			.getTranslator(I18NLinguist.class);
 
@@ -207,16 +202,13 @@ public class I18NLinguist extends JFrame implements ActionListener,
 						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			I18NUpdate update = new I18NUpdate(fileChooser.getSelectedFile());
-			update.update();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("File was not found."),
-					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			I18NUpdate.update(fileChooser.getSelectedFile());
 		} catch (IOException e) {
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("IO error in file reading."),
-					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+					translator.i18n(
+							"IO error during update!\n\nMessage was:\n{0}",
+							e.getMessage()), JOptionPane.OK_OPTION,
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -234,16 +226,13 @@ public class I18NLinguist extends JFrame implements ActionListener,
 						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			I18NRelease release = new I18NRelease(fileChooser.getSelectedFile());
-			release.release();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("File was not found."),
-					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			I18NRelease.release(fileChooser.getSelectedFile());
 		} catch (IOException e) {
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n("IO error in file reading."),
-					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+					translator.i18n(
+							"IO error during release!\n\nMessage was:\n{0}",
+							e.getMessage()), JOptionPane.OK_OPTION,
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -271,7 +260,6 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		try {
 			translationPanel.saveFile();
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
 			JOptionPane.showConfirmDialog(this,
 					translator.i18n("I18NFile could not be saved!"),
 					translator.i18n("Error"), JOptionPane.DEFAULT_OPTION,
@@ -339,8 +327,6 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	}
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("de"));
-		Translator.setDefault(Locale.getDefault());
 		I18NLinguist app = new I18NLinguist();
 		app.setVisible(true);
 	}

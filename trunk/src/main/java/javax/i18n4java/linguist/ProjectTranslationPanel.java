@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -39,6 +39,7 @@ import javax.i18n4java.LocaleChooser;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -135,8 +136,18 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent o) {
 		if (o.getSource() == localeChooser) {
-			translationPanel.setSelectedLocale(localeChooser
-					.getSelectedLocale());
+			try {
+				translationPanel.setSelectedLocale(localeChooser
+						.getSelectedLocale());
+			} catch (IOException e) {
+				JOptionPane
+						.showMessageDialog(
+								getParent(),
+								translator
+										.i18n("The panel could not be updated for the new language!"),
+								translator.i18n("Error"),
+								JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 

@@ -25,11 +25,10 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,6 @@ import javax.i18n4java.proc.I18NJavaParser;
 import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.i18n4java.utils.FileSearch;
 
-import org.apache.log4j.Logger;
-
 /**
  * This applications reads files and directories given by command line and
  * search the found files for strings to be translated. This tools is similar to
@@ -51,17 +48,18 @@ import org.apache.log4j.Logger;
  */
 public class I18NUpdate {
 
-	private static final Logger logger = Logger.getLogger(I18NUpdate.class);
+	public static void update(File projectDirectory) throws IOException {
+		new I18NUpdate(projectDirectory).update();
+	}
 
 	private final I18NProjectConfiguration configuration;
 	private final List<File> inputFiles = new ArrayList<File>();
 
-	public I18NUpdate(File projectDirectory) throws FileNotFoundException,
-			IOException {
+	private I18NUpdate(File projectDirectory) throws IOException {
 		configuration = new I18NProjectConfiguration(projectDirectory);
 	}
 
-	public void update() {
+	private void update() throws IOException {
 		findAllInputFiles();
 		processFiles();
 	}
@@ -71,34 +69,26 @@ public class I18NUpdate {
 				"*.java"));
 	}
 
-	private void processFiles() {
+	private void processFiles() throws IOException {
 		for (File file : inputFiles) {
 			processFile(file);
 		}
 	}
 
-	private void processFile(File file) {
-		try {
-			logger.info("Process file " + file.getPath() + "...");
-			File sourceFile = new File(configuration.getSourceDirectory(),
-					file.getPath());
-			MultiLanguageTranslations i18nSources = collectI18NSource(sourceFile);
-			if (i18nSources.hasTranslations()) {
-				File i18nFile = new File(configuration.getI18nDirectory(),
-						I18NFile.getResource(sourceFile).getPath());
-				addNewSourcesToExistingFile(i18nFile, i18nSources);
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+	private void processFile(File file) throws IOException {
+		File sourceFile = new File(configuration.getSourceDirectory(),
+				file.getPath());
+		MultiLanguageTranslations i18nSources = collectI18NSource(sourceFile);
+		if (i18nSources.hasTranslations()) {
+			File i18nFile = new File(configuration.getI18nDirectory(), I18NFile
+					.getResource(sourceFile).getPath());
+			addNewSourcesToExistingFile(i18nFile, i18nSources);
 		}
 	}
 
 	private MultiLanguageTranslations collectI18NSource(File file)
-			throws FileNotFoundException {
-		logger.info("Scanning " + file.getPath() + "...");
-		MultiLanguageTranslations sources = I18NJavaParser.parseFile(file);
-		sources.print();
-		return sources;
+			throws IOException {
+		return I18NJavaParser.parseFile(file);
 	}
 
 	private void addNewSourcesToExistingFile(File file,
@@ -108,29 +98,22 @@ public class I18NUpdate {
 		File directory = new File(file.getPath().replaceAll(file.getName(), ""));
 		if (!directory.exists()) {
 			if (!directory.mkdirs()) {
-				logger.warn("Could not create directory '"
-						+ directory.getPath() + "'");
-				return;
+				throw new IOException("Could not create directory '"
+						+ directory + "'!");
 			}
 		}
 		writeTranslations(file, translations);
 	}
 
-	private MultiLanguageTranslations readTranslations(File file) {
-		try {
-			logger.info("Read " + file.getPath() + " for translations...");
-			MultiLanguageTranslations hash = I18NFile.read(file);
-			hash.removeLocations();
-			return hash;
-		} catch (IOException e) {
-			logger.warn(e.getMessage());
-			return new MultiLanguageTranslations();
-		}
+	private MultiLanguageTranslations readTranslations(File file)
+			throws IOException {
+		MultiLanguageTranslations hash = I18NFile.read(file);
+		hash.removeLocations();
+		return hash;
 	}
 
 	private void writeTranslations(File file,
 			MultiLanguageTranslations translations) throws IOException {
-		logger.info("Write translations to " + file.getPath());
 		I18NFile.write(file, translations);
 	}
 }

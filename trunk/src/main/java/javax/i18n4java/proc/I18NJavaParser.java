@@ -25,18 +25,15 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Pattern;
 
 import javax.i18n4java.data.MultiLanguageTranslations;
-
-import org.apache.log4j.Logger;
 
 /**
  * This object reads Java files and searches for I18N strings which can be
@@ -53,17 +50,16 @@ public class I18NJavaParser {
 	 * @param file
 	 *            to be read and processed.
 	 * @return A Vector of all I18N strings is returned.
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
 	static public MultiLanguageTranslations parseFile(File file)
-			throws FileNotFoundException {
+			throws IOException {
 		I18NJavaParser parser = new I18NJavaParser(file);
 		return parser.parse();
 	}
 
 	private File file = null;
 	private String packageName = "";
-	private Logger logger = null;
 
 	static private final Pattern I18N_PATTERN = Pattern
 			.compile(".*i18n\\s*\\(.*");
@@ -72,7 +68,6 @@ public class I18NJavaParser {
 
 	private I18NJavaParser(File file) {
 		this.file = file;
-		logger = Logger.getLogger(I18NJavaParser.class);
 	}
 
 	/**
@@ -81,9 +76,9 @@ public class I18NJavaParser {
 	 * @param file
 	 *            is the file to be processed.
 	 * @return A Vector of all I18N strings is returned.
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	private MultiLanguageTranslations parse() throws FileNotFoundException {
+	private MultiLanguageTranslations parse() throws IOException {
 		RandomAccessFile f = new RandomAccessFile(file, "r");
 		return readFileAndPrepareData(f);
 	}
@@ -96,45 +91,40 @@ public class I18NJavaParser {
 	 *            is the file to read.
 	 * @return A String is returned containing the content of the file reduced
 	 *         by its end of lines.
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	private MultiLanguageTranslations readFileAndPrepareData(RandomAccessFile f) {
+	private MultiLanguageTranslations readFileAndPrepareData(RandomAccessFile f)
+			throws IOException {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
-		try {
-			String line;
-			StringBuffer buffer = null;
-			int lineNumber = 0;
-			while ((line = readLineWithoutComments(f)) != null) {
-				buffer = new StringBuffer(line);
+		String line;
+		StringBuffer buffer = null;
+		int lineNumber = 0;
+		while ((line = readLineWithoutComments(f)) != null) {
+			buffer = new StringBuffer(line);
+			lineNumber++;
+			int startLineNumber = lineNumber;
+			while (buffer.toString().endsWith("\"")
+					|| buffer.toString().endsWith("+")
+					|| buffer.toString().endsWith(",")) {
+				String nextLine = readLineWithoutComments(f);
 				lineNumber++;
-				int startLineNumber = lineNumber;
-				while (buffer.toString().endsWith("\"")
-						|| buffer.toString().endsWith("+")
-						|| buffer.toString().endsWith(",")) {
-					String nextLine = readLineWithoutComments(f);
-					lineNumber++;
-					if (nextLine == null) {
-						throw new IOException("Unexpected end of file!");
-					}
-					buffer.append(nextLine);
+				if (nextLine == null) {
+					throw new IOException("Unexpected end of file!");
 				}
-				// remove string appends: '" + "' --> ""
-				line = buffer.toString().replaceAll("\"\\s*\\+\\s*\"", "");
-				if (line.contains("package")) {
-					packageName = extractPackageName(line);
-					continue;
-				}
-				if (line.isEmpty()) {
-					continue;
-				}
-				translations
-						.add(extractI18N(line, startLineNumber, lineNumber));
+				buffer.append(nextLine);
 			}
-			return translations;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			return translations;
+			// remove string appends: '" + "' --> ""
+			line = buffer.toString().replaceAll("\"\\s*\\+\\s*\"", "");
+			if (line.contains("package")) {
+				packageName = extractPackageName(line);
+				continue;
+			}
+			if (line.isEmpty()) {
+				continue;
+			}
+			translations.add(extractI18N(line, startLineNumber, lineNumber));
 		}
+		return translations;
 	}
 
 	private String readLineWithoutComments(RandomAccessFile f)

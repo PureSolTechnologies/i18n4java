@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import static org.junit.Assert.*;
@@ -37,11 +37,6 @@ import javax.i18n4java.Translator;
 import javax.i18n4java.data.MultiLanguageTranslations;
 import javax.i18n4java.proc.I18NJavaParser;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -72,21 +67,12 @@ public class I18NJavaParserTest {
 		System.out.println(translator.i18n("Test!"));
 	}
 
-	@Before
-	public void initLogger() {
-		Logger logger = Logger.getLogger(I18NJavaParser.class);
-		logger.addAppender(new ConsoleAppender(new SimpleLayout()));
-		logger.setLevel(Level.TRACE);
-		logger.trace("Logger set.");
-	}
-
 	@Test
 	public void testParser() throws Exception {
 		MultiLanguageTranslations translations = I18NJavaParser
 				.parseFile(new File(
 						"src/test/java/javax/i18n4java/proc/I18NJavaParserTest.java"));
 		assertNotNull(translations);
-		translations.print();
 		assertNotNull(translations.get("tr(String)"));
 		assertNotNull(translations.get("tr(String)"));
 		assertNotNull(translations.get("tr(String, Objects)"));

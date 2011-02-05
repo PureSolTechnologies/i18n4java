@@ -25,11 +25,10 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +43,6 @@ import javax.i18n4java.data.TRFile;
 import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.i18n4java.utils.FileSearch;
 
-import org.apache.log4j.Logger;
-
 /**
  * This application converts all i18n files in the the specified directory and
  * converts them into tr files for usage in internationalized applications.
@@ -54,17 +51,18 @@ import org.apache.log4j.Logger;
  */
 public class I18NRelease {
 
-	private static final Logger logger = Logger.getLogger(I18NRelease.class);
+	public static void release(File projectDirectory) throws IOException {
+		new I18NRelease(projectDirectory).release();
+	}
 
 	private final I18NProjectConfiguration configuration;
 	private final List<File> inputFiles = new ArrayList<File>();
 
-	public I18NRelease(File projectDirectory) throws FileNotFoundException,
-			IOException {
+	private I18NRelease(File projectDirectory) throws IOException {
 		configuration = new I18NProjectConfiguration(projectDirectory);
 	}
 
-	public void release() {
+	private void release() throws IOException {
 		findAllInputFiles();
 		processFiles();
 	}
@@ -74,34 +72,26 @@ public class I18NRelease {
 				"*.i18n"));
 	}
 
-	private void processFiles() {
+	private void processFiles() throws IOException {
 		for (File file : inputFiles) {
 			processFile(file);
 		}
 	}
 
-	private void processFile(File file) {
-		try {
-			logger.info("Process file " + file.getPath() + "...");
-			File sourceFile = new File(configuration.getI18nDirectory(),
-					file.getPath());
-			MultiLanguageTranslations mlTranslations = I18NFile
-					.read(sourceFile);
-			for (Locale language : mlTranslations.getAvailableLanguages()) {
-				File destinationFile = new File(
-						configuration.getDestinationDirectory(), file.getPath()
-								.replaceAll("\\.i18n", "." + language + ".tr"));
-				release(mlTranslations, language, destinationFile);
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+	private void processFile(File file) throws IOException {
+		File sourceFile = new File(configuration.getI18nDirectory(),
+				file.getPath());
+		MultiLanguageTranslations mlTranslations = I18NFile.read(sourceFile);
+		for (Locale language : mlTranslations.getAvailableLanguages()) {
+			File destinationFile = new File(
+					configuration.getDestinationDirectory(), file.getPath()
+							.replaceAll("\\.i18n", "." + language + ".tr"));
+			release(mlTranslations, language, destinationFile);
 		}
 	}
 
 	private void release(MultiLanguageTranslations mlTranslations,
 			Locale language, File file) throws IOException {
-		logger.info("Release language " + language + "  to file "
-				+ file.getPath());
 		SingleLanguageTranslations translations = new SingleLanguageTranslations();
 		Set<String> sources = mlTranslations.getSources();
 		for (String source : sources) {

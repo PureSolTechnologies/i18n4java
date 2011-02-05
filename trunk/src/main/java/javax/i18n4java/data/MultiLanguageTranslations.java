@@ -213,15 +213,6 @@ public class MultiLanguageTranslations implements Cloneable {
 		}
 	}
 
-	public void print() {
-		Set<String> sources = getSources();
-		for (String source : sources) {
-			System.out.println("Source: " + source);
-			printLocations(source);
-			printTranslations(source);
-		}
-	}
-
 	protected void printLocations(String source) {
 		System.out.println("\tlocations:");
 		List<SourceLocation> locations = translations.get(source)

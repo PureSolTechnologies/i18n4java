@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java;
 
 import java.io.IOException;
@@ -47,8 +47,6 @@ import javax.i18n4java.data.TRFile;
 import javax.i18n4java.utils.I18N4Java;
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
-
 /**
  * This small object was inspired by QT's approach to internationalization which
  * is much more flexible and much easier to use. This object was to be created
@@ -69,16 +67,12 @@ public class Translator implements Serializable {
 
 	private static final long serialVersionUID = -2918229155516838530L;
 
-	private static final Logger logger = Logger.getLogger(Translator.class);
-
 	/**
 	 * This variable contains the current default language for the translator.
 	 */
 	private static Locale defaultLocale;
 	static {
 		defaultLocale = Locale.getDefault();
-		logger.info("Setting default locale to '" + defaultLocale.toString()
-				+ "'");
 	}
 
 	/**
@@ -108,7 +102,6 @@ public class Translator implements Serializable {
 			String context = clazz.getName();
 			Translator translator = (Translator) instances.get(context);
 			if (translator == null) {
-				logger.debug("Creating instance for class '" + context + "'");
 				translator = new Translator(clazz);
 				instances.putIfAbsent(context, translator);
 			}
@@ -138,7 +131,6 @@ public class Translator implements Serializable {
 	 * @param locale
 	 */
 	public static synchronized void setDefault(Locale locale) {
-		logger.info("Set default locale to '" + locale.toString() + "'");
 		defaultLocale = locale;
 		Locale.setDefault(locale);
 		JComponent.setDefaultLocale(locale);
@@ -170,7 +162,6 @@ public class Translator implements Serializable {
 
 	public static void setSingleLanguageMode() {
 		synchronized (additionalLocales) {
-			logger.info("Set to single language mode");
 			additionalLocales.clear();
 			resetAllInstances();
 		}
@@ -178,7 +169,6 @@ public class Translator implements Serializable {
 
 	public static void addAdditionalLocale(Locale locale) {
 		synchronized (additionalLocales) {
-			logger.info("Set additional locale " + locale.toString());
 			if (!additionalLocales.contains(locale)) {
 				additionalLocales.add(locale);
 			}
@@ -200,7 +190,6 @@ public class Translator implements Serializable {
 	 */
 	private static void resetAllInstances() {
 		synchronized (instances) {
-			logger.info("Reset all instances");
 			for (String context : instances.keySet()) {
 				instances.get(context).reset();
 			}
@@ -242,7 +231,6 @@ public class Translator implements Serializable {
 	 * will result in a re-read of language translations files.
 	 */
 	private void reset() {
-		logger.info("reset '" + context + "'");
 		translations.clear();
 		translationChanged();
 	}
@@ -280,8 +268,6 @@ public class Translator implements Serializable {
 	 *            is the language to be read.
 	 */
 	private void readContextTranslation(Locale locale) {
-		logger.debug("read context translation for context '" + context
-				+ "' and language '" + locale + "'");
 		if (locale.equals(I18N4Java.getImplementationLocale())) {
 			translations.putIfAbsent(locale.toString(),
 					new SingleLanguageTranslations());
@@ -303,7 +289,6 @@ public class Translator implements Serializable {
 	private void readContextTranslationFromResource(String language,
 			String resource) {
 		try {
-			logger.info("Read context language file '" + resource + "'");
 			InputStream is = getClass().getResourceAsStream(resource);
 			if (is == null) {
 				throw new IOException("No context translation file found for '"
@@ -315,7 +300,6 @@ public class Translator implements Serializable {
 				is.close();
 			}
 		} catch (IOException e) {
-			logger.warn(e.getMessage());
 			translations
 					.putIfAbsent(language, new SingleLanguageTranslations());
 		}

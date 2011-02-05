@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -49,14 +49,10 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import org.apache.log4j.Logger;
-
 class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger
-			.getLogger(FilesTranslationPanel.class);
 	private static final Translator translator = Translator
 			.getTranslator(FilesTranslationPanel.class);
 
@@ -96,8 +92,9 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 	/**
 	 * @param selectedLocale
 	 *            the selectedLocale to set
+	 * @throws IOException
 	 */
-	public void setSelectedLocale(Locale selectedLocale) {
+	public void setSelectedLocale(Locale selectedLocale) throws IOException {
 		fileTranslationPanel.setSelectedLocale(selectedLocale);
 		fileTreeModel.setSelectedLocale(selectedLocale);
 		fileTree.repaint();
@@ -155,7 +152,6 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 					configuration.getI18nDirectory(), "*.i18n");
 			fileTreeModel.setFiles(files, configuration);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
 			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
 					translator.i18n("IO error in file reading."),
 					JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);

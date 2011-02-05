@@ -11,4 +11,5 @@ Bundle-SymbolicName: javax.i18n4java
 Bundle-Description: Contains PureSol Technologies' internationalization framework
 Bundle-Vendor: PureSol Technologies (http://www.puresol-technologies.com)
 Bundle-Version: 1.1.0
+Import-Package: org.apache.log4j
 Export-Package: javax.i18n4java
