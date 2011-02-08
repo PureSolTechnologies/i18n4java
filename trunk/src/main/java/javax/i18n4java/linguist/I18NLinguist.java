@@ -141,11 +141,11 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		quit.addActionListener(this);
 
 		toolsMenu.add(update);
-		translationUpdater.i18n("Update...", translator, update);
+		translationUpdater.i18n("Update", translator, update);
 		update.addActionListener(this);
 
 		toolsMenu.add(release);
-		translationUpdater.i18n("Release...", translator, release);
+		translationUpdater.i18n("Release", translator, release);
 		release.addActionListener(this);
 
 		toolsMenu.add(clear);
@@ -173,11 +173,11 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		openButton.addActionListener(this);
 
 		tools.add(updateButton);
-		translationUpdater.i18n("Update...", translator, updateButton);
+		translationUpdater.i18n("Update", translator, updateButton);
 		updateButton.addActionListener(this);
 
 		tools.add(releaseButton);
-		translationUpdater.i18n("Release...", translator, releaseButton);
+		translationUpdater.i18n("Release", translator, releaseButton);
 		releaseButton.addActionListener(this);
 
 		tools.add(clearButton);
@@ -190,48 +190,22 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private void update() {
 		try {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			int result = fileChooser.showOpenDialog(this);
-			if (result == JFileChooser.CANCEL_OPTION) {
-				return;
-			}
-			if (result == JFileChooser.ERROR_OPTION) {
-				JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-						translator.i18n("Error while choosing file."),
-						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			I18NUpdate.update(fileChooser.getSelectedFile());
+			I18NUpdate.update(translationPanel.getDirectory());
 		} catch (IOException e) {
-			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n(
-							"IO error during update!\n\nMessage was:\n{0}",
-							e.getMessage()), JOptionPane.OK_OPTION,
+			JOptionPane.showMessageDialog(this, translator.i18n(
+					"IO error during update!\n\nMessage was:\n{0}",
+					e.getMessage()), translator.i18n("Error"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void release() {
 		try {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			int result = fileChooser.showOpenDialog(this);
-			if (result == JFileChooser.CANCEL_OPTION) {
-				return;
-			}
-			if (result == JFileChooser.ERROR_OPTION) {
-				JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-						translator.i18n("Error while choosing file."),
-						JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			I18NRelease.release(fileChooser.getSelectedFile());
+			I18NRelease.release(translationPanel.getDirectory());
 		} catch (IOException e) {
-			JOptionPane.showConfirmDialog(this, translator.i18n("Error"),
-					translator.i18n(
-							"IO error during release!\n\nMessage was:\n{0}",
-							e.getMessage()), JOptionPane.OK_OPTION,
+			JOptionPane.showMessageDialog(this, translator.i18n(
+					"IO error during release!\n\nMessage was:\n{0}",
+					e.getMessage()), translator.i18n("Error"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

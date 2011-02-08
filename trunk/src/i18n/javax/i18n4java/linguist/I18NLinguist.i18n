@@ -13,7 +13,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>275</line>
+                    <line>237</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -30,7 +30,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>144</line>
+                    <line>139</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -47,7 +47,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>122</line>
+                    <line>117</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -64,7 +64,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>121</line>
+                    <line>116</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -79,14 +79,21 @@
                         <value>EA-Fehler beim Lesen der Datei.</value>
                     </entry>
                 </translated>
+            </value>
+        </entry>
+        <entry>
+            <key>Update</key>
+            <value>
+                <source>Update</source>
+                <translated/>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>217</line>
+                    <line>144</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>244</line>
+                    <line>176</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -103,7 +110,24 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>165</line>
+                    <line>160</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Release</key>
+            <value>
+                <source>Release</source>
+                <translated/>
+                <locations>
+                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
+                    <line>148</line>
+                    <lineCount>1</lineCount>
+                </locations>
+                <locations>
+                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
+                    <line>180</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -120,7 +144,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>137</line>
+                    <line>132</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -135,16 +159,6 @@
                         <value>Freigabe...</value>
                     </entry>
                 </translated>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>153</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>185</line>
-                    <lineCount>1</lineCount>
-                </locations>
             </value>
         </entry>
         <entry>
@@ -159,7 +173,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>138</line>
+                    <line>133</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -176,7 +190,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>145</line>
+                    <line>140</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -193,7 +207,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>133</line>
+                    <line>128</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -210,7 +224,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>123</line>
+                    <line>118</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -225,16 +239,6 @@
                         <value>Datei wurde nicht gefunden.</value>
                     </entry>
                 </translated>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>213</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>240</line>
-                    <lineCount>1</lineCount>
-                </locations>
             </value>
         </entry>
         <entry>
@@ -249,17 +253,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>205</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>232</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>262</line>
+                    <line>225</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -276,12 +270,12 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>157</line>
+                    <line>152</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>189</line>
+                    <line>184</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -296,16 +290,6 @@
                         <value>Aktualisieren...</value>
                     </entry>
                 </translated>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>149</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>181</line>
-                    <lineCount>1</lineCount>
-                </locations>
             </value>
         </entry>
         <entry>
@@ -320,7 +304,7 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>161</line>
+                    <line>156</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -337,29 +321,12 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>132</line>
+                    <line>127</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>177</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Help</key>
-            <value>
-                <source>Help</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Hilfe</value>
-                    </entry>
-                </translated>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>124</line>
+                    <line>172</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -376,42 +343,39 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>205</line>
+                    <line>196</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>213</line>
+                    <line>207</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>217</line>
+                    <line>225</line>
                     <lineCount>1</lineCount>
                 </locations>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>232</line>
+                    <line>237</line>
                     <lineCount>1</lineCount>
                 </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Help</key>
+            <value>
+                <source>Help</source>
+                <translated>
+                    <entry>
+                        <key>de</key>
+                        <value>Hilfe</value>
+                    </entry>
+                </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>240</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>244</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>262</line>
-                    <lineCount>1</lineCount>
-                </locations>
-                <locations>
-                    <file>javax.i18n4java.linguist.I18NLinguist.java</file>
-                    <line>275</line>
+                    <line>119</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>

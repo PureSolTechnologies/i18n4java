@@ -173,6 +173,10 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 		}
 	}
 
+	public File getDirectory() {
+		return configuration.getProjectDirectory();
+	}
+
 	public void removeObsoletePhrases() {
 		fileTranslationPanel.removeObsoletePhrases();
 	}

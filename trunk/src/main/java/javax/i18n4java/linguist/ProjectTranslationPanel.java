@@ -133,6 +133,10 @@ class ProjectTranslationPanel extends JPanel implements ActionListener {
 		translationPanel.openDirectory(directory);
 	}
 
+	public File getDirectory() {
+		return translationPanel.getDirectory();
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent o) {
 		if (o.getSource() == localeChooser) {

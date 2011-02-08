@@ -13,7 +13,41 @@
                 </translated>
                 <locations>
                     <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
-                    <line>104</line>
+                    <line>105</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>The panel could not be updated for the new language!</key>
+            <value>
+                <source>The panel could not be updated for the new language!</source>
+                <translated>
+                    <entry>
+                        <key>en_US</key>
+                        <value>The panel could not be updated for the new language!</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
+                    <line>151</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Error</key>
+            <value>
+                <source>Error</source>
+                <translated>
+                    <entry>
+                        <key>en_US</key>
+                        <value>Fehler</value>
+                    </entry>
+                </translated>
+                <locations>
+                    <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
+                    <line>151</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
