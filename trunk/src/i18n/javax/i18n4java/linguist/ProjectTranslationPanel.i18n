@@ -7,6 +7,10 @@
                 <source>Language</source>
                 <translated>
                     <entry>
+                        <key>en_US</key>
+                        <value></value>
+                    </entry>
+                    <entry>
                         <key>de</key>
                         <value>Sprache</value>
                     </entry>
@@ -25,7 +29,7 @@
                 <translated>
                     <entry>
                         <key>en_US</key>
-                        <value>The panel could not be updated for the new language!</value>
+                        <value></value>
                     </entry>
                 </translated>
                 <locations>
@@ -42,6 +46,10 @@
                 <translated>
                     <entry>
                         <key>en_US</key>
+                        <value></value>
+                    </entry>
+                    <entry>
+                        <key>de</key>
                         <value>Fehler</value>
                     </entry>
                 </translated>

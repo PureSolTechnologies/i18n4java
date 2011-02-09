@@ -25,12 +25,17 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import javax.i18n4java.data.SourceLocation;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.junit.Test;
 
@@ -131,5 +136,27 @@ public class SourceLocationTest {
 				new SourceLocation("File.java", 1).toString());
 		assertEquals("File.java:1-2",
 				new SourceLocation("File.java", 1, 2).toString());
+	}
+
+	@Test
+	public void testMarshallingAndUnmarshalling() throws Exception {
+		File file = new File("SourceLocationMarshallerTest");
+		SourceLocation sourceLocation = new SourceLocation("File.java", 1, 2);
+		JAXBContext context = JAXBContext
+				.newInstance(sourceLocation.getClass());
+		assertNotNull(context);
+
+		Marshaller marshaller = context.createMarshaller();
+		assertNotNull(marshaller);
+		marshaller.marshal(sourceLocation, file);
+		assertTrue(file.exists());
+
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		SourceLocation unmarshalled = (SourceLocation) unmarshaller
+				.unmarshal(file);
+		assertNotSame(sourceLocation, unmarshalled);
+		assertEquals(sourceLocation, unmarshalled);
+		assertTrue(file.delete());
+		assertFalse(file.exists());
 	}
 }

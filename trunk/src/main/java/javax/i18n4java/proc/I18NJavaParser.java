@@ -160,7 +160,7 @@ public class I18NJavaParser {
 		for (int index = 1; index < i18ns.length; index++) {
 			String source = extractStringFromStartToEnd("\"" + i18ns[index]);
 			if ((source != null) && (!source.isEmpty())) {
-				translations.add(MultiLanguageTranslations.from(
+				translations.add(MultiLanguageTranslations.create(
 						source.replaceAll("\\\\n", "\n"), packageName + "."
 								+ file.getName(), startLine));
 			}

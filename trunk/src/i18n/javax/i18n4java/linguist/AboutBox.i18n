@@ -5,12 +5,24 @@
             <key>About</key>
             <value>
                 <source>About</source>
-                <translated>
+                <translations>
+                    <entry>
+                        <key>en</key>
+                        <value>About</value>
+                    </entry>
+                    <entry>
+                        <key>en_us</key>
+                        <value>About</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>About</value>
+                    </entry>
                     <entry>
                         <key>de</key>
                         <value>Über</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
                     <line>74</line>
@@ -22,12 +34,20 @@
             <key>email:</key>
             <value>
                 <source>email:</source>
-                <translated>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>email:</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>email:</value>
+                    </entry>
                     <entry>
                         <key>de</key>
                         <value>Email:</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
                     <line>112</line>
@@ -39,12 +59,20 @@
             <key>License</key>
             <value>
                 <source>License</source>
-                <translated>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>License</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>License</value>
+                    </entry>
                     <entry>
                         <key>de</key>
                         <value>Lizenz</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
                     <line>157</line>
@@ -56,29 +84,20 @@
             <key>Copyright</key>
             <value>
                 <source>Copyright</source>
-                <translated>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>author:</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>author:</value>
+                    </entry>
                     <entry>
                         <key>de</key>
                         <value>Copyright</value>
                     </entry>
-                </translated>
-                <locations>
-                    <file>javax.i18n4java.linguist.AboutBox.java</file>
-                    <line>135</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>author:</key>
-            <value>
-                <source>author:</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Autor:</value>
-                    </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
                     <line>111</line>
@@ -87,15 +106,48 @@
             </value>
         </entry>
         <entry>
+            <key>author:</key>
+            <value>
+                <source>author:</source>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>Copyright</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>Copyright</value>
+                    </entry>
+                    <entry>
+                        <key>de</key>
+                        <value>Autor:</value>
+                    </entry>
+                </translations>
+                <locations>
+                    <file>javax.i18n4java.linguist.AboutBox.java</file>
+                    <line>135</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
             <key>OK</key>
             <value>
                 <source>OK</source>
-                <translated>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>OK</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>OK</value>
+                    </entry>
                     <entry>
                         <key>de</key>
                         <value>OK</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
                     <line>69</line>

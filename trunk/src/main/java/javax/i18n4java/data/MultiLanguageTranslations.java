@@ -25,14 +25,13 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -52,7 +51,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MultiLanguageTranslations implements Cloneable {
 
-	private Hashtable<String, LanguageSet> translations = null;
+	private final Hashtable<String, LanguageSet> translations = new Hashtable<String, LanguageSet>();
 
 	/**
 	 * Creates an initial translations hash with starting data provided.
@@ -62,15 +61,15 @@ public class MultiLanguageTranslations implements Cloneable {
 	 * @param line
 	 * @return
 	 */
-	static public MultiLanguageTranslations from(String source, String file,
+	public static MultiLanguageTranslations create(String source, String file,
 			int line) {
 		MultiLanguageTranslations hash = new MultiLanguageTranslations();
-		hash.set(source, file, line);
+		hash.add(source, file, line);
 		return hash;
 	}
 
 	public MultiLanguageTranslations() {
-		translations = new Hashtable<String, LanguageSet>();
+		super();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,8 +77,9 @@ public class MultiLanguageTranslations implements Cloneable {
 		if (translations == null) {
 			throw new IllegalArgumentException("translations must no be null!");
 		}
-		this.translations = (Hashtable<String, LanguageSet>) translations
-				.clone();
+		this.translations.clear();
+		this.translations.putAll((Hashtable<String, LanguageSet>) translations
+				.clone());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -107,62 +107,65 @@ public class MultiLanguageTranslations implements Cloneable {
 		if (set == null) {
 			return source;
 		}
-		if (!set.containsLanguage(locale)) {
+		if (!set.has(locale)) {
 			return source;
 		}
 		return translations.get(source).get(locale);
 	}
 
-	public void set(String source) {
+	public void add(String source) {
 		if (!translations.containsKey(source)) {
 			translations.put(source, new LanguageSet(source));
 		}
 	}
 
-	public void set(String source, Locale locale, String translation) {
-		set(source);
-		translations.get(source).set(locale, translation);
+	public void add(String source, Locale locale, String translation) {
+		add(source);
+		translations.get(source).add(locale, translation);
 	}
 
-	public void set(String source, LanguageSet translation) {
-		translations.put(source, translation);
-	}
-
-	public void set(String source, String file, int line) {
-		set(source);
+	public void add(String source, String file, int line) {
+		add(source);
 		addLocation(source, new SourceLocation(file, line));
 	}
 
 	public void add(MultiLanguageTranslations translations) {
-		if (translations == null) {
-			return;
-		}
-		Set<String> sources = translations.getSources();
-		for (String source : sources) {
-			add(source, translations.get(source));
+		if (translations != null) {
+			for (String source : translations.getSources()) {
+				add(source, translations.get(source));
+			}
 		}
 	}
 
 	public void add(String source, LanguageSet translation) {
-		if (!translations.containsKey(source)) {
-			translations.put(source, translation);
-		} else {
-			translations.get(source).add(translation);
-		}
+		add(source);
+		translations.get(source).add(translation);
 	}
 
 	public void addLocation(String source, SourceLocation location) {
+		add(source);
 		translations.get(source).addLocation(location);
 	}
 
-	public void addLocations(String source, List<SourceLocation> locations) {
-		for (int index = 0; index < locations.size(); index++) {
-			addLocation(source, locations.get(index));
-		}
+	public void addLocations(String source, Set<SourceLocation> locations) {
+		add(source);
+		translations.get(source).addLocations(locations);
 	}
 
-	public List<SourceLocation> getLocations(String source) {
-		return translations.get(source).getLocations();
+	public boolean has(String oldSource, Locale locale) {
+		LanguageSet languageSet = translations.get(oldSource);
+		if (languageSet == null) {
+			return false;
+		}
+		return languageSet.has(locale);
+	}
+
+	public Set<SourceLocation> getLocations(String source) {
+		LanguageSet languageSet = translations.get(source);
+		if (languageSet == null) {
+			return new HashSet<SourceLocation>();
+		}
+		return languageSet.getLocations();
 	}
 
 	public void removeLocations() {
@@ -196,11 +199,11 @@ public class MultiLanguageTranslations implements Cloneable {
 		return translations.get(source).getAvailableLanguages();
 	}
 
-	public boolean hasTranslations() {
+	public boolean hasSources() {
 		return (translations.size() > 0);
 	}
 
-	public void removeWithoutLocation() {
+	public void removeSourcesWithoutLocation() {
 		ArrayList<String> toRemove = new ArrayList<String>();
 		for (String source : translations.keySet()) {
 			LanguageSet languageSet = translations.get(source);
@@ -213,27 +216,67 @@ public class MultiLanguageTranslations implements Cloneable {
 		}
 	}
 
-	protected void printLocations(String source) {
-		System.out.println("\tlocations:");
-		List<SourceLocation> locations = translations.get(source)
-				.getLocations();
-		if (locations == null) {
-			return;
-		}
-		for (int index = 0; index < locations.size(); index++) {
-			SourceLocation location = locations.get(index);
-			if (location == null) {
-				continue;
+	public void removeLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			LanguageSet languageSet = translations.get(source);
+			translations.remove(source);
+			source = languageSet.getSource();
+			source = source.replaceAll("\\n", "\\\\n");
+			translations.put(source, languageSet);
+			languageSet.setSource(source);
+			for (Locale language : languageSet.getAvailableLanguages()) {
+				String translation = languageSet.get(language);
+				if (translation != null) {
+					translation = translation.replaceAll("\\n", "\\\\n");
+					languageSet.add(language, translation);
+				}
 			}
-			System.out.println("\t\t" + location.toString());
 		}
 	}
 
-	protected void printTranslations(String source) {
-		for (Locale language : getAvailableLanguages(source)) {
-			System.out.println("\t" + language + "="
-					+ translations.get(source).get(language));
+	public void addLineBreaks() {
+		Enumeration<String> sources = translations.keys();
+		while (sources.hasMoreElements()) {
+			String source = sources.nextElement();
+			LanguageSet languageSet = translations.get(source);
+			translations.remove(source);
+			source = languageSet.getSource();
+			source = source.replaceAll("\\\\n", "\n");
+			translations.put(source, languageSet);
+			languageSet.setSource(source);
+			for (Locale language : languageSet.getAvailableLanguages()) {
+				String translation = languageSet.get(language);
+				if (translation != null) {
+					translation = translation.replaceAll("\\\\n", "\n");
+					languageSet.add(language, translation);
+				}
+			}
 		}
+	}
+
+	public boolean isTranslationFinished() {
+		Set<Locale> languages = getAvailableLanguages();
+		if (languages.size() == 0) {
+			return false;
+		}
+		for (Locale language : languages) {
+			if (!isTranslationFinished(language)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isTranslationFinished(Locale language) {
+		for (String source : getSources()) {
+			LanguageSet languageSet = getTranslations(source);
+			if (!languageSet.has(language)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -264,75 +307,12 @@ public class MultiLanguageTranslations implements Cloneable {
 		try {
 			MultiLanguageTranslations cloned = (MultiLanguageTranslations) super
 					.clone();
-			cloned.translations = (Hashtable<String, LanguageSet>) this.translations
-					.clone();
+			cloned.translations
+					.putAll((Hashtable<String, LanguageSet>) this.translations
+							.clone());
 			return cloned;
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void removeLineBreaks() {
-		Enumeration<String> sources = translations.keys();
-		while (sources.hasMoreElements()) {
-			String source = sources.nextElement();
-			LanguageSet languageSet = translations.get(source);
-			translations.remove(source);
-			source = languageSet.getSource();
-			source = source.replaceAll("\\n", "\\\\n");
-			translations.put(source, languageSet);
-			languageSet.setSource(source);
-			for (Locale language : languageSet.getAvailableLanguages()) {
-				String translation = languageSet.get(language);
-				if (translation != null) {
-					translation = translation.replaceAll("\\n", "\\\\n");
-					languageSet.set(language, translation);
-				}
-			}
-		}
-	}
-
-	public void addLineBreaks() {
-		Enumeration<String> sources = translations.keys();
-		while (sources.hasMoreElements()) {
-			String source = sources.nextElement();
-			LanguageSet languageSet = translations.get(source);
-			translations.remove(source);
-			source = languageSet.getSource();
-			source = source.replaceAll("\\\\n", "\n");
-			translations.put(source, languageSet);
-			languageSet.setSource(source);
-			for (Locale language : languageSet.getAvailableLanguages()) {
-				String translation = languageSet.get(language);
-				if (translation != null) {
-					translation = translation.replaceAll("\\\\n", "\n");
-					languageSet.set(language, translation);
-				}
-			}
-		}
-	}
-
-	public boolean isTranslationFinished() {
-		Set<Locale> languages = getAvailableLanguages();
-		if (languages.size() == 0) {
-			return false;
-		}
-		for (Locale language : languages) {
-			if (!isTranslationFinished(language)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean isTranslationFinished(Locale language) {
-		Set<String> sources = getSources();
-		for (String source : sources) {
-			LanguageSet languageSet = getTranslations(source);
-			if (!languageSet.containsLanguage(language)) {
-				return false;
-			}
-		}
-		return true;
 	}
 }

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -41,7 +41,7 @@ class StatusComponent extends JPanel {
 	private static final long serialVersionUID = 9057595345044306838L;
 
 	public StatusComponent(String text, boolean selected, boolean focus,
-			boolean finished) {
+			Status status) {
 		super();
 
 		setOpaque(false);
@@ -55,18 +55,28 @@ class StatusComponent extends JPanel {
 		if (focus) {
 			setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
-		if (finished) {
-			label.setForeground(new Color(0, 127, 0));
-			if (selected) {
-				setOpaque(true);
-				setBackground(new Color(192, 255, 192));
-			}
-		} else {
+		switch (status) {
+		case EMPTY:
 			label.setForeground(new Color(127, 0, 0));
 			if (selected) {
 				setOpaque(true);
 				setBackground(new Color(255, 192, 192));
 			}
+			break;
+		case ONGOING:
+			label.setForeground(new Color(127, 127, 0));
+			if (selected) {
+				setOpaque(true);
+				setBackground(new Color(255, 255, 192));
+			}
+			break;
+		case FINISHED:
+			label.setForeground(new Color(0, 127, 0));
+			if (selected) {
+				setOpaque(true);
+				setBackground(new Color(192, 255, 192));
+			}
+			break;
 		}
 		add(label, BorderLayout.CENTER);
 	}

@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -70,6 +70,7 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 
 	// GUI elements...
 	private final ReservoirCellRenderer reservoirCellRenderer = new ReservoirCellRenderer();
+	private final JLabel localeLabel = new JLabel();
 	private final JList reservoir = new JList();
 	private final JTextArea source = new JTextArea();
 	private final JTextArea translation = new JTextArea();
@@ -81,8 +82,6 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 	private boolean changed = false;
 	private String oldSource = "";
 	private String oldTranslation = "";
-	private Locale oldLanguage = Locale.getDefault();
-	private boolean translationChanged = false;
 	private Locale selectedLocale = Locale.getDefault();
 
 	public TranslationPanel() {
@@ -98,6 +97,9 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		localeLabel.setText(selectedLocale.toString());
+		panel.add(localeLabel);
 
 		/* Reservoir */
 		reservoir.setCellRenderer(reservoirCellRenderer);
@@ -141,28 +143,42 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 	 */
 	public void setSelectedLocale(Locale selectedLocale) {
 		this.selectedLocale = selectedLocale;
+		localeLabel.setText(selectedLocale.toString());
 		reservoirCellRenderer.setSelectedLocale(selectedLocale);
 		reservoir.repaint();
 		updateTranslation();
 	}
 
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
 	public boolean hasChanged() {
-		updateHash();
+		updateTranslationHash();
 		return changed;
 	}
 
 	public void setTranslations(MultiLanguageTranslations translations) {
 		this.translations = translations;
-		updateReservoir();
+		updateTranslationHash();
 		changed = false;
+		updateReservoir();
 	}
 
 	public MultiLanguageTranslations getTranslations() {
 		return translations;
 	}
 
-	public void changeTranslation(String text) {
-		translationChanged = true;
+	private void updateTranslationHash() {
+		if ((!oldSource.isEmpty())
+				&& (!oldTranslation.equals(translation.getText()))) {
+			translations.add(oldSource, selectedLocale, translation.getText());
+			changed = true;
+		}
+	}
+
+	private void changedSource() {
+		setSource((String) reservoir.getSelectedValue());
 	}
 
 	private void updateReservoir() {
@@ -179,8 +195,8 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 		setSource(null);
 	}
 
-	public void setSource(String source) {
-		this.source.setText(source != null ? source : "");
+	private void setSource(String text) {
+		source.setText(text != null ? text : "");
 		updateTranslation();
 		updateLocation();
 	}
@@ -188,13 +204,18 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 	private void updateTranslation() {
 		if ((translations == null) || (source.getText().isEmpty())) {
 			translation.setText("");
+			translation.setEditable(false);
 			return;
 		}
-		updateHash();
+		translation.setEditable(true);
+		updateTranslationHash();
 		oldSource = source.getText();
-		oldTranslation = translations.get(oldSource, selectedLocale);
+		if (translations.has(oldSource, selectedLocale)) {
+			oldTranslation = translations.get(oldSource, selectedLocale);
+		} else {
+			oldTranslation = "";
+		}
 		translation.setText(oldTranslation);
-		translationChanged = false;
 	}
 
 	private void updateLocation() {
@@ -214,32 +235,29 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 		location.setText(locations.toString());
 	}
 
-	private void updateHash() {
-		if ((!translation.getText().isEmpty()) && (translationChanged)) {
-			if (!oldSource.isEmpty()) {
-				translations.set(oldSource, oldLanguage, translation.getText());
-				changed = true;
-				translationChanged = false;
-			}
-		}
-	}
-
 	public void removeObsoletePhrases() {
-		translations.removeWithoutLocation();
+		translations.removeSourcesWithoutLocation();
 		updateReservoir();
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent o) {
 		if (o.getSource() == this.reservoir) {
-			setSource((String) reservoir.getSelectedValue());
+			/*
+			 * Reservoir selection was changed. The source field needs to be
+			 * updated.
+			 */
+			changedSource();
 		}
 	}
 
 	@Override
 	public void caretUpdate(CaretEvent o) {
 		if (o.getSource() == translation) {
-			changeTranslation(translation.getText());
+			/*
+			 * The text field was changed, maybe...
+			 */
 		}
 	}
+
 }

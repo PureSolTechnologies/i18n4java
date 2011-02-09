@@ -2,15 +2,22 @@
 <internationalization>
     <translations>
         <entry>
+            <key>email:</key>
+            <value>
+                <source>email:</source>
+                <translations>
+                    <entry>
+                        <key>en_US</key>
+                        <value></value>
+                    </entry>
+                </translations>
+            </value>
+        </entry>
+        <entry>
             <key>Classes</key>
             <value>
                 <source>Classes</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Klassen</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>82</line>
@@ -22,12 +29,7 @@
             <key>Save</key>
             <value>
                 <source>Save</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Speichern</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>122</line>
@@ -39,12 +41,7 @@
             <key>IO error in file reading.</key>
             <value>
                 <source>IO error in file reading.</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>EA-Fehler beim Lesen der Datei.</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>155</line>
@@ -56,12 +53,12 @@
             <key>File not found</key>
             <value>
                 <source>File not found</source>
-                <translated>
+                <translations>
                     <entry>
-                        <key>de</key>
-                        <value>Datei nicht gefunden</value>
+                        <key>en_US</key>
+                        <value>File not found</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>171</line>
@@ -73,12 +70,7 @@
             <key>Changes were made.\nDo you want to save?</key>
             <value>
                 <source>Changes were made.\nDo you want to save?</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Es wurden Änderungen durchgeführt.\nSollen diese gespeichert werden?</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>122</line>
@@ -90,12 +82,12 @@
             <key>Error</key>
             <value>
                 <source>Error</source>
-                <translated>
+                <translations>
                     <entry>
-                        <key>de</key>
-                        <value>Fehler</value>
+                        <key>en_US</key>
+                        <value>Error</value>
                     </entry>
-                </translated>
+                </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.FilesTranslationPanel.java</file>
                     <line>155</line>

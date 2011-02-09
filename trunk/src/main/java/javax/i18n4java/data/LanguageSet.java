@@ -25,17 +25,16 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,14 +55,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LanguageSet implements Cloneable {
 
 	private String source = "";
-	private Map<String, String> translated = new Hashtable<String, String>();
-	private List<SourceLocation> locations = new ArrayList<SourceLocation>();
+	private final Map<String, String> translations = new Hashtable<String, String>();
+	private final Set<SourceLocation> locations = new HashSet<SourceLocation>();
 
 	public LanguageSet() {
 	}
 
 	public LanguageSet(String source) {
-		this();
 		this.source = source;
 	}
 
@@ -75,16 +73,18 @@ public class LanguageSet implements Cloneable {
 		this.source = source;
 	}
 
-	public void set(Locale locale, String translation) {
-		translated.put(locale2String(locale), translation);
+	public void add(Locale locale, String translation) {
+		translations.put(locale2String(locale), translation);
 	}
 
 	public String get(Locale locale) {
-		return translated.get(locale2String(locale));
+		return translations.get(locale2String(locale));
 	}
 
-	public void addLocations(List<SourceLocation> locations) {
-		this.locations.addAll(locations);
+	public void addLocations(Set<SourceLocation> locations) {
+		for (SourceLocation location : locations) {
+			addLocation(location);
+		}
 	}
 
 	public void addLocation(SourceLocation location) {
@@ -93,7 +93,7 @@ public class LanguageSet implements Cloneable {
 		}
 	}
 
-	public List<SourceLocation> getLocations() {
+	public Set<SourceLocation> getLocations() {
 		return locations;
 	}
 
@@ -101,25 +101,25 @@ public class LanguageSet implements Cloneable {
 		locations.clear();
 	}
 
-	public void add(LanguageSet translated) {
-		if (!getSource().equals(translated.getSource())) {
-			throw new IllegalArgumentException("Source "
-					+ translated.getSource() + " can not be set to "
-					+ getSource() + "!");
+	public void add(LanguageSet languageSet) {
+		if (!source.equals(languageSet.source)) {
+			throw new IllegalArgumentException("Source '" + languageSet.source
+					+ "' can not be set to '" + source + "'!");
 		}
-		for (Locale locale : translated.getAvailableLanguages()) {
-			set(locale, translated.get(locale));
+		for (Locale locale : languageSet.getAvailableLanguages()) {
+			add(locale, languageSet.get(locale));
 		}
-		addLocations(translated.getLocations());
+		addLocations(languageSet.getLocations());
 	}
 
-	public boolean containsLanguage(Locale locale) {
-		return translated.containsKey(locale2String(locale));
+	public boolean has(Locale locale) {
+		String translation = translations.get(locale2String(locale));
+		return ((translation != null) && (!translation.isEmpty()));
 	}
 
 	public Set<Locale> getAvailableLanguages() {
 		Set<Locale> locales = new HashSet<Locale>();
-		for (String lang : translated.keySet()) {
+		for (String lang : translations.keySet()) {
 			locales.add(string2Locale(lang));
 		}
 		return locales;
@@ -127,18 +127,39 @@ public class LanguageSet implements Cloneable {
 
 	public Object clone() {
 		try {
-			LanguageSet languageSet = (LanguageSet) super.clone();
-			languageSet.setSource(this.getSource());
-			languageSet.translated = new Hashtable<String, String>();
-			languageSet.locations = new Vector<SourceLocation>();
-			languageSet.add(this);
-			return languageSet;
+			LanguageSet cloned = (LanguageSet) super.clone();
+			cloned.setSource(this.getSource());
+			Field translations = cloned.getClass().getDeclaredField(
+					"translations");
+			translations.setAccessible(true);
+			translations.set(cloned, new HashMap<String, String>());
+			translations.setAccessible(false);
+
+			Field locations = cloned.getClass().getDeclaredField("locations");
+			locations.setAccessible(true);
+			locations.set(cloned, new HashSet<SourceLocation>());
+			locations.setAccessible(false);
+
+			cloned.add(this);
+			return cloned;
 		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
+			throw new RuntimeException(e);
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -147,34 +168,48 @@ public class LanguageSet implements Cloneable {
 				+ ((locations == null) ? 0 : locations.hashCode());
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result
-				+ ((translated == null) ? 0 : translated.hashCode());
+				+ ((translations == null) ? 0 : translations.hashCode());
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		LanguageSet other = (LanguageSet) obj;
 		if (locations == null) {
-			if (other.locations != null)
+			if (other.locations != null) {
 				return false;
-		} else if (!locations.equals(other.locations))
+			}
+		} else if (!locations.equals(other.locations)) {
 			return false;
+		}
 		if (source == null) {
-			if (other.source != null)
+			if (other.source != null) {
 				return false;
-		} else if (!source.equals(other.source))
+			}
+		} else if (!source.equals(other.source)) {
 			return false;
-		if (translated == null) {
-			if (other.translated != null)
+		}
+		if (translations == null) {
+			if (other.translations != null) {
 				return false;
-		} else if (!translated.equals(other.translated))
+			}
+		} else if (!translations.equals(other.translations)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -205,4 +240,5 @@ public class LanguageSet implements Cloneable {
 					"Illegal form of locale string found in '" + language + "'");
 		}
 	}
+
 }

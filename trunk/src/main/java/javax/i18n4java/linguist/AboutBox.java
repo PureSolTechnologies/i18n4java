@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.BorderLayout;
@@ -154,13 +154,15 @@ class AboutBox extends JDialog implements ActionListener, WindowListener {
 				JTextArea textField = new JTextArea();
 				textField.setEditable(false);
 				textField.setText(builder.toString());
-				tabbedPane.add(new JScrollPane(textField),
-						translator.i18n("License"));
+				textField.setCaretPosition(0);
+				JScrollPane scrollPane = new JScrollPane(textField,
+						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				tabbedPane.add(scrollPane, translator.i18n("License"));
 			} finally {
 				stream.close();
 			}
 		} catch (IOException e) {
-
 		}
 	}
 

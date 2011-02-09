@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.io.File;
@@ -43,8 +43,7 @@ class FileTree implements Comparable<FileTree> {
 	 * @param file
 	 * @return
 	 */
-	private static FileTree getFileTreeElement(FileTree currentNode,
-			File file) {
+	private static FileTree getFileTreeElement(FileTree currentNode, File file) {
 		if (currentNode.getFile().equals(file)) {
 			return currentNode;
 		}
@@ -66,7 +65,7 @@ class FileTree implements Comparable<FileTree> {
 	private final List<FileTree> children = new ArrayList<FileTree>();
 	private final FileTree parent;
 	private final String name;
-	private boolean finished = false;
+	private Status status = Status.EMPTY;
 
 	public FileTree(String file) {
 		super();
@@ -120,12 +119,12 @@ class FileTree implements Comparable<FileTree> {
 		return children.size() > 0;
 	}
 
-	public boolean isFinished() {
-		return finished;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@Override

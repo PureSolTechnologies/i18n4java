@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import java.io.Serializable;
@@ -52,17 +52,27 @@ public class SourceLocation implements Cloneable, Serializable,
 
 	private static final long serialVersionUID = 1L;
 
-	private String file;
-	private int line;
-	private int lineCount;
+	private final String file;
+	private final int line;
+	private final int lineCount;
 
+	/**
+	 * This constructor does not have any practical meaning for normal work. But
+	 * this default constructor is needed by JAXB for marshalling and
+	 * unmarshalling.
+	 * 
+	 * Do not remove!!!
+	 */
 	public SourceLocation() {
+		file = "";
+		line = 0;
+		lineCount = 0;
 	}
 
 	public SourceLocation(SourceLocation sourceLocation) {
-		this.file = sourceLocation.getFile();
-		this.line = sourceLocation.getLine();
-		this.lineCount = sourceLocation.getLineCount();
+		file = sourceLocation.getFile();
+		line = sourceLocation.getLine();
+		lineCount = sourceLocation.getLineCount();
 	}
 
 	public SourceLocation(String file, int line) {
@@ -85,30 +95,6 @@ public class SourceLocation implements Cloneable, Serializable,
 			throw new IllegalArgumentException(
 					"Line count has to be 1 or greater!");
 		}
-		this.lineCount = lineCount;
-	}
-
-	/**
-	 * @param file
-	 *            the file to set
-	 */
-	public void setFile(String file) {
-		this.file = file;
-	}
-
-	/**
-	 * @param line
-	 *            the line to set
-	 */
-	public void setLine(int line) {
-		this.line = line;
-	}
-
-	/**
-	 * @param lineCount
-	 *            the lineCount to set
-	 */
-	public void setLineCount(int lineCount) {
 		this.lineCount = lineCount;
 	}
 

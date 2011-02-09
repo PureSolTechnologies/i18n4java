@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.i18n4java.data.I18NFile;
+import javax.i18n4java.data.MultiLanguageTranslations;
 import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -47,43 +48,24 @@ class FileTreeModel implements TreeModel {
 	 * This method is static to express the functional character of the method
 	 * and to avoid accidental usage of non static fields.
 	 * 
-	 * @param fileTree
-	 * @param locale
-	 * @return
-	 * @throws IOException
-	 */
-	private static boolean isFinished(FileTree fileTree, Locale locale)
-			throws IOException {
-		if (!fileTree.hashChildren()) {
-			return isFinished(fileTree.getFile(), locale);
-		}
-		for (int id = 0; id < fileTree.getChildCount(); id++) {
-			FileTree child = (FileTree) fileTree.getChild(id);
-			if (!isFinished(child, locale)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * This method is static to express the functional character of the method
-	 * and to avoid accidental usage of non static fields.
-	 * 
 	 * @param file
 	 * @param locale
 	 * @return
 	 * @throws IOException
 	 */
-	private static boolean isFinished(File file, Locale locale)
+	private static Status getStatus(File file, Locale locale)
 			throws IOException {
 		if (file.exists() && file.isFile()) {
-			if (!I18NFile.read(file).getAvailableLanguages().contains(locale)) {
-				return false;
+			MultiLanguageTranslations translations = I18NFile.read(file);
+			if (!translations.getAvailableLanguages().contains(locale)) {
+				return Status.EMPTY;
 			}
-			return I18NFile.isFinished(file, locale);
+			if (translations.isTranslationFinished(locale)) {
+				return Status.FINISHED;
+			}
+			return Status.ONGOING;
 		}
-		return false;
+		return Status.EMPTY;
 	}
 
 	/**
@@ -91,39 +73,40 @@ class FileTreeModel implements TreeModel {
 	 * and to avoid accidental usage of non static fields.
 	 * 
 	 * @param currentNode
-	 */
-	private static void setFinishedFlagsForDirectories(FileTree currentNode) {
-		if (!currentNode.hashChildren()) {
-			return;
-		}
-		boolean finished = true;
-		for (int index = 0; index < currentNode.getChildCount(); index++) {
-			FileTree child = currentNode.getChild(index);
-			setFinishedFlagsForDirectories(child);
-			if (!child.isFinished()) {
-				finished = false;
-			}
-		}
-		currentNode.setFinished(finished);
-	}
-
-	/**
-	 * This method is static to express the functional character of the method
-	 * and to avoid accidental usage of non static fields.
-	 * 
-	 * @param currentNode
-	 * @param locale
 	 * @throws IOException
 	 */
-	private static void setFinishedFlagsForFiles(FileTree currentNode,
-			Locale locale) throws IOException {
+	private static void setStatusFlags(FileTree currentNode, Locale locale)
+			throws IOException {
 		if (!currentNode.hashChildren()) {
-			currentNode.setFinished(isFinished(currentNode, locale));
+			currentNode.setStatus(getStatus(currentNode.getFile(), locale));
 			return;
 		}
+		Status status = Status.EMPTY;
+		boolean first = true;
 		for (int index = 0; index < currentNode.getChildCount(); index++) {
-			setFinishedFlagsForFiles(currentNode.getChild(index), locale);
+			FileTree child = currentNode.getChild(index);
+			setStatusFlags(child, locale);
+			if (first) {
+				first = false;
+				status = child.getStatus();
+			} else {
+				switch (child.getStatus()) {
+				case EMPTY:
+					if (status == Status.FINISHED) {
+						status = Status.ONGOING;
+					}
+					break;
+				case ONGOING:
+					status = Status.ONGOING;
+					break;
+				case FINISHED:
+					if (status == Status.EMPTY) {
+						status = Status.ONGOING;
+					}
+				}
+			}
 		}
+		currentNode.setStatus(status);
 	}
 
 	/*
@@ -154,7 +137,7 @@ class FileTreeModel implements TreeModel {
 
 	public void setSelectedLocale(Locale selectedLocale) throws IOException {
 		this.selectedLocale = selectedLocale;
-		setFinishedFlags();
+		setStatusFlags();
 		fireStructureChanged();
 	}
 
@@ -166,7 +149,7 @@ class FileTreeModel implements TreeModel {
 			I18NProjectConfiguration configuration) throws IOException {
 		this.configuration = configuration;
 		setFileTree(files);
-		setFinishedFlags();
+		setStatusFlags();
 		fireStructureChanged();
 	}
 
@@ -194,24 +177,33 @@ class FileTreeModel implements TreeModel {
 		}
 	}
 
-	private void setFinishedFlags() throws IOException {
-		setFinishedFlagsForFiles(fileTree, selectedLocale);
-		setFinishedFlagsForDirectories(fileTree);
+	private void setStatusFlags() throws IOException {
+		if ((fileTree != null) && (selectedLocale != null)) {
+			setStatusFlags(fileTree, selectedLocale);
+		}
 	}
 
 	private void fireStructureChanged() {
+		if (fileTree != null) {
+			for (TreeModelListener listener : listeners) {
+				listener.treeStructureChanged(new TreeModelEvent(this,
+						new TreePath(fileTree)));
+			}
+		}
+	}
+
+	private void fireFileChanged(File file) {
 		for (TreeModelListener listener : listeners) {
-			listener.treeStructureChanged(new TreeModelEvent(this,
-					new TreePath(fileTree)));
+			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(
+					fileTree.getFileTreeElement(file))));
 		}
 	}
 
 	public void changedFile(File file) throws IOException {
-		boolean finished = isFinished(file, selectedLocale);
 		FileTree fileTreeElement = fileTree.getFileTreeElement(file);
-		fileTreeElement.setFinished(finished);
-		setFinishedFlags();
-		fireStructureChanged();
+		fileTreeElement.setStatus(getStatus(file, selectedLocale));
+		setStatusFlags();
+		fireFileChanged(file);
 	}
 
 	@Override

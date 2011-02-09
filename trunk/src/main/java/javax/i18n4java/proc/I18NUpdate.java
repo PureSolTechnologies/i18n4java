@@ -79,7 +79,7 @@ public class I18NUpdate {
 		File sourceFile = new File(configuration.getSourceDirectory(),
 				file.getPath());
 		MultiLanguageTranslations i18nSources = collectI18NSource(sourceFile);
-		if (i18nSources.hasTranslations()) {
+		if (i18nSources.hasSources()) {
 			File i18nFile = new File(configuration.getI18nDirectory(), I18NFile
 					.getResource(sourceFile).getPath());
 			addNewSourcesToExistingFile(i18nFile, i18nSources);

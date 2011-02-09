@@ -25,15 +25,15 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.Set;
 
 import javax.i18n4java.data.LanguageSet;
 import javax.i18n4java.data.MultiLanguageTranslations;
@@ -48,21 +48,21 @@ public class MultiLanguageTranslationsTest {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
 		assertEquals(0, translations.getAvailableLanguages().size());
 		assertEquals(0, translations.getSources().size());
-		assertFalse(translations.hasTranslations());
+		assertFalse(translations.hasSources());
 	}
 
 	@Test
 	public void testFrom() {
 		MultiLanguageTranslations translations = MultiLanguageTranslations
-				.from("Source", "File.java", 123);
+				.create("Source", "File.java", 123);
 		assertNotNull(translations);
 		assertEquals(0, translations.getAvailableLanguages().size());
 		assertEquals(1, translations.getSources().size());
-		assertTrue(translations.hasTranslations());
+		assertTrue(translations.hasSources());
 		LanguageSet languageSet = translations.get("Source");
 		assertNotNull(languageSet);
 		assertEquals(0, languageSet.getAvailableLanguages().size());
-		List<SourceLocation> locations = languageSet.getLocations();
+		Set<SourceLocation> locations = languageSet.getLocations();
 		assertNotNull(locations);
 		assertEquals(1, locations.size());
 	}
@@ -70,21 +70,21 @@ public class MultiLanguageTranslationsTest {
 	@Test
 	public void testSettersAndGetters() {
 		MultiLanguageTranslations translations = new MultiLanguageTranslations();
-		translations.set("Source1");
+		translations.add("Source1");
 		translations.addLocation("Source1", new SourceLocation("File1.java", 1,
 				2));
-		translations.set("Source2", "File2.java", 2);
-		translations.set("Source3", new Locale("de"), "Quelle3");
+		translations.add("Source2", "File2.java", 2);
+		translations.add("Source3", new Locale("de"), "Quelle3");
 		translations.addLocation("Source3", new SourceLocation("File3.java", 3,
 				4));
-		List<SourceLocation> locations = new Vector<SourceLocation>();
+		Set<SourceLocation> locations = new HashSet<SourceLocation>();
 		locations.add(new SourceLocation("File3.java", 3, 4));
 		locations.add(new SourceLocation("File3.java", 5, 6));
 		locations.add(new SourceLocation("File3_1.java", 1, 2));
 		translations.addLocations("Source3", locations);
 
 		assertTrue(translations.getTranslations().size() > 0);
-		assertTrue(translations.hasTranslations());
+		assertTrue(translations.hasSources());
 
 		assertTrue(translations.containsSource("Source1"));
 		assertEquals(1, translations.getAvailableLanguages().size());
@@ -125,7 +125,7 @@ public class MultiLanguageTranslationsTest {
 
 		Hashtable<String, LanguageSet> translation = new Hashtable<String, LanguageSet>();
 		translation.put("Test", new LanguageSet());
-		translation.get("Test").set(new Locale("de"), "Test");
+		translation.get("Test").add(new Locale("de"), "Test");
 		translations.setTranslations(translation);
 		assertNotSame(translation, translations.getTranslations());
 		assertEquals(translation, translations.getTranslations());
@@ -140,7 +140,7 @@ public class MultiLanguageTranslationsTest {
 
 	@Test
 	public void testClone() {
-		MultiLanguageTranslations origin = MultiLanguageTranslations.from(
+		MultiLanguageTranslations origin = MultiLanguageTranslations.create(
 				"Source1", "File.java", 123);
 		MultiLanguageTranslations cloned = (MultiLanguageTranslations) origin
 				.clone();
@@ -153,8 +153,8 @@ public class MultiLanguageTranslationsTest {
 		MultiLanguageTranslations hash = new MultiLanguageTranslations();
 		assertEquals("English", hash.get("English", new Locale("de")));
 
-		hash.set("English", new Locale("de"), "Deutsch");
-		hash.set("English", new Locale("vi"), "Tieng Viet");
+		hash.add("English", new Locale("de"), "Deutsch");
+		hash.add("English", new Locale("vi"), "Tieng Viet");
 
 		assertEquals("English", hash.get("English", new Locale("")));
 		assertEquals("Deutsch", hash.get("English", new Locale("de")));

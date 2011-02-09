@@ -49,13 +49,11 @@ public class I18NProjectConfiguration {
 
 	public static final String CONFIGURATION_FILENAME = "i18n4java.properties";
 
-	private static final String PROJECT_DIRECTORY_KEY = "i18n4java.project.directory";
 	private static final String SOURCE_DIRECTORY_KEY = "i18n4java.project.directories.source";
 	private static final String I18N_DIRECTORY_KEY = "i18n4java.project.directories.i18n";
 	private static final String DESTINATION_DIRECTORY_KEY = "i18n4java.project.directories.destination";
 
 	private final File projectDirectory;
-	private final String relativeProjectTopDirectory;
 	private final String relativeSourceDirectory;
 	private final String relativeI18nDirectory;
 	private final String relativeDestinationDirectory;
@@ -86,8 +84,6 @@ public class I18NProjectConfiguration {
 			props.load(new FileInputStream(fileOrDirectory));
 			fileLocation = fileOrDirectory.getParentFile();
 		}
-		relativeProjectTopDirectory = props.containsKey(PROJECT_DIRECTORY_KEY) ? props
-				.getProperty(PROJECT_DIRECTORY_KEY) : ".";
 		relativeSourceDirectory = props.containsKey(SOURCE_DIRECTORY_KEY) ? props
 				.getProperty(SOURCE_DIRECTORY_KEY) : "src/main/java";
 		relativeI18nDirectory = props.containsKey(I18N_DIRECTORY_KEY) ? props
@@ -95,14 +91,7 @@ public class I18NProjectConfiguration {
 		relativeDestinationDirectory = props
 				.containsKey(DESTINATION_DIRECTORY_KEY) ? props
 				.getProperty(DESTINATION_DIRECTORY_KEY) : "res";
-		projectDirectory = new File(fileLocation, relativeProjectTopDirectory);
-	}
-
-	/**
-	 * @return the relativeProjectTopDirectory
-	 */
-	public String getRelativeProjectTopDirectory() {
-		return relativeProjectTopDirectory;
+		projectDirectory = fileLocation;
 	}
 
 	/**

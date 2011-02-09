@@ -25,9 +25,11 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,8 +46,8 @@ public class LocaleChooser extends JComboBox {
 
 	private static final long serialVersionUID = -5751261750747502182L;
 
-	private final List<String> availableLocaleNames = I18N4Java
-			.getAvailableLocaleNames();
+	private final List<Locale> availableLocales = I18N4Java
+			.getAvailableLocales();
 
 	public LocaleChooser() {
 		super();
@@ -53,19 +55,25 @@ public class LocaleChooser extends JComboBox {
 	}
 
 	private void insertLocales() {
-		for (String localeName : availableLocaleNames) {
-			addItem(localeName + " / "
-					+ new Locale(localeName).getDisplayName());
+		Collections.sort(availableLocales, new Comparator<Locale>() {
+			@Override
+			public int compare(Locale arg0, Locale arg1) {
+				return arg0.toString().compareTo(arg1.toString());
+			}
+		});
+		for (Locale locale : availableLocales) {
+			addItem(locale.toString() + " - " + locale.getDisplayLanguage()
+					+ " / " + locale.getDisplayCountry());
 		}
 	}
 
 	public Locale getSelectedLocale() {
-		return new Locale(availableLocaleNames.get(getSelectedIndex()));
+		return availableLocales.get(getSelectedIndex());
 	}
 
 	public void setSelectedLocale(Locale locale) {
-		for (int index = 0; index < availableLocaleNames.size(); index++) {
-			if (availableLocaleNames.get(index).equals(locale.toString())) {
+		for (int index = 0; index < availableLocales.size(); index++) {
+			if (availableLocales.get(index).equals(locale)) {
 				setSelectedIndex(index);
 				break;
 			}

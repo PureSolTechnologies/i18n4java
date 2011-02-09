@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.proc;
 
 import static org.junit.Assert.*;
@@ -42,10 +42,17 @@ public class I18NProjectConfiguratorTest {
 	public void testReadI18NProperties() throws Exception {
 		I18NProjectConfiguration config = new I18NProjectConfiguration(
 				new File("."));
-		assertEquals("src", config.getRelativeProjectTopDirectory());
-		assertEquals("main/java", config.getRelativeSourceDirectory());
-		assertEquals("i18n", config.getRelativeI18nDirectory());
-		assertEquals("main/resources", config.getRelativeDestinationDirectory());
+		assertEquals(new File("."), config.getProjectDirectory());
+		assertEquals("src/main/java", config.getRelativeSourceDirectory());
+		assertEquals("src/i18n", config.getRelativeI18nDirectory());
+		assertEquals("src/main/resources",
+				config.getRelativeDestinationDirectory());
+
+		assertEquals(new File("./src/main/java"), config.getSourceDirectory());
+		assertEquals(new File("./src/i18n"), config.getI18nDirectory());
+		assertEquals(new File("./src/main/resources"),
+				config.getDestinationDirectory());
+
 		assertTrue(config.getProjectDirectory().exists());
 		assertTrue(config.getSourceDirectory().exists());
 		assertTrue(config.getI18nDirectory().exists());

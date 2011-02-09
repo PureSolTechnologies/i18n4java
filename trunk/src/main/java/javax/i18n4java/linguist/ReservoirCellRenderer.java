@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import java.awt.Component;
@@ -79,18 +79,19 @@ class ReservoirCellRenderer implements ListCellRenderer {
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
-
 		String source = (String) value;
 
-		boolean finished = false;
 		LanguageSet languageSet = translationsHash.getTranslations(source);
 		if (languageSet == null) {
-			return new StatusComponent(source, isSelected, cellHasFocus, false);
+			return new StatusComponent(source, isSelected, cellHasFocus,
+					Status.EMPTY);
 		}
 		String translation = languageSet.get(selectedLocale);
 		if ((translation != null) && (!translation.isEmpty())) {
-			finished = true;
+			return new StatusComponent(source, isSelected, cellHasFocus,
+					Status.FINISHED);
 		}
-		return new StatusComponent(source, isSelected, cellHasFocus, finished);
+		return new StatusComponent(source, isSelected, cellHasFocus,
+				Status.EMPTY);
 	}
 }

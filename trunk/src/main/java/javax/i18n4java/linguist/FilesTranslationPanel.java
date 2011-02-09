@@ -61,8 +61,7 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 	// GUI elements...
 	private final FileTreeModel fileTreeModel = new FileTreeModel();
 	private final JTree fileTree = new JTree(fileTreeModel);
-	private final FileTreeCellRenderer fileTreeCellRenderer = new FileTreeCellRenderer();
-	private final TranslationPanel fileTranslationPanel = new TranslationPanel();
+	private final TranslationPanel translationPanel = new TranslationPanel();
 
 	private I18NProjectConfiguration configuration = null;
 	private File i18nFile = null;
@@ -78,13 +77,13 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 		borderLayout.setVgap(5);
 		setLayout(borderLayout);
 
-		fileTree.setCellRenderer(fileTreeCellRenderer);
+		fileTree.setCellRenderer(new FileTreeCellRenderer());
 		fileTree.setBorder(translationUpdater.i18n("Classes", translator,
 				fileTree, BorderFactory.createTitledBorder("")));
 		fileTree.addTreeSelectionListener(this);
 
 		add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(
-				fileTree), fileTranslationPanel));
+				fileTree), translationPanel));
 
 		add(new JLabel("Some project statistics"), BorderLayout.SOUTH);
 	}
@@ -95,13 +94,13 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 	 * @throws IOException
 	 */
 	public void setSelectedLocale(Locale selectedLocale) throws IOException {
-		fileTranslationPanel.setSelectedLocale(selectedLocale);
+		translationPanel.setSelectedLocale(selectedLocale);
 		fileTreeModel.setSelectedLocale(selectedLocale);
 		fileTree.repaint();
 	}
 
 	public boolean hasChanged() {
-		return fileTranslationPanel.hasChanged();
+		return translationPanel.hasChanged();
 	}
 
 	/**
@@ -135,8 +134,8 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 
 	public void saveFile() throws IOException {
 		if (i18nFile != null) {
-			I18NFile.write(i18nFile,
-					this.fileTranslationPanel.getTranslations());
+			I18NFile.write(i18nFile, translationPanel.getTranslations());
+			translationPanel.setChanged(false);
 			fileTreeModel.changedFile(i18nFile);
 		}
 	}
@@ -164,7 +163,7 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 				return;
 			}
 			i18nFile = file;
-			fileTranslationPanel.setTranslations(I18NFile.read(i18nFile));
+			translationPanel.setTranslations(I18NFile.read(i18nFile));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, translator.i18n(
 					"The file {0} could not be read!", i18nFile), translator
@@ -178,7 +177,7 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 	}
 
 	public void removeObsoletePhrases() {
-		fileTranslationPanel.removeObsoletePhrases();
+		translationPanel.removeObsoletePhrases();
 	}
 
 	@Override
@@ -186,7 +185,10 @@ class FilesTranslationPanel extends JPanel implements TreeSelectionListener {
 		if (o.getSource() == fileTree) {
 			FileTree fileTree = (FileTree) o.getPath().getLastPathComponent();
 			if (!fileTree.hashChildren()) {
-				openFile(fileTree.getFile());
+				File file = fileTree.getFile();
+				if (!file.equals(i18nFile)) {
+					openFile(file);
+				}
 			}
 		}
 	}

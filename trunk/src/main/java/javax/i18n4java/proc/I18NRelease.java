@@ -96,7 +96,7 @@ public class I18NRelease {
 		Set<String> sources = mlTranslations.getSources();
 		for (String source : sources) {
 			LanguageSet set = mlTranslations.get(source);
-			if (set.containsLanguage(language)) {
+			if (set.has(language)) {
 				translations.add(source, set.get(language));
 			}
 		}

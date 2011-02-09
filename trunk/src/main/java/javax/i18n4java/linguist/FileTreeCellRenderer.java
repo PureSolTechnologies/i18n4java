@@ -45,6 +45,6 @@ class FileTreeCellRenderer implements TreeCellRenderer {
 			boolean hasFocus) {
 		FileTree fileTree = (FileTree) value;
 		return new StatusComponent(fileTree.getName(), selected, hasFocus,
-				fileTree.isFinished());
+				fileTree.getStatus());
 	}
 }

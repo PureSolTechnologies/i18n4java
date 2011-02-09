@@ -25,12 +25,17 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import javax.i18n4java.data.SingleLanguageTranslations;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.junit.Test;
 
@@ -97,5 +102,28 @@ public class SingleLanguageTranslationsTest {
 		assertEquals(origin, cloned);
 		cloned.set("Source2", "Quelle2");
 		assertFalse(origin.equals(cloned));
+	}
+
+	@Test
+	public void testMarshallingAndUnmarshalling() throws Exception {
+		File file = new File("SingleLanguageTranslationMarshallerTest");
+		SingleLanguageTranslations translations = new SingleLanguageTranslations();
+		translations.add("Source", "Quelle");
+
+		JAXBContext context = JAXBContext.newInstance(translations.getClass());
+		assertNotNull(context);
+
+		Marshaller marshaller = context.createMarshaller();
+		assertNotNull(marshaller);
+		marshaller.marshal(translations, file);
+		assertTrue(file.exists());
+
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		SingleLanguageTranslations unmarshalled = (SingleLanguageTranslations) unmarshaller
+				.unmarshal(file);
+		assertNotSame(translations, unmarshalled);
+		assertEquals(translations, unmarshalled);
+		assertTrue(file.delete());
+		assertFalse(file.exists());
 	}
 }

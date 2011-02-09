@@ -25,18 +25,21 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.data;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.io.File;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.i18n4java.data.LanguageSet;
 import javax.i18n4java.data.SourceLocation;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.junit.Test;
 
@@ -100,11 +103,11 @@ public class LanguageSetTest {
 		LanguageSet set = new LanguageSet();
 		// settings...
 		set.setSource("Source String");
-		set.set(new Locale("de"), "Quellzeichenkette");
+		set.add(new Locale("de"), "Quellzeichenkette");
 
 		LanguageSet translated = new LanguageSet("Source String");
-		translated.set(new Locale("xx"), "XXX");
-		translated.set(new Locale("yy"), "YYY");
+		translated.add(new Locale("xx"), "XXX");
+		translated.add(new Locale("yy"), "YYY");
 		translated.addLocation(new SourceLocation("translated.java", 1, 1));
 		set.add(translated);
 
@@ -112,7 +115,7 @@ public class LanguageSetTest {
 		// no double entry(!):
 		set.addLocation(new SourceLocation("TestFile.java", 1, 2));
 
-		List<SourceLocation> locations = new Vector<SourceLocation>();
+		Set<SourceLocation> locations = new HashSet<SourceLocation>();
 		locations.add(new SourceLocation("TestFile2.java", 2, 3));
 		locations.add(new SourceLocation("TestFile3.java", 3, 4));
 		set.addLocations(locations);
@@ -189,20 +192,48 @@ public class LanguageSetTest {
 	@Test
 	public void testClone() {
 		LanguageSet origin = new LanguageSet("Source String");
-		origin.set(new Locale("de"), "Quellzeichenkette");
+		origin.add(new Locale("de"), "Quellzeichenkette");
 		origin.addLocation(new SourceLocation("File.java", 1, 2));
 		LanguageSet cloned = (LanguageSet) origin.clone();
 		assertNotNull(cloned);
 		assertEquals(origin, cloned);
+
 		cloned.setSource("New Source String");
 		assertFalse(origin.equals(cloned));
 		cloned.setSource("Source String");
 		assertTrue(origin.equals(cloned));
-		cloned.set(new Locale("de"), "Neue Quellzeichenkette");
+
+		cloned.add(new Locale("de"), "Neue Quellzeichenkette");
+		assertEquals("Neue Quellzeichenkette", cloned.get(new Locale("de")));
+		assertEquals("Quellzeichenkette", origin.get(new Locale("de")));
 		assertFalse(origin.equals(cloned));
-		cloned.set(new Locale("de"), "Quellzeichenkette");
+		cloned.add(new Locale("de"), "Quellzeichenkette");
+		assertEquals("Quellzeichenkette", cloned.get(new Locale("de")));
 		assertTrue(origin.equals(cloned));
+
 		cloned.addLocation(new SourceLocation("File.java", 10, 3));
 		assertFalse(origin.equals(cloned));
+	}
+
+	@Test
+	public void testMarshallingAndUnmarshalling() throws Exception {
+		File file = new File("LanguageSetMarshallerTest");
+		LanguageSet translations = new LanguageSet("Source1");
+		translations.add(new Locale("de", "DE"), "Quelle1");
+
+		JAXBContext context = JAXBContext.newInstance(translations.getClass());
+		assertNotNull(context);
+
+		Marshaller marshaller = context.createMarshaller();
+		assertNotNull(marshaller);
+		marshaller.marshal(translations, file);
+		assertTrue(file.exists());
+
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		LanguageSet unmarshalled = (LanguageSet) unmarshaller.unmarshal(file);
+		assertNotSame(translations, unmarshalled);
+		assertEquals(translations, unmarshalled);
+		assertTrue(file.delete());
+		assertFalse(file.exists());
 	}
 }
