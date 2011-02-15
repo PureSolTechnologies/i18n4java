@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package javax.i18n4java.linguist;
 
 import static org.junit.Assert.*;
@@ -73,19 +73,27 @@ public class FileTreeModelTest {
 		assertEquals(null, file.getParent());
 
 		file = new File("/");
-		assertEquals("/", file.getPath());
+		assertEquals(File.separator, file.getPath());
+		assertEquals(null, file.getParent());
+
+		file = new File("\\");
+		assertEquals(File.separator, file.getPath());
 		assertEquals(null, file.getParent());
 
 		file = new File("/src");
-		assertEquals("/src", file.getPath());
-		assertEquals("/", file.getParent());
+		assertEquals(File.separator + "src", file.getPath());
+		assertEquals(File.separator, file.getParent());
+
+		file = new File("\\src");
+		assertEquals(File.separator + "src", file.getPath());
+		assertEquals(File.separator, file.getParent());
 	}
 
 	@Test
 	public void testInstance() throws Exception {
 		assertNotNull(new FileTreeModel());
-		assertNotNull(new FileTreeModel(FILES,
-				new I18NProjectConfiguration(new File("."))));
+		assertNotNull(new FileTreeModel(FILES, new I18NProjectConfiguration(
+				new File("."))));
 	}
 
 	@Test
