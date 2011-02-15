@@ -76,15 +76,7 @@ public class FileTreeModelTest {
 		assertEquals(File.separator, file.getPath());
 		assertEquals(null, file.getParent());
 
-		file = new File("\\");
-		assertEquals(File.separator, file.getPath());
-		assertEquals(null, file.getParent());
-
 		file = new File("/src");
-		assertEquals(File.separator + "src", file.getPath());
-		assertEquals(File.separator, file.getParent());
-
-		file = new File("\\src");
 		assertEquals(File.separator + "src", file.getPath());
 		assertEquals(File.separator, file.getParent());
 	}
