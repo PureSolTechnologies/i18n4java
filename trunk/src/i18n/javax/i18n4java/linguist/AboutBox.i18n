@@ -7,16 +7,20 @@
                 <source>About</source>
                 <translations>
                     <entry>
-                        <key>en</key>
+                        <key>en_us</key>
                         <value>About</value>
                     </entry>
                     <entry>
-                        <key>en_us</key>
+                        <key>en</key>
                         <value>About</value>
                     </entry>
                     <entry>
                         <key>en_US</key>
                         <value>About</value>
+                    </entry>
+                    <entry>
+                        <key>de_DE</key>
+                        <value>Über</value>
                     </entry>
                     <entry>
                         <key>de</key>
@@ -44,6 +48,10 @@
                         <value>email:</value>
                     </entry>
                     <entry>
+                        <key>de_DE</key>
+                        <value>Email:</value>
+                    </entry>
+                    <entry>
                         <key>de</key>
                         <value>Email:</value>
                     </entry>
@@ -69,38 +77,17 @@
                         <value>License</value>
                     </entry>
                     <entry>
+                        <key>de_DE</key>
+                        <value>Lizenz</value>
+                    </entry>
+                    <entry>
                         <key>de</key>
                         <value>Lizenz</value>
                     </entry>
                 </translations>
                 <locations>
                     <file>javax.i18n4java.linguist.AboutBox.java</file>
-                    <line>157</line>
-                    <lineCount>1</lineCount>
-                </locations>
-            </value>
-        </entry>
-        <entry>
-            <key>Copyright</key>
-            <value>
-                <source>Copyright</source>
-                <translations>
-                    <entry>
-                        <key>en_us</key>
-                        <value>author:</value>
-                    </entry>
-                    <entry>
-                        <key>en_US</key>
-                        <value>author:</value>
-                    </entry>
-                    <entry>
-                        <key>de</key>
-                        <value>Copyright</value>
-                    </entry>
-                </translations>
-                <locations>
-                    <file>javax.i18n4java.linguist.AboutBox.java</file>
-                    <line>111</line>
+                    <line>161</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -119,8 +106,41 @@
                         <value>Copyright</value>
                     </entry>
                     <entry>
+                        <key>de_DE</key>
+                        <value>Autor:</value>
+                    </entry>
+                    <entry>
                         <key>de</key>
                         <value>Autor:</value>
+                    </entry>
+                </translations>
+                <locations>
+                    <file>javax.i18n4java.linguist.AboutBox.java</file>
+                    <line>111</line>
+                    <lineCount>1</lineCount>
+                </locations>
+            </value>
+        </entry>
+        <entry>
+            <key>Copyright</key>
+            <value>
+                <source>Copyright</source>
+                <translations>
+                    <entry>
+                        <key>en_us</key>
+                        <value>author:</value>
+                    </entry>
+                    <entry>
+                        <key>en_US</key>
+                        <value>author:</value>
+                    </entry>
+                    <entry>
+                        <key>de_DE</key>
+                        <value>Copyright</value>
+                    </entry>
+                    <entry>
+                        <key>de</key>
+                        <value>Copyright</value>
                     </entry>
                 </translations>
                 <locations>
@@ -141,6 +161,10 @@
                     </entry>
                     <entry>
                         <key>en_US</key>
+                        <value>OK</value>
+                    </entry>
+                    <entry>
+                        <key>de_DE</key>
                         <value>OK</value>
                     </entry>
                     <entry>

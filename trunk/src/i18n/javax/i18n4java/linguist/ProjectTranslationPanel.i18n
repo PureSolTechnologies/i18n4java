@@ -5,16 +5,7 @@
             <key>Language</key>
             <value>
                 <source>Language</source>
-                <translated>
-                    <entry>
-                        <key>en_US</key>
-                        <value></value>
-                    </entry>
-                    <entry>
-                        <key>de</key>
-                        <value>Sprache</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
                     <line>105</line>
@@ -26,12 +17,7 @@
             <key>The panel could not be updated for the new language!</key>
             <value>
                 <source>The panel could not be updated for the new language!</source>
-                <translated>
-                    <entry>
-                        <key>en_US</key>
-                        <value></value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
                     <line>151</line>
@@ -43,16 +29,7 @@
             <key>Error</key>
             <value>
                 <source>Error</source>
-                <translated>
-                    <entry>
-                        <key>en_US</key>
-                        <value></value>
-                    </entry>
-                    <entry>
-                        <key>de</key>
-                        <value>Fehler</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.ProjectTranslationPanel.java</file>
                     <line>151</line>

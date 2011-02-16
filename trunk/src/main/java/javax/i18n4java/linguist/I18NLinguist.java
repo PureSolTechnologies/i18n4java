@@ -33,14 +33,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import javax.i18n4java.KeyStrokeUpdater;
 import javax.i18n4java.LanguageDialog;
 import javax.i18n4java.TranslationUpdater;
 import javax.i18n4java.Translator;
+import javax.i18n4java.data.I18NFile;
+import javax.i18n4java.data.LanguageSet;
+import javax.i18n4java.data.MultiLanguageTranslations;
+import javax.i18n4java.proc.I18NProjectConfiguration;
 import javax.i18n4java.proc.I18NRelease;
 import javax.i18n4java.proc.I18NUpdate;
+import javax.i18n4java.utils.FileSearch;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -67,11 +75,6 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private final TranslationUpdater translationUpdater = new TranslationUpdater();
 	private final KeyStrokeUpdater keyStrokeUpdater = new KeyStrokeUpdater();
-	// menus...
-	private final JMenu fileMenu = new JMenu();
-	private final JMenu toolsMenu = new JMenu();
-	private final JMenu optionsMenu = new JMenu();
-	private final JMenu helpMenu = new JMenu();
 
 	// menu items...
 	private final JMenuItem update = new JMenuItem();
@@ -80,6 +83,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 	private final JMenuItem open = new JMenuItem();
 	private final JMenuItem save = new JMenuItem();
 	private final JMenuItem quit = new JMenuItem();
+	private final JMenuItem copyTranslation = new JMenuItem();
 	private final JMenuItem language = new JMenuItem();
 	private final JMenuItem about = new JMenuItem();
 
@@ -113,9 +117,13 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
+		JMenu fileMenu = new JMenu();
 		translationUpdater.i18n("File", translator, fileMenu);
+		JMenu toolsMenu = new JMenu();
 		translationUpdater.i18n("Tools", translator, toolsMenu);
+		JMenu optionsMenu = new JMenu();
 		translationUpdater.i18n("Options", translator, optionsMenu);
+		JMenu helpMenu = new JMenu();
 		translationUpdater.i18n("Help", translator, helpMenu);
 
 		menuBar.add(fileMenu);
@@ -151,6 +159,11 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		toolsMenu.add(clear);
 		translationUpdater.i18n("Clear", translator, clear);
 		clear.addActionListener(this);
+
+		toolsMenu.add(copyTranslation);
+		translationUpdater.i18n("Copy Translation...", translator,
+				copyTranslation);
+		copyTranslation.addActionListener(this);
 
 		optionsMenu.add(language);
 		translationUpdater.i18n("Language...", translator, language);
@@ -192,6 +205,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		try {
 			I18NUpdate.update(translationPanel.getDirectory());
 		} catch (IOException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, translator.i18n(
 					"IO error during update!\n\nMessage was:\n{0}",
 					e.getMessage()), translator.i18n("Error"),
@@ -203,6 +217,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		try {
 			I18NRelease.release(translationPanel.getDirectory());
 		} catch (IOException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, translator.i18n(
 					"IO error during release!\n\nMessage was:\n{0}",
 					e.getMessage()), translator.i18n("Error"),
@@ -212,6 +227,48 @@ public class I18NLinguist extends JFrame implements ActionListener,
 
 	private void clear() {
 		translationPanel.removeObsoletePhrases();
+	}
+
+	private void copyTranslation() {
+		try {
+			TranslationCopyDialog dlg = new TranslationCopyDialog(this);
+			dlg.setVisible(true);
+			if (dlg.isFinishedByOK()) {
+				System.out.println("Copy from " + dlg.getSource() + " to "
+						+ dlg.getTarget() + "...");
+				Locale sourceLocale = dlg.getSource();
+				Locale targetLocale = dlg.getTarget();
+				I18NProjectConfiguration configuration;
+				configuration = new I18NProjectConfiguration(
+						translationPanel.getDirectory());
+				List<File> files = FileSearch.find(
+						configuration.getI18nDirectory(), "*.i18n");
+				for (File file : files) {
+					File i18nFile = new File(configuration.getI18nDirectory(),
+							file.getPath());
+					MultiLanguageTranslations translations = I18NFile
+							.read(i18nFile);
+					for (String source : translations.getSources()) {
+						LanguageSet languageSet = translations
+								.getTranslations(source);
+						if (languageSet.has(sourceLocale)) {
+							translations.add(source, targetLocale,
+									languageSet.get(sourceLocale));
+						}
+					}
+					I18NFile.write(i18nFile, translations);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane
+					.showMessageDialog(
+							this,
+							translator
+									.i18n("Could not copy translations due to IO error!\n\nMessage: {0}",
+											e.getMessage()), translator
+									.i18n("Error"), JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void open() {
@@ -234,6 +291,7 @@ public class I18NLinguist extends JFrame implements ActionListener,
 		try {
 			translationPanel.saveFile();
 		} catch (IOException e) {
+			e.printStackTrace();
 			JOptionPane.showConfirmDialog(this,
 					translator.i18n("I18NFile could not be saved!"),
 					translator.i18n("Error"), JOptionPane.DEFAULT_OPTION,
@@ -264,6 +322,8 @@ public class I18NLinguist extends JFrame implements ActionListener,
 			release();
 		} else if ((o.getSource() == clear) || (o.getSource() == clearButton)) {
 			clear();
+		} else if ((o.getSource() == copyTranslation)) {
+			copyTranslation();
 		} else if (o.getSource() == language) {
 			setLanguage();
 		} else if (o.getSource() == about) {

@@ -105,11 +105,14 @@ public class I18NUpdate {
 		writeTranslations(file, translations);
 	}
 
-	private MultiLanguageTranslations readTranslations(File file)
-			throws IOException {
-		MultiLanguageTranslations hash = I18NFile.read(file);
-		hash.removeLocations();
-		return hash;
+	private MultiLanguageTranslations readTranslations(File file) {
+		try {
+			MultiLanguageTranslations hash = I18NFile.read(file);
+			hash.removeLocations();
+			return hash;
+		} catch (IOException e) {
+			return new MultiLanguageTranslations();
+		}
 	}
 
 	private void writeTranslations(File file,

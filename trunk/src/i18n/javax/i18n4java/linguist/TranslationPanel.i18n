@@ -5,15 +5,10 @@
             <key>Reservoir</key>
             <value>
                 <source>Reservoir</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Reservoir</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.TranslationPanel.java</file>
-                    <line>104</line>
+                    <line>106</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -22,15 +17,10 @@
             <key>Translation:</key>
             <value>
                 <source>Translation:</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Übersetzung:</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.TranslationPanel.java</file>
-                    <line>116</line>
+                    <line>118</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -39,15 +29,10 @@
             <key>Source</key>
             <value>
                 <source>Source</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Quelle</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.TranslationPanel.java</file>
-                    <line>111</line>
+                    <line>113</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
@@ -56,15 +41,10 @@
             <key>Location(s):</key>
             <value>
                 <source>Location(s):</source>
-                <translated>
-                    <entry>
-                        <key>de</key>
-                        <value>Fundort(e):</value>
-                    </entry>
-                </translated>
+                <translations/>
                 <locations>
                     <file>javax.i18n4java.linguist.TranslationPanel.java</file>
-                    <line>123</line>
+                    <line>125</line>
                     <lineCount>1</lineCount>
                 </locations>
             </value>
