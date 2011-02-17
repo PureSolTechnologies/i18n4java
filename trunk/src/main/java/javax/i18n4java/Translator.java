@@ -68,12 +68,9 @@ public class Translator implements Serializable {
 	private static final long serialVersionUID = -2918229155516838530L;
 
 	/**
-	 * This variable contains the current default language for the translator.
+	 * This variable contains the current default locale for the translator.
 	 */
-	private static Locale defaultLocale;
-	static {
-		defaultLocale = Locale.getDefault();
-	}
+	private static Locale defaultLocale = Locale.getDefault();
 
 	/**
 	 * This set contains the locales which are to be used as additional
@@ -147,19 +144,6 @@ public class Translator implements Serializable {
 		return defaultLocale;
 	}
 
-	/**
-	 * This method returns the currently set language.
-	 * 
-	 * @return
-	 */
-	public static String getDefaultLanguage() {
-		return getDefault().getLanguage();
-	}
-
-	public static String getDefaultCountry() {
-		return getDefault().getCountry();
-	}
-
 	public static void setSingleLanguageMode() {
 		synchronized (additionalLocales) {
 			additionalLocales.clear();
@@ -203,7 +187,7 @@ public class Translator implements Serializable {
 	 * in there. The context is the name of the class including the package
 	 * name.
 	 */
-	private final ConcurrentMap<String, SingleLanguageTranslations> translations = new ConcurrentHashMap<String, SingleLanguageTranslations>();
+	private final ConcurrentMap<Locale, SingleLanguageTranslations> translations = new ConcurrentHashMap<Locale, SingleLanguageTranslations>();
 
 	/**
 	 * This variable keeps the name of the class which is used as a context.
@@ -239,16 +223,16 @@ public class Translator implements Serializable {
 	 * This method adds a new translation to the translations map.
 	 * 
 	 * @param source
-	 * @param language
+	 * @param locale
 	 * @param translation
 	 */
-	synchronized void setTranslation(String source, String language,
+	synchronized void setTranslation(String source, Locale locale,
 			String translation) {
-		if (!translations.containsKey(language)) {
+		if (!translations.containsKey(locale)) {
 			translations
-					.putIfAbsent(language, new SingleLanguageTranslations());
+					.putIfAbsent(locale, new SingleLanguageTranslations());
 		}
-		translations.get(language).add(source, translation);
+		translations.get(locale).add(source, translation);
 	}
 
 	/**
@@ -262,31 +246,30 @@ public class Translator implements Serializable {
 	}
 
 	/**
-	 * This method reads the context translation for the language.
+	 * This method reads the context translation for the locale.
 	 * 
 	 * @param locale
-	 *            is the language to be read.
+	 *            is the locale to be read.
 	 */
 	private void readContextTranslation(Locale locale) {
 		if (locale.equals(I18N4Java.getImplementationLocale())) {
-			translations.putIfAbsent(locale.toString(),
-					new SingleLanguageTranslations());
+			translations.putIfAbsent(locale, new SingleLanguageTranslations());
 			return;
 		}
 		String resource = TRFile.getResourceName(context, locale);
-		readContextTranslationFromResource(locale.toString(), resource);
+		readContextTranslationFromResource(locale, resource);
 	}
 
 	/**
 	 * This method reads the actual translations from the translation file.
 	 * 
-	 * @param language
-	 *            is the language for which the translations are to be read.
+	 * @param locale
+	 *            is the locale for which the translations are to be read.
 	 * @param resource
-	 *            is the resource name, where the translations for the language
+	 *            is the resource name, where the translations for the locale
 	 *            can be found.
 	 */
-	private void readContextTranslationFromResource(String language,
+	private void readContextTranslationFromResource(Locale locale,
 			String resource) {
 		try {
 			InputStream is = getClass().getResourceAsStream(resource);
@@ -295,13 +278,12 @@ public class Translator implements Serializable {
 						+ resource + "'");
 			}
 			try {
-				translations.putIfAbsent(language, TRFile.read(is));
+				translations.putIfAbsent(locale, TRFile.read(is));
 			} finally {
 				is.close();
 			}
 		} catch (IOException e) {
-			translations
-					.putIfAbsent(language, new SingleLanguageTranslations());
+			translations.putIfAbsent(locale, new SingleLanguageTranslations());
 		}
 	}
 
@@ -315,18 +297,18 @@ public class Translator implements Serializable {
 	 * 
 	 * @param text
 	 *            is the text to be translated.
-	 * @param language
+	 * @param locale
 	 *            are the parameters for the MessageFormat.
 	 * @return The translated and localized string is returned.
 	 */
-	String translate(String text, String language) {
+	String translate(String text, Locale locale) {
 		synchronized (translations) {
 			if (translations.size() == 0) {
 				readContextTranslation();
 			}
 		}
 		SingleLanguageTranslations singleLanguageTranslations = translations
-				.get(language);
+				.get(locale);
 		if (singleLanguageTranslations == null) {
 			return text;
 		}
@@ -340,7 +322,7 @@ public class Translator implements Serializable {
 	/**
 	 * This method translates the given string into the localized form. The
 	 * original string and the translation can be a MessageFormat string. Used
-	 * is the current set locale and language.
+	 * is the current set locale.
 	 * 
 	 * @param text
 	 *            is the text to be translated.
@@ -349,9 +331,8 @@ public class Translator implements Serializable {
 	 * @return The translated and localized string is returned.
 	 */
 	public String i18n(String text, Object... params) {
-		StringBuffer translation = new StringBuffer(
-				new MessageFormat(translate(text, getDefaultLanguage()),
-						getDefault()).format(params));
+		StringBuffer translation = new StringBuffer(new MessageFormat(
+				translate(text, getDefault()), getDefault()).format(params));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
 			useLineBreak = true;
@@ -364,9 +345,8 @@ public class Translator implements Serializable {
 			}
 			translation
 					.append("(")
-					.append(new MessageFormat(translate(text,
-							locale.getLanguage()), locale).format(params))
-					.append(")");
+					.append(new MessageFormat(translate(text, locale), locale)
+							.format(params)).append(")");
 		}
 		return translation.toString();
 	}
