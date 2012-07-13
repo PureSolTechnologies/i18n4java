@@ -331,7 +331,7 @@ public class Translator implements Serializable {
 	 * @return The translated and localized string is returned.
 	 */
 	public String i18n(String text, Object... params) {
-		StringBuffer translation = new StringBuffer(new MessageFormat(
+		StringBuilder translation = new StringBuilder(new MessageFormat(
 				translate(text, getDefault()), getDefault()).format(params));
 		boolean useLineBreak = false;
 		if (translation.toString().contains("\n")) {
@@ -349,6 +349,22 @@ public class Translator implements Serializable {
 							.format(params)).append(")");
 		}
 		return translation.toString();
+	}
+
+	/**
+	 * This method translates the given string into the localized form. The
+	 * original string and the translation can be a MessageFormat string. Used
+	 * is the current set locale.
+	 * 
+	 * @param text
+	 *            is the text to be translated.
+	 * @param params
+	 *            are the parameters for the MessageFormat.
+	 * @return The translated and localized string is returned.
+	 */
+	public String i18n(String text, Locale locale, Object... params) {
+		return new MessageFormat(
+				translate(text, locale), locale).format(params);
 	}
 
 	public void addLanguageChangeListener(LanguageChangeListener listener) {
