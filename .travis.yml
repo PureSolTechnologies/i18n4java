@@ -1,0 +1,8 @@
+language: java
+jdk:
+  - oraclejdk5
+  - openjdk5
+  - oraclejdk6
+  - openjdk6
+  - oraclejdk7
+  - openjdk7
