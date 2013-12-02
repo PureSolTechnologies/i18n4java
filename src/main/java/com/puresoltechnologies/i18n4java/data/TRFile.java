@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java.data;
 
 import java.io.File;
@@ -90,8 +90,12 @@ public class TRFile {
 	public static void write(File file, SingleLanguageTranslations translations)
 			throws IOException {
 		try {
-			if (!file.getParentFile().exists()) {
-				file.getParentFile().mkdirs();
+			File parentFile = file.getParentFile();
+			if (!parentFile.exists()) {
+				if (!parentFile.mkdirs()) {
+					throw new IOException("Could not create directory '"
+							+ parentFile + "'.");
+				}
 			}
 			translations = (SingleLanguageTranslations) translations.clone();
 			translations.removeLineBreaks();

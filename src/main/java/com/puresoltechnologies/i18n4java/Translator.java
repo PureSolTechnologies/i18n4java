@@ -30,17 +30,18 @@ package com.puresoltechnologies.i18n4java;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import javax.swing.JComponent;
 
@@ -83,7 +84,7 @@ public class Translator implements Serializable {
 	 * This variable keeps the references to the system wide unique context
 	 * sensitive instances.
 	 */
-	private static final ConcurrentMap<String, Translator> instances = new ConcurrentHashMap<String, Translator>();
+	private static final Map<String, Translator> instances = new HashMap<String, Translator>();
 
 	/**
 	 * This method creates a the unique instance of Translator for Singleton
@@ -95,13 +96,13 @@ public class Translator implements Serializable {
 	 * 
 	 * @return A reference to a newly created Translator object is returned.
 	 */
-	private static synchronized Translator createInstance(Class<?> clazz) {
+	private static Translator createInstance(Class<?> clazz) {
+		String context = clazz.getName();
 		synchronized (instances) {
-			String context = clazz.getName();
-			Translator translator = (Translator) instances.get(context);
+			Translator translator = instances.get(context);
 			if (translator == null) {
 				translator = new Translator(clazz);
-				instances.putIfAbsent(context, translator);
+				instances.put(context, translator);
 			}
 			return translator;
 		}
@@ -115,7 +116,7 @@ public class Translator implements Serializable {
 	 * @return A reference to the static held Translator object is returned.
 	 */
 	public static Translator getTranslator(Class<?> clazz) {
-		Translator translator = (Translator) instances.get(clazz.getName());
+		Translator translator = instances.get(clazz.getName());
 		if (translator == null) {
 			translator = createInstance(clazz);
 		}
@@ -181,14 +182,14 @@ public class Translator implements Serializable {
 		}
 	}
 
-	private final List<WeakReference<LanguageChangeListener>> listeners = new ArrayList<WeakReference<LanguageChangeListener>>();
+	private final transient List<WeakReference<LanguageChangeListener>> listeners = new ArrayList<WeakReference<LanguageChangeListener>>();
 
 	/**
 	 * This is the hash table for the context translations. Everything is kept
 	 * in there. The context is the name of the class including the package
 	 * name.
 	 */
-	private final ConcurrentMap<Locale, SingleLanguageTranslations> translations = new ConcurrentHashMap<Locale, SingleLanguageTranslations>();
+	private final Map<Locale, SingleLanguageTranslations> translations = new HashMap<Locale, SingleLanguageTranslations>();
 
 	/**
 	 * This variable keeps the name of the class which is used as a context.
@@ -211,6 +212,12 @@ public class Translator implements Serializable {
 		context = clazz.getName();
 	}
 
+	private void readObject(ObjectInputStream ois)
+			throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		listeners.clear();
+	}
+
 	/**
 	 * This method clears the translations map. The next request for translation
 	 * will result in a re-read of language translations files.
@@ -229,10 +236,7 @@ public class Translator implements Serializable {
 	 */
 	synchronized void setTranslation(String source, Locale locale,
 			String translation) {
-		if (!translations.containsKey(locale)) {
-			translations
-					.putIfAbsent(locale, new SingleLanguageTranslations());
-		}
+		setDefaultTranslations(locale);
 		translations.get(locale).add(source, translation);
 	}
 
@@ -254,7 +258,7 @@ public class Translator implements Serializable {
 	 */
 	private void readContextTranslation(Locale locale) {
 		if (locale.equals(I18N4Java.getImplementationLocale())) {
-			translations.putIfAbsent(locale, new SingleLanguageTranslations());
+			setDefaultTranslations(locale);
 			return;
 		}
 		String resource = TRFile.getResourceName(context, locale);
@@ -279,12 +283,24 @@ public class Translator implements Serializable {
 						+ resource + "'");
 			}
 			try {
-				translations.putIfAbsent(locale, TRFile.read(is));
+				synchronized (translations) {
+					if (translations.get(locale) == null) {
+						translations.put(locale, TRFile.read(is));
+					}
+				}
 			} finally {
 				is.close();
 			}
 		} catch (IOException e) {
-			translations.putIfAbsent(locale, new SingleLanguageTranslations());
+			setDefaultTranslations(locale);
+		}
+	}
+
+	private void setDefaultTranslations(Locale locale) {
+		synchronized (translations) {
+			if (!translations.containsKey(locale)) {
+				translations.put(locale, new SingleLanguageTranslations());
+			}
 		}
 	}
 
@@ -364,8 +380,8 @@ public class Translator implements Serializable {
 	 * @return The translated and localized string is returned.
 	 */
 	public String i18n(String text, Locale locale, Object... params) {
-		return new MessageFormat(
-				translate(text, locale), locale).format(params);
+		return new MessageFormat(translate(text, locale), locale)
+				.format(params);
 	}
 
 	public void addLanguageChangeListener(LanguageChangeListener listener) {
@@ -373,9 +389,10 @@ public class Translator implements Serializable {
 		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
 				.iterator(); iterator.hasNext();) {
 			WeakReference<LanguageChangeListener> ref = iterator.next();
-			if (ref.get() == null) {
+			LanguageChangeListener referencedListener = ref.get();
+			if (referencedListener == null) {
 				iterator.remove();
-			} else if (ref.get().equals(listener)) {
+			} else if (referencedListener.equals(listener)) {
 				found = true;
 			}
 		}
@@ -388,9 +405,10 @@ public class Translator implements Serializable {
 		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
 				.iterator(); iterator.hasNext();) {
 			WeakReference<LanguageChangeListener> ref = iterator.next();
-			if (ref.get() == null) {
+			LanguageChangeListener referencedListener = ref.get();
+			if (referencedListener == null) {
 				iterator.remove();
-			} else if (ref.get().equals(listener)) {
+			} else if (referencedListener.equals(listener)) {
 				iterator.remove();
 			}
 		}
@@ -400,10 +418,11 @@ public class Translator implements Serializable {
 		for (Iterator<WeakReference<LanguageChangeListener>> iterator = listeners
 				.iterator(); iterator.hasNext();) {
 			WeakReference<LanguageChangeListener> ref = iterator.next();
-			if (ref.get() == null) {
+			LanguageChangeListener referencesListener = ref.get();
+			if (referencesListener == null) {
 				iterator.remove();
 			} else {
-				ref.get().translationChanged(this);
+				referencesListener.translationChanged(this);
 			}
 		}
 	}

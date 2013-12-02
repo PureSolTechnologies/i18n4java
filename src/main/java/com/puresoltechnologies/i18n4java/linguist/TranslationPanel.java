@@ -72,7 +72,7 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 	// GUI elements...
 	private final ReservoirCellRenderer reservoirCellRenderer = new ReservoirCellRenderer();
 	private final JLabel localeLabel = new JLabel();
-	private final JList reservoir = new JList();
+	private final JList<String> reservoir = new JList<String>();
 	private final JTextArea source = new JTextArea();
 	private final JTextArea translation = new JTextArea();
 	private final JTextArea location = new JTextArea();
@@ -179,7 +179,7 @@ class TranslationPanel extends JPanel implements ListSelectionListener,
 	}
 
 	private void changedSource() {
-		setSource((String) reservoir.getSelectedValue());
+		setSource(reservoir.getSelectedValue());
 	}
 
 	private void updateReservoir() {

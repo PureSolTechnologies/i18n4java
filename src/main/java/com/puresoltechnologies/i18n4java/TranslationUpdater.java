@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java;
 
 import java.awt.Dialog;
@@ -70,6 +70,7 @@ public class TranslationUpdater {
 		final WeakReference<AbstractButton> referent = new WeakReference<AbstractButton>(
 				button);
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				AbstractButton button = referent.get();
@@ -107,6 +108,7 @@ public class TranslationUpdater {
 			JLabel label, final Object... params) {
 		final WeakReference<JLabel> referent = new WeakReference<JLabel>(label);
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				JLabel label = referent.get();
@@ -138,6 +140,7 @@ public class TranslationUpdater {
 			Dialog dialog, final Object... params) {
 		final WeakReference<Dialog> referent = new WeakReference<Dialog>(dialog);
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				Dialog dialog = referent.get();
@@ -176,6 +179,7 @@ public class TranslationUpdater {
 		final WeakReference<TitledBorder> borderReferent = new WeakReference<TitledBorder>(
 				titledBorder);
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				JComponent component = componentReferent.get();

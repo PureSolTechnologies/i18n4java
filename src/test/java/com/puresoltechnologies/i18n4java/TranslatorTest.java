@@ -59,6 +59,7 @@ public class TranslatorTest {
 	@Test
 	public void testListeners() {
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				System.out.println("translation has changed.");

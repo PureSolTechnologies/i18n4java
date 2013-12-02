@@ -25,15 +25,16 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java.data;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -47,7 +48,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "translations")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SingleLanguageTranslations implements Cloneable {
+public class SingleLanguageTranslations implements Cloneable, Serializable {
+
+	private static final long serialVersionUID = -8643091070908120175L;
 
 	private final ConcurrentMap<String, String> translations = new ConcurrentHashMap<String, String>();
 
@@ -83,6 +86,7 @@ public class SingleLanguageTranslations implements Cloneable {
 		return string;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		for (String source : translations.keySet()) {

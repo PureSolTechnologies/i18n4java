@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java.proc;
 
 import java.io.File;
@@ -78,11 +78,21 @@ public class I18NProjectConfiguration {
 				throw new FileNotFoundException("File '" + file
 						+ "' was not found!");
 			}
-			props.load(new FileInputStream(file));
-			fileLocation = fileOrDirectory;
+			FileInputStream inStream = new FileInputStream(file);
+			try {
+				props.load(inStream);
+				fileLocation = fileOrDirectory;
+			} finally {
+				inStream.close();
+			}
 		} else {
-			props.load(new FileInputStream(fileOrDirectory));
-			fileLocation = fileOrDirectory.getParentFile();
+			FileInputStream inStream = new FileInputStream(fileOrDirectory);
+			try {
+				props.load(inStream);
+				fileLocation = fileOrDirectory.getParentFile();
+			} finally {
+				inStream.close();
+			}
 		}
 		relativeSourceDirectory = props.containsKey(SOURCE_DIRECTORY_KEY) ? props
 				.getProperty(SOURCE_DIRECTORY_KEY) : "src/main/java";

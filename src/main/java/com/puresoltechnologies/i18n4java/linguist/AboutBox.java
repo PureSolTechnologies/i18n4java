@@ -41,6 +41,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -144,22 +145,31 @@ class AboutBox extends JDialog implements ActionListener, WindowListener {
 				return;
 			}
 			try {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(stream));
-				StringBuilder builder = new StringBuilder();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-					builder.append("\n");
+				InputStreamReader inStreamReader = new InputStreamReader(
+						stream, Charset.defaultCharset());
+				try {
+					BufferedReader reader = new BufferedReader(inStreamReader);
+					try {
+						StringBuilder builder = new StringBuilder();
+						String line;
+						while ((line = reader.readLine()) != null) {
+							builder.append(line);
+							builder.append("\n");
+						}
+						JTextArea textField = new JTextArea();
+						textField.setEditable(false);
+						textField.setText(builder.toString());
+						textField.setCaretPosition(0);
+						JScrollPane scrollPane = new JScrollPane(textField,
+								JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+								JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+						tabbedPane.add(scrollPane, translator.i18n("License"));
+					} finally {
+						reader.close();
+					}
+				} finally {
+					inStreamReader.close();
 				}
-				JTextArea textField = new JTextArea();
-				textField.setEditable(false);
-				textField.setText(builder.toString());
-				textField.setCaretPosition(0);
-				JScrollPane scrollPane = new JScrollPane(textField,
-						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				tabbedPane.add(scrollPane, translator.i18n("License"));
 			} finally {
 				stream.close();
 			}

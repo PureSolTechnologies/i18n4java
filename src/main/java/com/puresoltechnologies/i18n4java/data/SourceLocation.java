@@ -29,6 +29,7 @@
 package com.puresoltechnologies.i18n4java.data;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -110,6 +111,7 @@ public class SourceLocation implements Cloneable, Serializable,
 		return lineCount;
 	}
 
+	@Override
 	public String toString() {
 		if (lineCount == 1) {
 			return file + ":" + line;
@@ -120,7 +122,37 @@ public class SourceLocation implements Cloneable, Serializable,
 
 	@Override
 	public SourceLocation clone() {
-		return new SourceLocation(this);
+		try {
+			SourceLocation cloned = (SourceLocation) super.clone();
+
+			Field fileField = cloned.getClass().getDeclaredField("file");
+			fileField.setAccessible(true);
+			fileField.set(cloned, this.file);
+			fileField.setAccessible(false);
+
+			Field lineField = cloned.getClass().getDeclaredField("line");
+			lineField.setAccessible(true);
+			lineField.set(cloned, this.line);
+			lineField.setAccessible(false);
+
+			Field lineCountField = cloned.getClass().getDeclaredField(
+					"lineCount");
+			lineCountField.setAccessible(true);
+			lineCountField.set(cloned, this.lineCount);
+			lineCountField.setAccessible(false);
+
+			return cloned;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
