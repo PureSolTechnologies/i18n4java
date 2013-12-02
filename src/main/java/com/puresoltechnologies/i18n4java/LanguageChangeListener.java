@@ -25,8 +25,9 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java;
+
 
 /**
  * This interface is used to implement a listener for changed translations. This

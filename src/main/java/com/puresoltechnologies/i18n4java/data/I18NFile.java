@@ -25,15 +25,16 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java.data;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
@@ -51,7 +52,28 @@ import javax.xml.bind.Unmarshaller;
 public class I18NFile {
 
 	public static File getResource(File file) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		FileInputStream fileInputStream = new FileInputStream(file);
+		try {
+			return getResource(file, fileInputStream);
+		} finally {
+			fileInputStream.close();
+		}
+	}
+
+	private static File getResource(File file, FileInputStream fileInputStream)
+			throws IOException {
+		InputStreamReader inputStreamReader = new InputStreamReader(
+				fileInputStream, Charset.defaultCharset());
+		try {
+			return getResource(file, inputStreamReader);
+		} finally {
+			inputStreamReader.close();
+		}
+	}
+
+	private static File getResource(File file, InputStreamReader inputStreamReader)
+			throws IOException {
+		BufferedReader reader = new BufferedReader(inputStreamReader);
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -82,8 +104,12 @@ public class I18NFile {
 	public static void write(File file, MultiLanguageTranslations translations)
 			throws IOException {
 		try {
-			if (!file.getParentFile().exists()) {
-				file.getParentFile().mkdirs();
+			File parentFile = file.getParentFile();
+			if (!parentFile.exists()) {
+				if (!parentFile.mkdirs()) {
+					throw new IOException("Cannot create directory '"
+							+ parentFile + "'.");
+				}
 			}
 			translations = (MultiLanguageTranslations) translations.clone();
 			translations.removeLineBreaks();

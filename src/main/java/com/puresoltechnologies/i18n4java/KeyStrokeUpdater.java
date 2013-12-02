@@ -25,7 +25,7 @@
  * limitations under the License.
  *
  ****************************************************************************/
- 
+
 package com.puresoltechnologies.i18n4java;
 
 import java.lang.ref.WeakReference;
@@ -68,6 +68,7 @@ public class KeyStrokeUpdater {
 		final WeakReference<JMenuItem> referent = new WeakReference<JMenuItem>(
 				item);
 		LanguageChangeListener listener = new LanguageChangeListener() {
+
 			@Override
 			public void translationChanged(Translator translator) {
 				JMenuItem item = referent.get();

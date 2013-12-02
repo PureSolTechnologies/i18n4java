@@ -37,7 +37,7 @@ import javax.swing.ListCellRenderer;
 import com.puresoltechnologies.i18n4java.data.LanguageSet;
 import com.puresoltechnologies.i18n4java.data.MultiLanguageTranslations;
 
-class ReservoirCellRenderer implements ListCellRenderer {
+class ReservoirCellRenderer implements ListCellRenderer<String> {
 
 	private MultiLanguageTranslations translationsHash;
 	private Locale selectedLocale = Locale.getDefault();
@@ -78,10 +78,8 @@ class ReservoirCellRenderer implements ListCellRenderer {
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value,
-			int index, boolean isSelected, boolean cellHasFocus) {
-		String source = (String) value;
-
+	public Component getListCellRendererComponent(JList<? extends String> list,
+			String source, int index, boolean isSelected, boolean cellHasFocus) {
 		LanguageSet languageSet = translationsHash.getTranslations(source);
 		if (languageSet == null) {
 			return new StatusComponent(source, isSelected, cellHasFocus,
@@ -95,4 +93,5 @@ class ReservoirCellRenderer implements ListCellRenderer {
 		return new StatusComponent(source, isSelected, cellHasFocus,
 				Status.EMPTY);
 	}
+
 }

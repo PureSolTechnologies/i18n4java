@@ -165,4 +165,16 @@ class FileTree implements Comparable<FileTree> {
 		return this.name.compareTo(other.name);
 	}
 
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof FileTree)) {
+			return false;
+		}
+		return compareTo((FileTree) obj) == 0;
+	}
 }
