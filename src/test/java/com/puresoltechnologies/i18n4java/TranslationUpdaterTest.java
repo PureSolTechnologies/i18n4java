@@ -38,6 +38,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.puresoltechnologies.i18n4java.TranslationUpdater;
@@ -78,6 +79,7 @@ public class TranslationUpdaterTest {
 	}
 
 	@Test
+	@Ignore("On Travis no X11 environment is available to test JDialog.")
 	public void testWeakReferencesJDialog() {
 		TranslationUpdater o = new TranslationUpdater();
 		JDialog dialog = new JDialog(new JFrame());
