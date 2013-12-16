@@ -43,7 +43,7 @@ import com.puresoltechnologies.i18n4java.utils.I18N4Java;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class LocaleChooser extends JComboBox<String> {
+public class LocaleChooser extends JComboBox {
 
 	private static final long serialVersionUID = -5751261750747502182L;
 

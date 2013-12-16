@@ -37,7 +37,7 @@ import javax.swing.ListCellRenderer;
 import com.puresoltechnologies.i18n4java.data.LanguageSet;
 import com.puresoltechnologies.i18n4java.data.MultiLanguageTranslations;
 
-class ReservoirCellRenderer implements ListCellRenderer<String> {
+class ReservoirCellRenderer implements ListCellRenderer {
 
 	private MultiLanguageTranslations translationsHash;
 	private Locale selectedLocale = Locale.getDefault();
@@ -78,19 +78,19 @@ class ReservoirCellRenderer implements ListCellRenderer<String> {
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends String> list,
-			String source, int index, boolean isSelected, boolean cellHasFocus) {
-		LanguageSet languageSet = translationsHash.getTranslations(source);
+	public Component getListCellRendererComponent(JList list,
+			Object source, int index, boolean isSelected, boolean cellHasFocus) {
+		LanguageSet languageSet = translationsHash.getTranslations(source.toString());
 		if (languageSet == null) {
-			return new StatusComponent(source, isSelected, cellHasFocus,
+			return new StatusComponent(source.toString(), isSelected, cellHasFocus,
 					Status.EMPTY);
 		}
 		String translation = languageSet.get(selectedLocale);
 		if ((translation != null) && (!translation.isEmpty())) {
-			return new StatusComponent(source, isSelected, cellHasFocus,
+			return new StatusComponent(source.toString(), isSelected, cellHasFocus,
 					Status.FINISHED);
 		}
-		return new StatusComponent(source, isSelected, cellHasFocus,
+		return new StatusComponent(source.toString(), isSelected, cellHasFocus,
 				Status.EMPTY);
 	}
 
