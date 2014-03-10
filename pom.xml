@@ -99,30 +99,25 @@
 				</executions>
 				<configuration>
 					<recursive>true</recursive>
+					<skipOptionals>false</skipOptionals>
+					<skipProvidedScope>false</skipProvidedScope>
+					<skipTestScope>false</skipTestScope>
 					<knownLicenses>
 						<knownLicense>
-							<key>cpl1</key>
 							<name>Common Public License Version 1.0 (CPL)</name>
 							<url>http://opensource.org/licenses/cpl1.0.php</url>
+							<aliases>
+								<alias>Common Public License Version 1.0</alias>
+							</aliases>
 						</knownLicense>
 						<knownLicense>
-							<key>nbsd</key>
-							<name>The BSD 3-Clause License</name>
-							<url>http://opensource.org/licenses/BSD-3-Clause</url>
+							<name>The BSD 2-Clause License</name>
+							<url>http://opensource.org/licenses/BSD-2-Clause</url>
+							<aliases>
+								<alias>New BSD License</alias>
+							</aliases>
 						</knownLicense>
 					</knownLicenses>
-					<validLicenses>
-						<validLicense>
-							<name>Common Public License Version 1.0</name>
-							<key>cpl1</key>
-						</validLicense>
-						<validLicense>
-							<name>New BSD License</name>
-							<key>nbsd</key>
-						</validLicense>
-					</validLicenses>
-					<approvedDependencies>
-					</approvedDependencies>
 				</configuration>
 			</plugin>
 			<plugin>
