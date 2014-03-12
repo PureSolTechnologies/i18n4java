@@ -36,9 +36,9 @@
 	</licenses>
 
 	<scm>
-		<developerConnection>scm:git:https://github.com/RickRainerLudwig/i18n4java</developerConnection>
-		<connection>scm:git:https://github.com/RickRainerLudwig/i18n4java</connection>
-		<url>https://github.com/RickRainerLudwig/i18n4java.git</url>
+		<developerConnection>scm:git:https://github.com/PureSolTechnologies/i18n4java</developerConnection>
+		<connection>scm:git:https://github.com/PureSolTechnologies/i18n4java</connection>
+		<url>https://github.com/PureSolTechnologies/i18n4java.git</url>
 		<tag>HEAD</tag>
 	</scm>
 
