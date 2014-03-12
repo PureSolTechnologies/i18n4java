@@ -20,7 +20,7 @@
 	<name>PureSol Technologies' I18n study</name>
 	<description>Internationalization (I18n) Framework for Java	</description>
 	<inceptionYear>2006</inceptionYear>
-	<url>http://oss.puresol-technologies.com/i18n4java</url>
+	<url>http://opensource.puresol-technologies.com/i18n4java</url>
 
 	<organization>
 		<name>PureSol Technologies</name>
@@ -67,7 +67,7 @@
 		<site>
 			<id>FTPPureSolTechnologiesCom</id>
 			<name>FTPPureSolTechnologiesCom</name>
-			<url>ftp://puresol-technologies.com/oss/i18n4java</url>
+			<url>ftp://puresol-technologies.com/opensource/i18n4java</url>
 		</site>
 	</distributionManagement>
 
@@ -88,7 +88,7 @@
 			<plugin>
 				<groupId>com.puresoltechnologies.maven.plugins</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.1.2-SNAPSHOT</version>
+				<version>1.2.0</version>
 				<executions>
 					<execution>
 						<phase>validate</phase>
