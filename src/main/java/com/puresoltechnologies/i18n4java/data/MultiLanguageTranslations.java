@@ -35,8 +35,8 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -57,9 +57,12 @@ public class MultiLanguageTranslations implements Cloneable {
 	 * Creates an initial translations hash with starting data provided.
 	 * 
 	 * @param source
+	 *            is the source string to be translated.
 	 * @param file
+	 *            is the file where the string was found.
 	 * @param line
-	 * @return
+	 *            is the line at which the string was found.
+	 * @return A {@link MultiLanguageTranslations} object is returned.
 	 */
 	public static MultiLanguageTranslations create(String source, String file,
 			int line) {

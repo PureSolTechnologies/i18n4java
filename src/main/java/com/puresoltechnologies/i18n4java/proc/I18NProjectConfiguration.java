@@ -59,10 +59,13 @@ public class I18NProjectConfiguration {
 	private final String relativeDestinationDirectory;
 
 	/**
+	 * Is the constructor to construct a new instance.
 	 * 
-	 * @param fileIOrDirectory
-	 * @throws FileNotFoundException
+	 * @param fileOrDirectory
+	 *            is the file or directory to look up the configuration.
 	 * @throws IOException
+	 *             is thrown in case of IO issues like reading issues or the
+	 *             configuration files was not found.
 	 */
 	public I18NProjectConfiguration(File fileOrDirectory) throws IOException {
 		super();
@@ -105,21 +108,27 @@ public class I18NProjectConfiguration {
 	}
 
 	/**
-	 * @return the relativeSourceDirectory
+	 * Returns the relative source directory.
+	 * 
+	 * @return The relative source directory is returned.
 	 */
 	public String getRelativeSourceDirectory() {
 		return relativeSourceDirectory;
 	}
 
 	/**
-	 * @return the relativeI18nDirectory
+	 * Provides the relative I18n directory containing the translations.
+	 * 
+	 * @return The relative I18n directory is returned.
 	 */
 	public String getRelativeI18nDirectory() {
 		return relativeI18nDirectory;
 	}
 
 	/**
-	 * @return the relativeDestinationDirectory
+	 * Provides the destination directory.
+	 * 
+	 * @return The relative destination directory is returned.
 	 */
 	public String getRelativeDestinationDirectory() {
 		return relativeDestinationDirectory;

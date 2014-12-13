@@ -67,7 +67,7 @@
 		<site>
 			<id>FTPPureSolTechnologiesCom</id>
 			<name>FTPPureSolTechnologiesCom</name>
-			<url>ftp://puresol-technologies.com/opensource/i18n4java</url>
+			<url>ftp://puresol-technologies.com/opensource.puresol-technologies.com/projects/i18n4java</url>
 		</site>
 	</distributionManagement>
 
@@ -123,7 +123,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<phase>verify</phase>

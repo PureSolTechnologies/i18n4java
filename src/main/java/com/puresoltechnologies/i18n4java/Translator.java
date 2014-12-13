@@ -113,6 +113,9 @@ public class Translator implements Serializable {
 	 * the whole system. This is the static method to build the Singleton
 	 * pattern.
 	 * 
+	 * @param clazz
+	 *            is the {@link Class} for which the a translator is to be
+	 *            returned.
 	 * @return A reference to the static held Translator object is returned.
 	 */
 	public static Translator getTranslator(Class<?> clazz) {
@@ -128,6 +131,7 @@ public class Translator implements Serializable {
 	 * follow.
 	 * 
 	 * @param locale
+	 *            is the locale to use be used as default for translation.
 	 */
 	public static synchronized void setDefault(Locale locale) {
 		defaultLocale = locale;
@@ -140,7 +144,7 @@ public class Translator implements Serializable {
 	 * This method returns the currently set default locale which is used for
 	 * primary translation.
 	 * 
-	 * @return
+	 * @return The set default locale is returned.
 	 */
 	public static Locale getDefault() {
 		return defaultLocale;
@@ -375,6 +379,8 @@ public class Translator implements Serializable {
 	 * 
 	 * @param text
 	 *            is the text to be translated.
+	 * @param locale
+	 *            is the locale to be used for translation.
 	 * @param params
 	 *            are the parameters for the MessageFormat.
 	 * @return The translated and localized string is returned.
