@@ -51,6 +51,7 @@ public class I18NJavaParser {
 	 *            to be read and processed.
 	 * @return A Vector of all I18N strings is returned.
 	 * @throws IOException
+	 *             is thrown in case of an IO issue.
 	 */
 	static public MultiLanguageTranslations parseFile(File file)
 			throws IOException {
