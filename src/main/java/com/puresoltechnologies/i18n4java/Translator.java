@@ -333,11 +333,7 @@ public class Translator implements Serializable {
 		if (singleLanguageTranslations == null) {
 			return text;
 		}
-		String translation = singleLanguageTranslations.get(text);
-		if (translation == null) {
-			return text;
-		}
-		return translation;
+		return singleLanguageTranslations.get(text);
 	}
 
 	/**
